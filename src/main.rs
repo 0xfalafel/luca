@@ -1,6 +1,6 @@
 #![allow(unused)]
 
-use gtk::{glib::clone, HeaderBar};
+use gtk::{glib::clone, HeaderBar, PackType};
 use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt, OrientableExt, WidgetExt};
 use relm4::{gtk, ComponentParts, ComponentSender, RelmApp, RelmWidgetExt, SimpleComponent};
 
@@ -58,7 +58,9 @@ impl SimpleComponent for AppModel {
                     set_orientation: gtk::Orientation::Vertical,
                     gtk::HeaderBar {
                         set_show_title_buttons: false,
-                        pack_end = &gtk::WindowControls{},
+                        pack_end = &gtk::WindowControls{
+                            set_side: gtk::PackType::End,
+                        },
                         add_css_class: "sidebar"
                     },
 
@@ -70,6 +72,7 @@ impl SimpleComponent for AppModel {
             },
         }
     }
+    
     /// Initialize the UI and model.
     fn init(
         counter: Self::Init,
