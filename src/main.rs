@@ -1,102 +1,68 @@
+#![allow(unused)]
+
 use gtk::glib::clone;
-use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt};
+use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt, OrientableExt};
 use relm4::{gtk, ComponentParts, ComponentSender, RelmApp, RelmWidgetExt, SimpleComponent};
 
-struct AppModel {
-    counter: u8,
-}
+struct AppModel;
 
-#[derive(Debug)]
-enum AppInput {
-    Increment,
-    Decrement,
-}
-
-struct AppWidgets {
-    label: gtk::Label,
-}
-
+#[relm4::component]
 impl SimpleComponent for AppModel {
 
     /// The type of the messages that this component can receive.
-    type Input = AppInput;
+    type Input = ();
     /// The type of the messages that this component can send.
     type Output = ();
     /// The type of data with which this component will be initialized.
-    type Init = u8;
+    type Init = ();
     /// The root GTK widget that this component will create.
-    type Root = gtk::Window;
+    //type Root = gtk::Window;
     /// A data structure that contains the widgets that you will need to update.
-    type Widgets = AppWidgets;
+    // type Widgets = AppWidgets;
+    //type Widgets = ();
 
-    fn init_root() -> Self::Root {
-        gtk::Window::builder()
-            .title("")
-            .default_width(300)
-            .default_height(100)
-            .build()
+
+    view! {
+        main_window = gtk::Window {
+            set_default_width: 500,
+            set_default_height: 250,
+            set_title: Some(""),
+            set_titlebar: Some(&gtk::Grid::new()), // set an emply headerbar
+
+            gtk::Paned {
+                set_orientation: gtk::Orientation::Horizontal,
+
+                
+            },
+
+            // gtk::Label {
+            //     #[watch]
+            //     set_label: &format!("Hi mom!")
+            // },
+        }
     }
-
     /// Initialize the UI and model.
     fn init(
         counter: Self::Init,
         window: Self::Root,
         sender: ComponentSender<Self>,
     ) -> relm4::ComponentParts<Self> {
-        let model = AppModel { counter };
+        let model = AppModel {};
 
-        let vbox = gtk::Box::builder()
-            .orientation(gtk::Orientation::Vertical)
-            .spacing(5)
-            .build();
-
-        let inc_button = gtk::Button::with_label("Increment");
-        let dec_button = gtk::Button::with_label("Decrement");
-
-        let label = gtk::Label::new(Some(&format!("Counter: {}", model.counter)));
-        label.set_margin_all(5);
-
-
-
-        window.set_child(Some(&vbox));
-        vbox.set_margin_all(5);
-        vbox.append(&inc_button);
-        vbox.append(&dec_button);
-        vbox.append(&label);
-
-        inc_button.connect_clicked(clone!(@strong sender => move |_| {
-            sender.input(AppInput::Increment);
-        }));
-
-        dec_button.connect_clicked(clone!(@strong sender => move |_| {
-            sender.input(AppInput::Decrement);
-        }));
-
-        let widgets = AppWidgets { label };
+        let widgets = view_output!();
 
         ComponentParts { model, widgets }
     }
 
-    fn update(&mut self, message: Self::Input, _sender: ComponentSender<Self>) {
-        match message {
-            AppInput::Increment => {
-                self.counter = self.counter.wrapping_add(1);
-            }
-            AppInput::Decrement => {
-                self.counter = self.counter.wrapping_sub(1);
-            }
-        }
-    }
+    // fn update(&mut self, message: Self::Input, _sender: ComponentSender<Self>) {
+    // }
 
-    /// Update the view to represent the updated model.
-    fn update_view(&self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {
-        widgets
-            .label
-            .set_label(&format!("Counter: {}", self.counter));
-    }
+    // /// Update the view to represent the updated model.
+    // fn update_view(&self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {
+    // }
 }
 
 fn main() {
     let app = RelmApp::new("relm4.test.simple_manual");
-    app.run::<AppModel>(0);
+    app.run::<AppModel>(());
 }
