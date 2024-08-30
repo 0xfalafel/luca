@@ -55,23 +55,25 @@ impl SimpleComponent for AppModel {
                 },
 
                 #[wrap(Some)]
-                set_end_child = &gtk::Box {
-                    set_vexpand: true,
-                    add_css_class: "sidebar",
-                    set_orientation: gtk::Orientation::Vertical,
-                    gtk::HeaderBar {
-                        set_show_title_buttons: false,
-                        pack_end = &gtk::WindowControls{
-                            set_side: gtk::PackType::End,
+                set_end_child = &gtk::WindowHandle {
+                    gtk::Box {
+                        set_vexpand: true,
+                        add_css_class: "sidebar",
+                        set_orientation: gtk::Orientation::Vertical,
+                        gtk::HeaderBar {
+                            set_show_title_buttons: false,
+                            pack_end = &gtk::WindowControls{
+                                set_side: gtk::PackType::End,
+                            },
+                            add_css_class: "sidebar"
                         },
-                        add_css_class: "sidebar"
-                    },
-
-                    gtk::Label {
-                        set_label: "Hi mom!",
-                        add_css_class: "sidebar"
+                        
+                        gtk::Label {
+                            set_label: "Hi mom!",
+                            add_css_class: "sidebar"
+                        }
                     }
-                }
+                },
             },
         }
     }
