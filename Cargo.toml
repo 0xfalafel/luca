@@ -1,5 +1,5 @@
 [package]
-name = "nerd-rs"
+name = "luca"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,3 +8,6 @@ edition = "2021"
 [dependencies]
 relm4 = "0.8.0"
 relm4-components = "0.8.0"
+
+[build-dependencies]
+glib-build-tools = "0.17.10"

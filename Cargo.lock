@@ -352,6 +352,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "glib-build-tools"
+version = "0.17.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7a65d79efe318ef2cbbbb37032b125866fd82c34ea44c816132621bbc552e716"
+
+[[package]]
 name = "glib-macros"
 version = "0.19.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -545,6 +551,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a7a70ba024b9dc04c27ea2f0c0548feb474ec5c54bba33a7f72f873a39d07b24"
 
 [[package]]
+name = "luca"
+version = "0.1.0"
+dependencies = [
+ "glib-build-tools",
+ "relm4",
+ "relm4-components",
+]
+
+[[package]]
 name = "memchr"
 version = "2.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -575,14 +590,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6a51313c5820b0b02bd422f4b44776fbf47961755c74ce64afc73bfad10226c3"
 dependencies = [
  "getrandom",
-]
-
-[[package]]
-name = "nerd-rs"
-version = "0.1.0"
-dependencies = [
- "relm4",
- "relm4-components",
 ]
 
 [[package]]

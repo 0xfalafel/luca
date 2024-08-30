@@ -1,6 +1,6 @@
 #![allow(unused)]
 
-use gtk::{glib::clone, HeaderBar, PackType};
+use gtk::{gdk, glib::clone, HeaderBar, PackType};
 use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt, OrientableExt, WidgetExt};
 use relm4::{gtk, ComponentParts, ComponentSender, RelmApp, RelmWidgetExt, SimpleComponent};
 
@@ -44,9 +44,12 @@ impl SimpleComponent for AppModel {
 
                     gtk::ScrolledWindow {
                         set_vexpand: true,
+                        add_css_class: "view",
+                        add_css_class: "text",
 
                         gtk::TextView {
-
+                            set_margin_start: 20
+                            
                         }
                     }
                 },
@@ -65,22 +68,23 @@ impl SimpleComponent for AppModel {
                     },
 
                     gtk::Label {
-                        set_label: "Hi daddy!",
+                        set_label: "Hi mom!",
                         add_css_class: "sidebar"
                     }
                 }
             },
         }
     }
-    
+
     /// Initialize the UI and model.
     fn init(
         counter: Self::Init,
         window: Self::Root,
         sender: ComponentSender<Self>,
     ) -> relm4::ComponentParts<Self> {
-        let model = AppModel {};
+        load_css();
 
+        let model = AppModel {};
         let widgets = view_output!();
 
         ComponentParts { model, widgets }
@@ -94,7 +98,24 @@ impl SimpleComponent for AppModel {
     // }
 }
 
+// fn initialize_custom_style() {
+//     gio::resources_register_include!("style.css").unwrap();
+
+//     let display = gdk::Display::default().unwrap();
+//     let theme = gtk::IconTheme::for_display(&display);
+//     theme.add_resource_path("/com/example/Foobar/icons");
+// }
+
+fn load_css() {
+    let display = gdk::Display::default().expect("Could not get default display.");
+    let provider = gtk::CssProvider::new();
+    let priority = gtk::STYLE_PROVIDER_PRIORITY_APPLICATION;
+
+    provider.load_from_data(include_str!("../data/style.css"));
+    gtk::style_context_add_provider_for_display(&display, &provider, priority);
+}
+
 fn main() {
-    let app = RelmApp::new("relm4.test.simple_manual");
+    let app = RelmApp::new("io.github.falafel.luca");
     app.run::<AppModel>(());
 }
