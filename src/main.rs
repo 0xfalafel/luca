@@ -38,33 +38,36 @@ impl SimpleComponent for AppModel {
                     set_size_request: (250, -1),
                     gtk::HeaderBar {
                         set_show_title_buttons: false,
-                        pack_start = &gtk::WindowControls{}
+                        pack_start = &gtk::WindowControls{},
+                        add_css_class: "view",
                     },
 
-                    gtk::Label {
-                        set_label: "Hi mom !"
+                    gtk::ScrolledWindow {
+                        set_vexpand: true,
+
+                        gtk::TextView {
+
+                        }
                     }
                 },
 
                 #[wrap(Some)]
                 set_end_child = &gtk::Box {
+                    set_vexpand: true,
+                    add_css_class: "sidebar",
                     set_orientation: gtk::Orientation::Vertical,
                     gtk::HeaderBar {
                         set_show_title_buttons: false,
-                        pack_end = &gtk::WindowControls{}
+                        pack_end = &gtk::WindowControls{},
+                        add_css_class: "sidebar"
                     },
 
                     gtk::Label {
-                        set_label: "Hi daddy!"
+                        set_label: "Hi daddy!",
+                        add_css_class: "sidebar"
                     }
                 }
-
             },
-
-            // gtk::Label {
-            //     #[watch]
-            //     set_label: &format!("Hi mom!")
-            // },
         }
     }
     /// Initialize the UI and model.
