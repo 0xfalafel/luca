@@ -1,6 +1,6 @@
 #![allow(unused)]
 
-use gtk::glib::clone;
+use gtk::{glib::clone, HeaderBar};
 use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt, OrientableExt};
 use relm4::{gtk, ComponentParts, ComponentSender, RelmApp, RelmWidgetExt, SimpleComponent};
 
@@ -32,7 +32,26 @@ impl SimpleComponent for AppModel {
             gtk::Paned {
                 set_orientation: gtk::Orientation::Horizontal,
 
-                
+                #[wrap(Some)]
+                set_start_child = &gtk::Box {
+                    set_orientation: gtk::Orientation::Vertical,
+                    gtk::HeaderBar {},
+
+                    gtk::Label {
+                        set_label: "Hi mom !"
+                    }
+                },
+
+                #[wrap(Some)]
+                set_end_child = &gtk::Box {
+                    set_orientation: gtk::Orientation::Vertical,
+                    gtk::HeaderBar {},
+
+                    gtk::Label {
+                        set_label: "Hi daddy!"
+                    }
+                }
+
             },
 
             // gtk::Label {
