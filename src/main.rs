@@ -108,6 +108,7 @@ impl SimpleComponent for AppModel {
 //     theme.add_resource_path("/com/example/Foobar/icons");
 // }
 
+// from https://jamesbenner.hashnode.dev/how-to-style-your-gtk4-rust-app-with-css
 fn load_css() {
     let display = gdk::Display::default().expect("Could not get default display.");
     let provider = gtk::CssProvider::new();
@@ -115,9 +116,18 @@ fn load_css() {
 
     provider.load_from_data(include_str!("../data/style.css"));
     gtk::style_context_add_provider_for_display(&display, &provider, priority);
+
+    // follow dark theme if present
+    if let Some(settings) = gtk::Settings::default() {
+        settings.set_gtk_application_prefer_dark_theme(true);
+        // let theme_name = settings.gtk_theme_name().expect("Could not get theme name.");
+        // println!("theme: {}", theme_name);
+
+    }
 }
 
 fn main() {
+
     let app = RelmApp::new("io.github.falafel.luca");
     app.run::<AppModel>(());
 }

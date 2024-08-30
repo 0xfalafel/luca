@@ -1,4 +1,6 @@
 headerbar {
+    border-radius: 0;
+    background-image: none;
 	box-shadow: none;
 }
 
