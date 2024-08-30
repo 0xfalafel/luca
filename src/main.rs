@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 use gtk::{glib::clone, HeaderBar};
-use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt, OrientableExt};
+use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt, OrientableExt, WidgetExt};
 use relm4::{gtk, ComponentParts, ComponentSender, RelmApp, RelmWidgetExt, SimpleComponent};
 
 struct AppModel;
@@ -24,8 +24,8 @@ impl SimpleComponent for AppModel {
 
     view! {
         main_window = gtk::Window {
-            set_default_width: 500,
-            set_default_height: 250,
+            set_default_width: 600,
+            set_default_height: 400,
             set_title: Some(""),
             set_titlebar: Some(&gtk::Grid::new()), // set an emply headerbar
 
@@ -35,7 +35,11 @@ impl SimpleComponent for AppModel {
                 #[wrap(Some)]
                 set_start_child = &gtk::Box {
                     set_orientation: gtk::Orientation::Vertical,
-                    gtk::HeaderBar {},
+                    set_size_request: (250, -1),
+                    gtk::HeaderBar {
+                        set_show_title_buttons: false,
+                        pack_start = &gtk::WindowControls{}
+                    },
 
                     gtk::Label {
                         set_label: "Hi mom !"
@@ -45,7 +49,10 @@ impl SimpleComponent for AppModel {
                 #[wrap(Some)]
                 set_end_child = &gtk::Box {
                     set_orientation: gtk::Orientation::Vertical,
-                    gtk::HeaderBar {},
+                    gtk::HeaderBar {
+                        set_show_title_buttons: false,
+                        pack_end = &gtk::WindowControls{}
+                    },
 
                     gtk::Label {
                         set_label: "Hi daddy!"
