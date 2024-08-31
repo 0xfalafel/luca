@@ -16,11 +16,6 @@ impl SimpleComponent for AppModel {
     type Output = ();
     /// The type of data with which this component will be initialized.
     type Init = ();
-    /// The root GTK widget that this component will create.
-    //type Root = gtk::Window;
-    /// A data structure that contains the widgets that you will need to update.
-    // type Widgets = AppWidgets;
-    //type Widgets = ();
 
 
     view! {
@@ -47,10 +42,9 @@ impl SimpleComponent for AppModel {
                         set_vexpand: true,
                         add_css_class: "view",
                         add_css_class: "text",
-
+                        
                         gtk::TextView {
-                            set_margin_start: 20
-                            
+                            set_margin_start: 20,
                         }
                     }
                 },
