@@ -1,6 +1,8 @@
 use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
+use crate::interpreter::solve;
+
 // Input component
 
 pub struct LucaInput {
@@ -51,7 +53,10 @@ impl SimpleComponent for LucaInput {
         match msg {
             Msg::TextChanged(text) => {
                 self.text = text;
-                println!("Text changed: {}", self.text);
+                if let Ok(res) = solve(self.text.clone()) {
+                    println!("{}", res);
+                }
+                //println!("Text changed: {}", self.text);
             }
         }
     }
