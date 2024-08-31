@@ -98,21 +98,7 @@ impl SimpleComponent for AppModel {
         ComponentParts { model, widgets }
     }
 
-    // fn update(&mut self, message: Self::Input, _sender: ComponentSender<Self>) {
-    // }
-
-    // /// Update the view to represent the updated model.
-    // fn update_view(&self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {
-    // }
 }
-
-// fn initialize_custom_style() {
-//     gio::resources_register_include!("style.css").unwrap();
-
-//     let display = gdk::Display::default().unwrap();
-//     let theme = gtk::IconTheme::for_display(&display);
-//     theme.add_resource_path("/com/example/Foobar/icons");
-// }
 
 // from https://jamesbenner.hashnode.dev/how-to-style-your-gtk4-rust-app-with-css
 fn load_css() {
