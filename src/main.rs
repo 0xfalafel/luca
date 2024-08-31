@@ -7,7 +7,7 @@ mod input_pane;
 use input_pane::LucaInput;
 
 mod interpreter;
-use interpreter::solve;
+
 
 // Application model
 
