@@ -1,8 +1,9 @@
 #![allow(unused)]
 
-use gtk::{gdk, glib::clone, HeaderBar, PackType};
+use gtk::{gdk, glib, glib::clone, HeaderBar, PackType};
 use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt, OrientableExt, WidgetExt};
 use relm4::{gtk, ComponentParts, ComponentSender, RelmApp, RelmWidgetExt, SimpleComponent};
+use granite::prelude::SettingsExt;
 
 struct AppModel;
 
@@ -114,15 +115,33 @@ fn load_css() {
     let provider = gtk::CssProvider::new();
     let priority = gtk::STYLE_PROVIDER_PRIORITY_APPLICATION;
 
+    // load our custom CSS
     provider.load_from_data(include_str!("../data/style.css"));
     gtk::style_context_add_provider_for_display(&display, &provider, priority);
 
-    // follow dark theme if present
-    if let Some(settings) = gtk::Settings::default() {
-        settings.set_gtk_application_prefer_dark_theme(true);
-        // let theme_name = settings.gtk_theme_name().expect("Could not get theme name.");
-        // println!("theme: {}", theme_name);
 
+    // from https://github.com/davidmhewitt/elementary-rust-example/blob/main/src/application.rs#L81
+
+    // follow dark theme if present
+    if let Some(gtk_settings) = gtk::Settings::default() {
+ 
+        granite::init();
+        if let Some(granite_settings) = granite::Settings::default() {
+            
+            // Use the dark theme, if it's the theme prefered globaly
+            gtk_settings.set_gtk_application_prefer_dark_theme(
+                granite_settings.prefers_color_scheme() == granite::SettingsColorScheme::Dark
+            );
+            
+            // Auto switch theme when the preferences are changed
+            granite_settings.connect_prefers_color_scheme_notify(
+                clone!(@weak gtk_settings => move |granite_settings| {
+                    gtk_settings.set_gtk_application_prefer_dark_theme(
+                        granite_settings.prefers_color_scheme() == granite::SettingsColorScheme::Dark
+                    );
+                })
+            );
+        }
     }
 }
 

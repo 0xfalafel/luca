@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 relm4 = "0.8.0"
 relm4-components = "0.8.0"
+granite = { version = "1.1", package = "granite-rs", features = ["v7_2"] }
 
 [build-dependencies]
 glib-build-tools = "0.17.10"

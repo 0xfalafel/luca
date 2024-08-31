@@ -392,6 +392,37 @@ dependencies = [
 ]
 
 [[package]]
+name = "granite-rs"
+version = "1.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6fea07093d6991e7bb6d01c2984f5d6e0fb62e487a1d3fa8fc0d0fa87491708d"
+dependencies = [
+ "bitflags",
+ "gdk4",
+ "gio",
+ "glib",
+ "granite-rs-sys",
+ "gtk4",
+ "libc",
+ "once_cell",
+]
+
+[[package]]
+name = "granite-rs-sys"
+version = "0.3.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "97471fe706f8443cee58bbd50a2ebfd70bd81603e4d411b90db4b211a65f70df"
+dependencies = [
+ "gdk4-sys",
+ "gio-sys",
+ "glib-sys",
+ "gobject-sys",
+ "gtk4-sys",
+ "libc",
+ "system-deps",
+]
+
+[[package]]
 name = "graphene-rs"
 version = "0.19.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -555,6 +586,7 @@ name = "luca"
 version = "0.1.0"
 dependencies = [
  "glib-build-tools",
+ "granite-rs",
  "relm4",
  "relm4-components",
 ]
