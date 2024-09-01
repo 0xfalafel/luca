@@ -241,7 +241,7 @@ pub fn solve(input: String) -> Result<String, String>{
     let lexer = Lexer::new(input);
     if let Ok(mut interpreter) = Interpreter::new(lexer){
         if let Ok(result) = interpreter.expr() {
-            println!("{}", result);
+            // println!("{}", result);
             return Ok(format!("{}", result));
         } else {
             return Err("Invalid syntax".to_string());

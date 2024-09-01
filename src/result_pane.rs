@@ -57,6 +57,7 @@ impl SimpleComponent for ResultView {
                         results.push('\n');
                     }
                 }
+                results.pop();
                 self.text_buffer.set_text(&results);
             }
         }
