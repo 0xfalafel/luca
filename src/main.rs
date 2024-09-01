@@ -38,6 +38,7 @@ impl SimpleComponent for AppModel {
         main_window = gtk::Window {
             set_default_width: 600,
             set_default_height: 400,
+            set_width_request: 370,
             set_title: Some(""),
             set_titlebar: Some(&gtk::Grid::new()), // set an emply headerbar
 
