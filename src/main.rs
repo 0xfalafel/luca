@@ -6,20 +6,28 @@ use granite::prelude::SettingsExt;
 mod input_pane;
 use input_pane::{LucaInput, MsgInput};
 
+mod result_pane;
+use result_pane::{ResultView, ResultMsg};
+
 mod interpreter;
 
 
 // Application model
+#[derive(Debug)]
+enum AppMsg {
+    TextChanged(String)
+}
 
 struct AppModel {
     input: Controller<LucaInput>,
+    result: Controller<ResultView>
 }
 
 #[relm4::component]
 impl SimpleComponent for AppModel {
 
     /// The type of the messages that this component can receive.
-    type Input = ();
+    type Input = AppMsg;
     /// The type of the messages that this component can send.
     type Output = ();
     /// The type of data with which this component will be initialized.
@@ -69,9 +77,11 @@ impl SimpleComponent for AppModel {
                             add_css_class: "sidebar"
                         },
                         
-                        gtk::Label {
-                            set_label: "Hi mom!",
-                            add_css_class: "sidebar"
+                        gtk::ScrolledWindow {
+                            set_vexpand: true,
+                            add_css_class: "view",
+                            add_css_class: "text",
+                            set_child: Some(model.result.widget())
                         }
                     }
                 },
@@ -90,17 +100,33 @@ impl SimpleComponent for AppModel {
             LucaInput::builder()
                 .launch(String::from("Hi mom!"))
                 .forward(sender.input_sender(), |msg| match msg {
-                    MsgInput::TextChanged(new_text) => {}
+                    MsgInput::TextChanged(new_text) => {AppMsg::TextChanged(new_text)}
                 });
 
+        let result_view: Controller<ResultView> = 
+            ResultView::builder()
+                .launch(String::from("Results"))
+                .detach();
+                // .forward(sender.input_sender(), |msg| match msg {
+                //     _ => {}
+                // });
+
         let model = AppModel {
-            input: text_input
+            input: text_input,
+            result: result_view
         };
         let widgets = view_output!();
 
         ComponentParts { model, widgets }
     }
 
+    fn update(&mut self, message: Self::Input, _sender: ComponentSender<Self>) {
+        match message {
+            AppMsg::TextChanged(new_text) => {
+                self.result.emit(ResultMsg::TextChanged(new_text))
+            }
+        }
+    }
 }
 
 // from https://jamesbenner.hashnode.dev/how-to-style-your-gtk4-rust-app-with-css
