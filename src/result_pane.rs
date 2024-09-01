@@ -6,7 +6,6 @@ use crate::interpreter::solve;
 // Input component
 
 pub struct ResultView {
-    text: String,
     text_buffer: gtk::TextBuffer
 }
 
@@ -36,7 +35,7 @@ impl SimpleComponent for ResultView {
         let text_buffer = gtk::TextBuffer::new(None);
         text_buffer.set_text(&text);
 
-        let model = ResultView {text, text_buffer};
+        let model = ResultView {text_buffer};
         let widgets = view_output!();
         ComponentParts {model, widgets}
     }
@@ -44,11 +43,13 @@ impl SimpleComponent for ResultView {
     fn update(&mut self, msg: Self::Input, _sender: ComponentSender<Self>) {
         match msg {
             ResultMsg::TextChanged(text) => {
-                // self.text = text;
+                
                 if let Ok(res) = solve(text) {
                     println!("{}", res);
-                    // self.text = res;
                     self.text_buffer.set_text(&res);
+                } else {
+                    let empty = "";
+                    self.text_buffer.set_text(&empty);
                 }
             }
         }

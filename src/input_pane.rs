@@ -1,12 +1,10 @@
 use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
-use crate::interpreter::solve;
 
 // Input component
 
 pub struct LucaInput {
-    text: String,
     text_buffer: gtk::TextBuffer
 }
 
@@ -43,7 +41,7 @@ impl SimpleComponent for LucaInput {
             sender.output(MsgInput::TextChanged(text.to_string())).unwrap();
         });
 
-        let model = LucaInput {text, text_buffer};
+        let model = LucaInput {text_buffer};
         let widgets = view_output!();
         ComponentParts {model, widgets}
     }
