@@ -108,7 +108,7 @@ impl Lexer {
     fn skip_whitespace(&mut self) {
 
         for char in self.text[self.pos..].chars() {
-            if char.is_whitespace() {
+            if char.is_whitespace() || char.is_ascii_alphabetic() {
                 self.pos += 1;
             } else {
                 break;
