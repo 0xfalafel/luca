@@ -23,6 +23,7 @@ impl SimpleComponent for ResultView {
     view! {
         gtk::TextView {
             set_margin_start: 20,
+            set_editable: false,
             set_buffer: Some(&model.text_buffer)
         },
     }
@@ -43,14 +44,20 @@ impl SimpleComponent for ResultView {
     fn update(&mut self, msg: Self::Input, _sender: ComponentSender<Self>) {
         match msg {
             ResultMsg::TextChanged(text) => {
+                // println!("input: {}", &text);
                 
-                if let Ok(res) = solve(text) {
-                    println!("{}", res);
-                    self.text_buffer.set_text(&res);
-                } else {
-                    let empty = "";
-                    self.text_buffer.set_text(&empty);
+                let mut results = String::new();
+
+                for line in text.lines() {
+
+                    if let Ok(res) = solve(line.to_string()) {
+                        results.push_str(&res);
+                        results.push_str("\n");
+                    } else {
+                        results.push('\n');
+                    }
                 }
+                self.text_buffer.set_text(&results);
             }
         }
     }

@@ -98,18 +98,15 @@ impl SimpleComponent for AppModel {
         load_css();
         let text_input: Controller<LucaInput> = 
             LucaInput::builder()
-                .launch(String::from("Hi mom!"))
+                .launch(String::from(""))
                 .forward(sender.input_sender(), |msg| match msg {
                     MsgInput::TextChanged(new_text) => {AppMsg::TextChanged(new_text)}
                 });
 
         let result_view: Controller<ResultView> = 
             ResultView::builder()
-                .launch(String::from("Results"))
+                .launch(String::from(""))
                 .detach();
-                // .forward(sender.input_sender(), |msg| match msg {
-                //     _ => {}
-                // });
 
         let model = AppModel {
             input: text_input,
