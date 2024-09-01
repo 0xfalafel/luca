@@ -1,29 +1,35 @@
+use std::io;
+use std::io::Write;
 
-
-
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 enum Error {
     ParseError,
-    InvalidTokenType
+    InvalidTokenType,
+    InvalidSyntax
 }
 
-#[derive(PartialEq)]
-#[derive(Debug)]
-enum TokenType {
-    INTEGER,
+
+/**************************************************************
+*   Tokens / Lexer
+**************************************************************/
+
+// Token types
+//
+// EOF (end-of-file) is  used to indicate that there is no more input left
+
+
+/// Token are used to represent the differents elements given as an input.
+/// The input is separated in a bunch of tokens.
+#[derive(Debug, Clone, Eq, PartialEq)]
+enum Token {
+    INTEGER(i128),
     PLUS,
     MINUS,
     MUL,
     DIV,
-    LPAR,
-    RPAR,
+    LPAREN,
+    RPAREN,
     EOF,
-}
-
-#[derive(Debug)]
-struct Token {
-    kind: TokenType,
-    value: i64
 }
 
 struct Lexer {
@@ -31,7 +37,7 @@ struct Lexer {
     pos: usize
 }
 
-/// Split the input text in multiple tokens
+/// The Lexer is in charge of spliting the input in a bunch of tokens.
 impl Lexer {
     pub fn new(text: String) -> Lexer {
 
@@ -41,82 +47,30 @@ impl Lexer {
         }
     }
 
+    /// Advance the `pos` pointer and set the `current_char` variable.
     fn advance(&mut self) {
         self.pos += 1
     }
 
+    /// Return the char at the `pos` position
     fn get_char(&self) -> Option<char> {
         self.text.chars().nth(self.pos)
-    }
-
-    pub fn get_next_token(&mut self) -> Result<Token, Error> {
-
-        let char = loop {
-
-            let char = self.get_char();
-            if char == None {
-                return Ok(Token {kind: TokenType::EOF, value: 0});
-            }
-            
-            let char = char.unwrap();
-            
-            if char.is_whitespace(){
-                self.skip_whitespace();
-            } else {
-                break char;
-            }
-        };
-            
-        if char.is_ascii_digit() {
-            return Ok(Token {kind: TokenType::INTEGER, value: self.integer()});
-        }
-
-        if char == '+' {
-            self.advance();
-            return Ok(Token { kind: TokenType::PLUS, value: 0 });
-        }
-
-        if char == '-' {
-            self.advance();
-            return Ok(Token { kind: TokenType::MINUS, value: 0 });
-        }
-
-        if char == '*' {
-            self.advance();
-            return Ok(Token { kind: TokenType::MUL, value: 0 });
-        }
-
-        if char == '/' {
-            self.advance();
-            return Ok(Token { kind: TokenType::DIV, value: 0 });
-        }
-
-        if char == '(' {
-            self.advance();
-            return Ok(Token { kind: TokenType::LPAR, value: 0 });
-        }
-
-        if char == ')' {
-            self.advance();
-            return Ok(Token { kind: TokenType::RPAR, value: 0 });
-        }
-
-        Err(Error::ParseError)
     }
 
     /// advance `self.pos` until the next non-whitespace character
     fn skip_whitespace(&mut self) {
 
         for char in self.text[self.pos..].chars() {
-            if char.is_whitespace() || char.is_ascii_alphabetic() {
+            if char.is_whitespace() {
                 self.pos += 1;
             } else {
                 break;
             }
         }
-   }
+    }
 
-    fn integer(&mut self) -> i64{
+    /// Return a (multidigit) integer consumed from the input.
+    fn integer(&mut self) -> i128 {
         let int_start = self.pos;
 
         loop {
@@ -130,35 +84,103 @@ impl Lexer {
                 break;
             }
         }
-        return i64::from_str_radix(&self.text[int_start..self.pos], 10).unwrap();
+        return i128::from_str_radix(&self.text[int_start..self.pos], 10).unwrap();
+    }
+
+    /// Lexical analyser (also known as scanner or tokenizer).
+    ///    
+    /// This method is responsible for breaking a sentence
+    /// appart into tokens. One token at the time.
+    pub fn get_next_token(&mut self) -> Result<Token, Error> {
+
+        let char = loop {
+
+            let char = self.get_char();
+            if char == None {
+                return Ok(Token::EOF);
+            }
+            
+            let char = char.unwrap();
+            
+            if char.is_whitespace(){
+                self.skip_whitespace();
+            } else {
+                break char;
+            }
+        };
+
+        match char {
+            char if char.is_ascii_digit() => {
+                Ok(Token::INTEGER(self.integer()))
+            },
+            '+' => {
+                self.advance();
+                Ok(Token::PLUS)
+            },
+            '-' => {
+                self.advance();
+                Ok(Token::MINUS)
+            },    
+            '*' => {
+                self.advance();
+                Ok(Token::MUL,)
+            },    
+            '/' => {
+                self.advance();
+                Ok(Token::DIV,)
+            },    
+            '(' => {
+                self.advance();
+                Ok(Token::LPAREN)
+            },    
+            ')' => {
+                self.advance();
+                Ok(Token::RPAREN)
+            },
+            _ => {Err(Error::ParseError)}
+        }
     }
 }
 
 
-/// Interpret the text, and calculate the result of the operation.
-struct Interpreter {
+//#############################################################
+//   Parser / AST
+//#############################################################
+
+/// The parser consume the tokens and create an AST tree
+
+struct AST {
+    token: Token,
+    children: Vec<AST>
+}
+
+impl AST {
+    fn new(token: Token, children: Vec<AST>) -> AST {
+        AST {
+            token: token,
+            children: children
+        }
+    }
+}
+
+pub struct Parser {
     lexer: Lexer,
     current_token: Token
 }
 
-impl Interpreter {
-    /*
-     * Grammar:
-     *  expr:   term ((MUL|DIV) term)*
-     *  term:   factor ((ADD|SUB) factor) *
-     *  factor: integer | LPAR expr RPAR
-     */
-    pub fn new(mut lexer: Lexer) -> Result<Interpreter, Error> {
+impl Parser {
+    fn new(mut lexer: Lexer) -> Result<Parser, Error> {
         let token = lexer.get_next_token()?;
 
-        Ok(Interpreter {
+        Ok(Parser {
             lexer: lexer,
             current_token: token
         })
     }
 
-    fn eat(&mut self, token_type: TokenType) -> Result<(), Error> {
-        if self.current_token.kind == token_type {
+    /// Consume one 'token' if we have the correct 'token type', else send an error
+    fn eat(&mut self, token: Token) -> Result<(), Error> {
+        if token == self.current_token {
             self.current_token = self.lexer.get_next_token()?;
             Ok(())
         } else {
@@ -166,87 +188,263 @@ impl Interpreter {
         }
     }
 
-    fn integer(&mut self) -> Result<i64, Error> {
-        let value = self.current_token.value;
-        self.eat(TokenType::INTEGER)?;
-        Ok(value)
+    /// factor : INTEGER | LPAREN expr RPAREN
+    fn factor(&mut self) -> Result<AST, Error> {
+        let token = self.current_token.clone();
+        
+        match token {
+            Token::INTEGER(i) => {
+                self.eat(Token::INTEGER(i))?;
+                let node = AST::new(token, vec![]);
+                Ok(node)
+            },
+            Token::LPAREN => {
+                self.eat(Token::LPAREN)?;
+                let node = self.expr()?;
+                self.eat(Token::RPAREN)?;
+                Ok(node)
+            },
+            _ => {
+                Err(Error::InvalidSyntax)
+            }
+        }
     }
 
-    // expr:   term ((ADD|SUB) term)*
-    pub fn expr(&mut self) -> Result<i64, Error> {
-        let mut result = self.term()?;
+    /// term : factor ((MUL | DIV) factor)*
+    fn term(&mut self) -> Result<AST, Error> {
+        let mut node = self.factor()?;
 
-        while self.current_token.kind != TokenType::EOF {
-
-            if self.current_token.kind == TokenType::PLUS {
-                self.eat(TokenType::PLUS)?;
-                result = result + self.term()?;
-            }
-
-            else if self.current_token.kind == TokenType::MINUS {
-                self.eat(TokenType::MINUS)?;
-                result = result - self.term()?;
-            }
-
-            else {
-                return Ok(result);
+        while self.current_token == Token::MUL || self.current_token == Token::DIV {
+            
+            match self.current_token {
+                Token::MUL => {
+                    self.eat(Token::MUL)?;
+                    let children: Vec<AST> = vec![node, self.factor()?];
+                    node = AST::new(Token::MUL, children);
+                },
+                Token::DIV => {
+                    self.eat(Token::DIV)?;
+                    let children: Vec<AST> = vec![node, self.factor()?];
+                    node = AST::new(Token::DIV, children);
+                }
+                _ => {panic!("Incorrect token in term()")}
             }
         }
-
-        return Ok(result);
+        Ok(node)
     }
 
-    // term:   factor ((MUL|DIV) factor)*
-    fn term(&mut self) -> Result<i64, Error> {
-        let mut result = self.factor()?;
+    /// expr    : term   ((PLUS | MINUS) term)*
+    /// term    : factor ((MUL  | DIV) factor)*
+    /// factor  : INTEGER | LPAREN expr RPAREN
+    fn expr(&mut self) -> Result<AST, Error> {
+        let mut node = self.term()?;
 
-        while self.current_token.kind != TokenType::EOF {
+        while self.current_token == Token::PLUS || self.current_token == Token::MINUS {
 
-            if self.current_token.kind == TokenType::MUL {
-                self.eat(TokenType::MUL)?;
-                result = result * self.factor()?;
-            }
-
-            else if self.current_token.kind == TokenType::DIV {
-                self.eat(TokenType::DIV)?;
-                result = result / self.factor()?;
-            }
-
-            else {
-                return Ok(result);
+            match self.current_token {
+                Token::PLUS => {
+                    self.eat(Token::PLUS)?;
+                    let children: Vec<AST> = vec![node, self.term()?];
+                    node = AST::new(Token::PLUS, children);
+                },
+                Token::MINUS => {
+                    self.eat(Token::MINUS)?;
+                    let children: Vec<AST> = vec![node, self.term()?];
+                    node = AST::new(Token::MINUS, children);
+                },
+                _ => {panic!("Incorrect token in expr()")}
             }
         }
 
-        return Ok(result);
+        Ok (node)
     }
 
-    fn factor(&mut self) -> Result<i64, Error> {
-        let result: i64;
+    fn parse(&mut self) -> Result<AST, Error> {
+        self.expr()
+    }
+}
 
-        if self.current_token.kind == TokenType::LPAR {
-            self.eat(TokenType::LPAR)?;
-            result = self.expr()?;
-            self.eat(TokenType::RPAR)?;
+
+//#############################################################
+//   Interpreter
+//#############################################################
+
+pub struct Interpreter {
+    parser: Parser
+}
+
+impl Interpreter {
+    fn new(parser: Parser) -> Interpreter {
+        Interpreter { parser: parser }
+    }
+
+    fn visit_num(&self, node: &AST) -> i128 {
+        match node.token {
+            Token::INTEGER(i) => i,
+            _ => panic!("Error: end node is not an integer")
         }
+    }
 
-        else {
-            result = self.integer()?;
+    fn visit_binop(&self, node: &AST) -> i128 {
+        let left_val = self.visit(&node.children[0]);
+        let right_val = self.visit(&node.children[1]);
+
+        match node.token {
+            Token::PLUS => {
+                return left_val + right_val
+            },
+            Token::MINUS => {
+                return left_val - right_val
+            },
+            Token::MUL => {
+                return left_val * right_val
+            },
+            Token::DIV => {
+                return left_val / right_val
+            },
+            _ => panic!("Unkown BinOp Token in the AST")
         }
+    }
 
+    fn visit(&self, node: &AST) -> i128 {
+        match node.token {
+            Token::INTEGER(_i) => {
+                return self.visit_num(node);
+            },
+            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV => {
+                return self.visit_binop(node);
+            },
+            _ => panic!("Unkown Token in the AST")
+        }
+    }
+
+    fn interpret(&mut self) -> Result<i128, Error> {
+        let tree = self.parser.parse()?;
+        let result = self.visit(&tree);
         Ok(result)
     }
 }
 
-pub fn solve(input: String) -> Result<String, String>{
-    let lexer = Lexer::new(input);
-    if let Ok(mut interpreter) = Interpreter::new(lexer){
-        if let Ok(result) = interpreter.expr() {
-            // println!("{}", result);
-            return Ok(format!("{}", result));
-        } else {
-            return Err("Invalid syntax".to_string());
+#[allow(unused)]
+fn main() {
+
+    loop {
+        // show the interactive prompt
+        print!("calc> ");
+        io::stdout().flush().unwrap();
+    
+        // read input from user
+        let mut input = String::new();
+    
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+
+        if input.eq("") || input.eq("exit\n") {
+            break;
         }
-    } else {
-        return Err("Invalid syntax".to_string());
+
+        let text = String::from(input.trim());
+        let lexer = Lexer::new(text);
+
+        match Parser::new(lexer) {
+            Ok(parser) => {
+                let mut interpreter = Interpreter::new(parser);
+                match interpreter.interpret() {
+                    Ok(result) => println!("{}", result),
+                    Err(_) => println!("Invalid syntax")
+                }
+            },
+            Err(_) => println!("Invalid syntax")
+        };
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn make_interpreter(text: &str) -> Interpreter {
+        let lexer = Lexer::new(String::from(text));
+        let parser = Parser::new(lexer).expect("Could not parse");
+        let interpreter = Interpreter::new(parser);
+
+        interpreter
+    }
+
+    #[test]
+    fn test_expression1() {
+        let mut interpreter = make_interpreter("3");
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(3));
+    }
+
+    #[test]
+    fn test_expression2() {
+        let mut interpreter = make_interpreter("2 + 7 * 4");
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(30));
+    }
+
+    #[test]
+    fn test_expression3() {
+        let mut interpreter = make_interpreter("7 - 8 / 4");
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(5));
+    }
+
+    #[test]
+    fn test_expression4() {
+        let mut interpreter = make_interpreter("14 + 2 * 3 - 6 / 2");
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(17));
+    }
+
+    #[test]
+    fn test_expression5() {
+        let mut interpreter = make_interpreter("7 + 3 * (10 / (12 / (3 + 1) - 1))");
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(22));
+    }
+
+    #[test]
+    fn test_expression6() {
+        let mut interpreter = make_interpreter(
+            "7 + 3 * (10 / (12 / (3 + 1) - 1)) / (2 + 3) - 5 - 3 + (8)"
+        );
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(10));
+    }
+
+    #[test]
+    fn test_expression7() {
+        let mut interpreter = make_interpreter("7 + (((3 + 2)))");
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(12));
+    }
+
+    #[test]
+    fn test_expression_invalid_syntax() {
+        let mut interpreter = make_interpreter("10 *");
+        let result = interpreter.interpret();
+        assert_eq!(result, Err(Error::InvalidSyntax));
+    }
+
+}
+
+pub fn solve(input: String) -> Result<String, String>{
+    let text = String::from(input.trim());
+    let lexer = Lexer::new(text);
+
+    match Parser::new(lexer) {
+        Ok(parser) => {
+            let mut interpreter = Interpreter::new(parser);
+            match interpreter.interpret() {
+                Ok(result) => Ok(format!("{}", result)),
+                Err(_) => Err("Invalid syntax".to_string())
+            }
+        },
+        Err(_) => Err("Invalid syntax".to_string())
     }
 }
