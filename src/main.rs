@@ -4,7 +4,7 @@ use relm4::{gtk, Component, ComponentController, ComponentParts, ComponentSender
 use granite::prelude::SettingsExt;
 
 mod input_pane;
-use input_pane::LucaInput;
+use input_pane::{LucaInput, MsgInput};
 
 mod interpreter;
 
@@ -90,7 +90,7 @@ impl SimpleComponent for AppModel {
             LucaInput::builder()
                 .launch(String::from("Hi mom!"))
                 .forward(sender.input_sender(), |msg| match msg {
-                    _ => {}
+                    MsgInput::TextChanged(new_text) => {}
                 });
 
         let model = AppModel {

@@ -5,21 +5,21 @@ use crate::interpreter::solve;
 
 // Input component
 
-pub struct LucaInput {
+pub struct ResultView {
     text: String,
     text_buffer: gtk::TextBuffer
 }
 
 #[derive(Debug)]
-pub enum MsgInput {
+pub enum ResultMsg {
     TextChanged(String)
 }
 
 #[relm4::component(pub)]
-impl SimpleComponent for LucaInput {
+impl SimpleComponent for ResultView {
     type Init = String;
-    type Input = ();
-    type Output = MsgInput;
+    type Input = ResultMsg;
+    type Output = ();
 
     view! {
         gtk::TextView {
@@ -36,26 +36,27 @@ impl SimpleComponent for LucaInput {
         let text_buffer = gtk::TextBuffer::new(None);
         text_buffer.set_text(&text);
 
-        text_buffer.connect_changed(move |text_buffer| {
+        let text_buffer_clone = text_buffer.clone();
+        text_buffer_clone.connect_changed(move |text_buffer| {
             let start_iter = text_buffer.start_iter();
             let end_iter = text_buffer.end_iter();
             let text = text_buffer.text(&start_iter, &end_iter, false);
-            sender.output(MsgInput::TextChanged(text.to_string())).unwrap();
+            sender.input(ResultMsg::TextChanged(text.to_string()));
         });
 
-        let model = LucaInput {text, text_buffer};
+        let model = ResultView {text, text_buffer};
         let widgets = view_output!();
         ComponentParts {model, widgets}
     }
 
-    // fn update(&mut self, msgInput: Self::Input, _sender: ComponentSender<Self>) {
-    //     match msg {
-    //         Msg::TextChanged(text) => {
-    //             self.text = text;
-    //             if let Ok(res) = solve(self.text.clone()) {
-    //                 println!("{}", res);
-    //             }
-    //         }
-    //     }
-    // }
+    fn update(&mut self, msg: Self::Input, _sender: ComponentSender<Self>) {
+        match msg {
+            ResultMsg::TextChanged(text) => {
+                self.text = text;
+                if let Ok(res) = solve(self.text.clone()) {
+                    println!("{}", res);
+                }
+            }
+        }
+    }
 }
