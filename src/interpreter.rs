@@ -188,16 +188,29 @@ impl Parser {
         }
     }
 
-    /// factor : INTEGER | LPAREN expr RPAREN
+    /// factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN
     fn factor(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
         
         match token {
+            // (PLUS | MINUS) factor
+            Token::PLUS | Token::MINUS=> {
+                match token {
+                    Token::PLUS => self.eat(Token::PLUS)?,
+                    Token::MINUS => self.eat(Token::MINUS)?,
+                    _ => {panic!()}
+                }
+                let children = vec![self.factor()?];
+                let node = AST::new(token, children); 
+                Ok(node)
+            },
+            // INTEGER
             Token::INTEGER(i) => {
                 self.eat(Token::INTEGER(i))?;
                 let node = AST::new(token, vec![]);
                 Ok(node)
             },
+            // LPAREN expr RPAREN
             Token::LPAREN => {
                 self.eat(Token::LPAREN)?;
                 let node = self.expr()?;
@@ -306,13 +319,27 @@ impl Interpreter {
         }
     }
 
+    fn visit_unaryop(&self, node: &AST) -> i128 {
+        let val = self.visit(&node.children[0]);
+
+        match node.token {
+            Token::PLUS  => {  val },
+            Token::MINUS => { -val }
+            _ => {panic!("Invalid token type for an unary node")}
+        }
+    }
+
     fn visit(&self, node: &AST) -> i128 {
         match node.token {
             Token::INTEGER(_i) => {
                 return self.visit_num(node);
             },
             Token::PLUS | Token::MINUS | Token::MUL | Token::DIV => {
-                return self.visit_binop(node);
+                match node.children.len() {
+                    1 => return self.visit_unaryop(node),
+                    2 => return self.visit_binop(node),
+                    _ => panic!("Too many children for an AST node")
+                }             
             },
             _ => panic!("Unkown Token in the AST")
         }
@@ -430,7 +457,20 @@ mod tests {
         let result = interpreter.interpret();
         assert_eq!(result, Err(Error::InvalidSyntax));
     }
+    
+    #[test]
+    fn test_expression_unary() {
+        let mut interpreter = make_interpreter("---42");
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(-42));
+    }
 
+    #[test]
+    fn test_expression_unary2() {
+        let mut interpreter = make_interpreter("-6*-7 - 3");
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(39));
+    }
 }
 
 pub fn solve(input: String) -> Result<String, String>{
