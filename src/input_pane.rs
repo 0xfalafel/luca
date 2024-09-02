@@ -1,6 +1,10 @@
 use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
+use crate::interpreter::solve;
+use std::collections::HashMap;
+use std::cell::RefCell;
+use std::rc::Rc;
 
 // Input component
 
@@ -38,7 +42,23 @@ impl SimpleComponent for LucaInput {
             let start_iter = text_buffer.start_iter();
             let end_iter = text_buffer.end_iter();
             let text = text_buffer.text(&start_iter, &end_iter, false);
-            sender.output(MsgInput::TextChanged(text.to_string())).unwrap();
+
+            // interpret the text from the input pane
+            let mut results = String::new();
+            let variables : Rc<RefCell<HashMap<String, i128>>> = Rc::new(RefCell::new(HashMap::new()));
+            
+            for line in text.lines() {
+
+                if let Ok(res) = solve(line.to_string(), variables.clone()) {
+                    results.push_str(&res);
+                    results.push_str("\n");
+                } else {
+                    results.push('\n');
+                }
+            }
+            results.pop();
+
+            sender.output(MsgInput::TextChanged(results.to_string())).unwrap();
         });
 
         let model = LucaInput {text_buffer};

@@ -1,7 +1,6 @@
 use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
-use crate::interpreter::solve;
 
 // Input component
 
@@ -44,21 +43,7 @@ impl SimpleComponent for ResultView {
     fn update(&mut self, msg: Self::Input, _sender: ComponentSender<Self>) {
         match msg {
             ResultMsg::TextChanged(text) => {
-                // println!("input: {}", &text);
-                
-                let mut results = String::new();
-
-                for line in text.lines() {
-
-                    if let Ok(res) = solve(line.to_string()) {
-                        results.push_str(&res);
-                        results.push_str("\n");
-                    } else {
-                        results.push('\n');
-                    }
-                }
-                results.pop();
-                self.text_buffer.set_text(&results);
+                self.text_buffer.set_text(&text);
             }
         }
     }

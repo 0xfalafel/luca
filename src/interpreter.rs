@@ -1,12 +1,27 @@
-use std::io;
+use std::collections::HashMap;
+use std::{i128, io};
 use std::io::Write;
+use std::rc::Rc;
+use std::cell::RefCell;
 
 #[derive(Debug, Eq, PartialEq)]
 enum Error {
-    ParseError,
-    InvalidTokenType,
-    InvalidSyntax
+    InvalidSyntax,
+    UndefinedVariable,
+    DivisonByZero
 }
+
+/*
+Our grammar is the following:
+
+statement   : expr | assignement
+assignment  : VAR ASSIGN expr
+expr        : term   ((PLUS | MINUS) term)*
+term        : factor ((MUL  | DIV) factor)*
+factor      : INTEGER | LPAREN expr RPAREN | VAR
+
+*/
+
 
 
 /**************************************************************
@@ -29,9 +44,12 @@ enum Token {
     DIV,
     LPAREN,
     RPAREN,
+    ASSIGN,
+    VAR(String),
     EOF,
 }
 
+#[derive(Debug, Clone)]
 struct Lexer {
     text: String,
     pos: usize
@@ -87,31 +105,45 @@ impl Lexer {
         return i128::from_str_radix(&self.text[int_start..self.pos], 10).unwrap();
     }
 
+    /// Retun a string
+    fn variable(&mut self) -> String {
+        let str_start = self.pos;
+
+        while let Some(char) = self.get_char() {
+            if char.is_alphabetic() {
+                self.advance()
+            } else {
+                break;
+            }
+        }
+
+        let new_var = String::from(&self.text[str_start..self.pos]);
+        new_var
+    }
+
     /// Lexical analyser (also known as scanner or tokenizer).
     ///    
     /// This method is responsible for breaking a sentence
     /// appart into tokens. One token at the time.
     pub fn get_next_token(&mut self) -> Result<Token, Error> {
 
+        // get the next non-whitespace char, or EOF
         let char = loop {
-
-            let char = self.get_char();
-            if char == None {
-                return Ok(Token::EOF);
-            }
-            
-            let char = char.unwrap();
-            
-            if char.is_whitespace(){
-                self.skip_whitespace();
-            } else {
-                break char;
+            match self.get_char() {
+                None => return Ok(Token::EOF),
+                Some(char) if char.is_whitespace() => {
+                    self.skip_whitespace()
+                },
+                Some(char) => break char
             }
         };
 
         match char {
             char if char.is_ascii_digit() => {
                 Ok(Token::INTEGER(self.integer()))
+            },
+            char if char.is_alphabetic() => {
+                Ok(Token::VAR(self.variable()))
             },
             '+' => {
                 self.advance();
@@ -137,7 +169,11 @@ impl Lexer {
                 self.advance();
                 Ok(Token::RPAREN)
             },
-            _ => {Err(Error::ParseError)}
+            '=' => {
+                self.advance();
+                Ok(Token::ASSIGN)
+            },
+            _ => {Err(Error::InvalidSyntax)}
         }
     }
 }
@@ -163,6 +199,7 @@ impl AST {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct Parser {
     lexer: Lexer,
     current_token: Token
@@ -184,11 +221,11 @@ impl Parser {
             self.current_token = self.lexer.get_next_token()?;
             Ok(())
         } else {
-            Err(Error::InvalidTokenType)
+            Err(Error::InvalidSyntax)
         }
     }
 
-    /// factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN
+    /// factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN | VAR
     fn factor(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
         
@@ -215,6 +252,11 @@ impl Parser {
                 self.eat(Token::LPAREN)?;
                 let node = self.expr()?;
                 self.eat(Token::RPAREN)?;
+                Ok(node)
+            },
+            Token::VAR(name) => {
+                self.eat(Token::VAR(name.clone()))?;
+                let node = AST::new(Token::VAR(name), vec![]);
                 Ok(node)
             },
             _ => {
@@ -247,8 +289,6 @@ impl Parser {
     }
 
     /// expr    : term   ((PLUS | MINUS) term)*
-    /// term    : factor ((MUL  | DIV) factor)*
-    /// factor  : INTEGER | LPAREN expr RPAREN
     fn expr(&mut self) -> Result<AST, Error> {
         let mut node = self.term()?;
 
@@ -271,9 +311,45 @@ impl Parser {
 
         Ok (node)
     }
+    
+    /// assignment  : variable ASSIGN expr
+    fn assignement(&mut self) -> Result<AST, Error> {
+        
+        // Make a copy of the variable name
+        let var_name = self.current_token.clone();    
+        self.eat(var_name.clone())?;
+        
+        self.eat(Token::ASSIGN)?; // `=`
+
+        let node = AST::new(
+            Token::ASSIGN, vec![
+                AST::new(var_name, vec![]),
+                self.expr()?
+            ]
+        );
+
+        Ok(node)
+    }
+    
+    /// statement   : expr | assignement
+    fn statement(&mut self) -> Result<AST, Error> {
+        match self.current_token {
+            Token::VAR(_) => {
+                let mut lex = self.lexer.clone();
+                if lex.get_next_token()? == Token::ASSIGN {
+                    self.assignement()
+                } else {
+                    self.expr()
+                }
+            },
+            _ => {self.expr()}
+        }
+    }
+
 
     fn parse(&mut self) -> Result<AST, Error> {
-        self.expr()
+        //self.expr()
+        self.statement()
     }
 }
 
@@ -283,12 +359,16 @@ impl Parser {
 //#############################################################
 
 pub struct Interpreter {
-    parser: Parser
+    parser: Parser,
+    variables: Rc<RefCell<HashMap<String, i128>>>
 }
 
 impl Interpreter {
-    fn new(parser: Parser) -> Interpreter {
-        Interpreter { parser: parser }
+    fn new(parser: Parser, variables: Rc<RefCell<HashMap<String, i128>>>) -> Interpreter {
+        Interpreter {
+            parser: parser,
+            variables: variables
+        }
     }
 
     fn visit_num(&self, node: &AST) -> i128 {
@@ -298,46 +378,78 @@ impl Interpreter {
         }
     }
 
-    fn visit_binop(&self, node: &AST) -> i128 {
-        let left_val = self.visit(&node.children[0]);
-        let right_val = self.visit(&node.children[1]);
+    fn visit_variable(&self, node: &AST) -> Result<i128, Error> {
+        match &node.token {
+            Token::VAR(var_name) => {
+                let var_list = self.variables.borrow();
+                match var_list.get(var_name) {
+                    Some(val) => {Ok(*val)},
+                    None => Err(Error::UndefinedVariable)
+                }                    
+            },
+            _ => panic!("Token is not a variable")
+        }
+    }
+
+    fn visit_binop(&mut self, node: &AST) -> Result<i128, Error> {
+        let left_val = self.visit(&node.children[0])?;
+        let right_val = self.visit(&node.children[1])?;
 
         match node.token {
             Token::PLUS => {
-                return left_val + right_val
+                Ok(left_val + right_val)
             },
             Token::MINUS => {
-                return left_val - right_val
+                Ok(left_val - right_val)
             },
             Token::MUL => {
-                return left_val * right_val
+                Ok(left_val * right_val)
             },
             Token::DIV => {
-                return left_val / right_val
+                match right_val {
+                    0 => Err(Error::DivisonByZero),
+                    _ => Ok(left_val / right_val)
+                }
             },
             _ => panic!("Unkown BinOp Token in the AST")
         }
     }
 
-    fn visit_unaryop(&self, node: &AST) -> i128 {
-        let val = self.visit(&node.children[0]);
+    fn visit_unaryop(&mut self, node: &AST) -> Result<i128, Error> {
+        let val = self.visit(&node.children[0])?;
 
-        match node.token {
-            Token::PLUS  => {  val },
-            Token::MINUS => { -val }
+        match &node.token {
+            Token::PLUS  => {  Ok(val) },
+            Token::MINUS => { Ok(-val) },
             _ => {panic!("Invalid token type for an unary node")}
         }
     }
 
-    fn visit(&self, node: &AST) -> i128 {
+    fn visit_assign(&mut self, node: &AST) -> Result<i128, Error> {
+        let right_val = self.visit(&node.children[1])?;
+
+        match &node.children[0].token {
+            Token::VAR(var_name) => {
+                let mut var = self.variables.borrow_mut();
+                var.insert(var_name.clone(), right_val);
+                // self.variables.set(insert(var_name.clone(), right_val));
+            },
+            _ => panic!("Assignement without a variable")
+        }
+        Ok(right_val)
+    }
+
+    fn visit(&mut self, node: &AST) -> Result<i128, Error> {
         match node.token {
             Token::INTEGER(_i) => {
-                return self.visit_num(node);
+                Ok(self.visit_num(node))
             },
-            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV => {
+            Token::VAR(_) => Ok(self.visit_variable(node)?),
+            Token::ASSIGN => Ok(self.visit_assign(node)?),
+            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV=> {
                 match node.children.len() {
-                    1 => return self.visit_unaryop(node),
-                    2 => return self.visit_binop(node),
+                    1 => Ok(self.visit_unaryop(node)?),
+                    2 => Ok(self.visit_binop(node)?),
                     _ => panic!("Too many children for an AST node")
                 }             
             },
@@ -347,21 +459,38 @@ impl Interpreter {
 
     fn interpret(&mut self) -> Result<i128, Error> {
         let tree = self.parser.parse()?;
-        let result = self.visit(&tree);
+        let result = self.visit(&tree)?;
         Ok(result)
+    }
+}
+
+pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, i128>>>) -> Result<String, String>{
+    let text = String::from(input.trim());
+    let lexer = Lexer::new(text);
+
+    match Parser::new(lexer) {
+        Ok(parser) => {
+            let mut interpreter = Interpreter::new(parser, variables);
+            match interpreter.interpret() {
+                Ok(result) => Ok(format!("{}", result)),
+                Err(_) => Err("Invalid syntax".to_string())
+            }
+        },
+        Err(_) => Err("Invalid syntax".to_string())
     }
 }
 
 #[allow(unused)]
 fn main() {
+    let variables: Rc<RefCell<HashMap<String, i128>>> = Rc::new(RefCell::new(HashMap::new()));
 
     loop {
         // show the interactive prompt
         print!("calc> ");
+        let mut input = String::new();
         io::stdout().flush().unwrap();
     
         // read input from user
-        let mut input = String::new();
     
         io::stdin()
             .read_line(&mut input)
@@ -371,19 +500,10 @@ fn main() {
             break;
         }
 
-        let text = String::from(input.trim());
-        let lexer = Lexer::new(text);
-
-        match Parser::new(lexer) {
-            Ok(parser) => {
-                let mut interpreter = Interpreter::new(parser);
-                match interpreter.interpret() {
-                    Ok(result) => println!("{}", result),
-                    Err(_) => println!("Invalid syntax")
-                }
-            },
+        match solve(input, variables.clone()) {
+            Ok(result) => println!("{}", result),
             Err(_) => println!("Invalid syntax")
-        };
+        }
     }
 }
 
@@ -392,45 +512,52 @@ fn main() {
 mod tests {
     use super::*;
 
-    fn make_interpreter(text: &str) -> Interpreter {
+    fn make_interpreter(text: &str, variables: Option<Rc<RefCell<HashMap<String, i128>>>>) -> Interpreter {
+        
+        // Create an empty variables array if none is defined
+        let vars = match variables {
+            Some(vars) => vars,
+            None => Rc::new(RefCell::new(HashMap::new()))
+        };
+
         let lexer = Lexer::new(String::from(text));
         let parser = Parser::new(lexer).expect("Could not parse");
-        let interpreter = Interpreter::new(parser);
+        let interpreter = Interpreter::new(parser, vars);
 
         interpreter
     }
 
     #[test]
     fn test_expression1() {
-        let mut interpreter = make_interpreter("3");
+        let mut interpreter = make_interpreter("3", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(3));
     }
 
     #[test]
     fn test_expression2() {
-        let mut interpreter = make_interpreter("2 + 7 * 4");
+        let mut interpreter = make_interpreter("2 + 7 * 4", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(30));
     }
 
     #[test]
     fn test_expression3() {
-        let mut interpreter = make_interpreter("7 - 8 / 4");
+        let mut interpreter = make_interpreter("7 - 8 / 4", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(5));
     }
 
     #[test]
     fn test_expression4() {
-        let mut interpreter = make_interpreter("14 + 2 * 3 - 6 / 2");
+        let mut interpreter = make_interpreter("14 + 2 * 3 - 6 / 2", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(17));
     }
 
     #[test]
     fn test_expression5() {
-        let mut interpreter = make_interpreter("7 + 3 * (10 / (12 / (3 + 1) - 1))");
+        let mut interpreter = make_interpreter("7 + 3 * (10 / (12 / (3 + 1) - 1))", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(22));
     }
@@ -438,7 +565,7 @@ mod tests {
     #[test]
     fn test_expression6() {
         let mut interpreter = make_interpreter(
-            "7 + 3 * (10 / (12 / (3 + 1) - 1)) / (2 + 3) - 5 - 3 + (8)"
+            "7 + 3 * (10 / (12 / (3 + 1) - 1)) / (2 + 3) - 5 - 3 + (8)", None
         );
         let result = interpreter.interpret();
         assert_eq!(result, Ok(10));
@@ -446,45 +573,66 @@ mod tests {
 
     #[test]
     fn test_expression7() {
-        let mut interpreter = make_interpreter("7 + (((3 + 2)))");
+        let mut interpreter = make_interpreter("7 + (((3 + 2)))", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(12));
     }
 
     #[test]
     fn test_expression_invalid_syntax() {
-        let mut interpreter = make_interpreter("10 *");
+        let mut interpreter = make_interpreter("10 *", None);
         let result = interpreter.interpret();
         assert_eq!(result, Err(Error::InvalidSyntax));
     }
-    
+
     #[test]
     fn test_expression_unary() {
-        let mut interpreter = make_interpreter("---42");
+        let mut interpreter = make_interpreter("---42", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(-42));
     }
 
     #[test]
     fn test_expression_unary2() {
-        let mut interpreter = make_interpreter("-6*-7 - 3");
+        let mut interpreter = make_interpreter("-6*-7 - 3", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(39));
     }
-}
 
-pub fn solve(input: String) -> Result<String, String>{
-    let text = String::from(input.trim());
-    let lexer = Lexer::new(text);
+    #[test]
+    fn test_expression_variable1() {
+        let vars : Rc<RefCell<HashMap<String, i128>>> = Rc::new(RefCell::new(HashMap::new()));
 
-    match Parser::new(lexer) {
-        Ok(parser) => {
-            let mut interpreter = Interpreter::new(parser);
-            match interpreter.interpret() {
-                Ok(result) => Ok(format!("{}", result)),
-                Err(_) => Err("Invalid syntax".to_string())
-            }
-        },
-        Err(_) => Err("Invalid syntax".to_string())
+        let mut interpreter = make_interpreter("a=5", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("a", Some(vars));
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(5));
+    }
+
+    #[test]
+    fn test_expression_variable2() {
+        let vars : Rc<RefCell<HashMap<String, i128>>> = Rc::new(RefCell::new(HashMap::new()));
+
+        let mut interpreter = make_interpreter("bob=(525+84)/4", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("bob + 48", Some(vars));
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(200));
+    }
+
+    #[test]
+    fn test_expression_variable3() {
+        let vars : Rc<RefCell<HashMap<String, i128>>> = Rc::new(RefCell::new(HashMap::new()));
+
+        let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("b=1", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("b=3", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("a+b", Some(vars));
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(5));
     }
 }
