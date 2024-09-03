@@ -3,6 +3,8 @@ use std::{i128, io};
 use std::io::Write;
 use std::rc::Rc;
 use std::cell::RefCell;
+use std::ops::{Add, Sub, Neg, Mul, Div};
+
 
 #[derive(Debug, Eq, PartialEq)]
 enum Error {
@@ -355,6 +357,92 @@ impl Parser {
 
 
 //#############################################################
+//   Types used for the interpreter response
+//#############################################################
+
+/// Result of parsing the AST
+#[derive(Debug, PartialEq)]
+enum ResType {
+    Int(i128),
+    Float(f64)
+}
+
+impl ResType {
+    fn get_i128(self) -> i128 {
+        match self {
+            ResType::Int(val) => {val},
+            ResType::Float(val) => {val as i128}
+        }
+    }
+    
+    fn get_f64(self) -> f64 {
+        match self {
+            ResType::Float(val) => {val}
+            ResType::Int(val) => {val as f64},
+        }
+    }
+}
+
+impl Add for ResType {
+    type Output = Self; 
+    
+    fn add(self, other: Self) -> ResType {
+        if matches!(self, ResType::Float(_)) || matches!(other, ResType::Float(_)) {
+            ResType::Float(self.get_f64() + other.get_f64())
+        } else { // Both Int
+            ResType::Int(self.get_i128() + other.get_i128())
+        }
+    }
+}
+
+impl Sub for ResType {
+    type Output = Self; 
+    
+    fn sub(self, other: Self) -> ResType {
+        if matches!(self, ResType::Float(_)) || matches!(other, ResType::Float(_)) {
+            ResType::Float(self.get_f64() - other.get_f64())
+        } else { // Both Int
+            ResType::Int(self.get_i128() - other.get_i128())
+        }
+    }
+}
+
+impl Mul for ResType {
+    type Output = Self; 
+    
+    fn mul(self, other: Self) -> ResType {
+        if matches!(self, ResType::Float(_)) || matches!(other, ResType::Float(_)) {
+            ResType::Float(self.get_f64() * other.get_f64())
+        } else { // Both Int
+            ResType::Int(self.get_i128() * other.get_i128())
+        }
+    }
+}
+
+impl Div for ResType {
+    type Output = Self; 
+    
+    fn div(self, other: Self) -> ResType {
+        if matches!(self, ResType::Float(_)) || matches!(other, ResType::Float(_)) {
+            ResType::Float(self.get_f64() / other.get_f64())
+        } else { // Both Int
+            ResType::Int(self.get_i128() / other.get_i128())
+        }
+    }
+}
+
+impl Neg for ResType {
+    type Output = Self; 
+    
+    fn neg(self) -> Self::Output {
+        match self {
+            ResType::Int(val) => ResType::Int(-val),
+            ResType::Float(val) => ResType::Float(-val),
+        }        
+    }
+}
+
+//#############################################################
 //   Interpreter
 //#############################################################
 
@@ -371,19 +459,19 @@ impl Interpreter {
         }
     }
 
-    fn visit_num(&self, node: &AST) -> i128 {
+    fn visit_num(&self, node: &AST) -> ResType {
         match node.token {
-            Token::INTEGER(i) => i,
+            Token::INTEGER(i) => ResType::Int(i),
             _ => panic!("Error: end node is not an integer")
         }
     }
 
-    fn visit_variable(&self, node: &AST) -> Result<i128, Error> {
+    fn visit_variable(&self, node: &AST) -> Result<ResType, Error> {
         match &node.token {
             Token::VAR(var_name) => {
                 let var_list = self.variables.borrow();
                 match var_list.get(var_name) {
-                    Some(val) => {Ok(*val)},
+                    Some(val) => {Ok(ResType::Int(*val))},
                     None => Err(Error::UndefinedVariable)
                 }                    
             },
@@ -391,7 +479,7 @@ impl Interpreter {
         }
     }
 
-    fn visit_binop(&mut self, node: &AST) -> Result<i128, Error> {
+    fn visit_binop(&mut self, node: &AST) -> Result<ResType, Error> {
         let left_val = self.visit(&node.children[0])?;
         let right_val = self.visit(&node.children[1])?;
 
@@ -415,7 +503,7 @@ impl Interpreter {
         }
     }
 
-    fn visit_unaryop(&mut self, node: &AST) -> Result<i128, Error> {
+    fn visit_unaryop(&mut self, node: &AST) -> Result<ResType, Error> {
         let val = self.visit(&node.children[0])?;
 
         match &node.token {
@@ -425,7 +513,7 @@ impl Interpreter {
         }
     }
 
-    fn visit_assign(&mut self, node: &AST) -> Result<i128, Error> {
+    fn visit_assign(&mut self, node: &AST) -> Result<ResType, Error> {
         let right_val = self.visit(&node.children[1])?;
 
         match &node.children[0].token {
@@ -439,7 +527,7 @@ impl Interpreter {
         Ok(right_val)
     }
 
-    fn visit(&mut self, node: &AST) -> Result<i128, Error> {
+    fn visit(&mut self, node: &AST) -> Result<ResType, Error> {
         match node.token {
             Token::INTEGER(_i) => {
                 Ok(self.visit_num(node))
