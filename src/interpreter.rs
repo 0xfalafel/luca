@@ -448,11 +448,11 @@ impl Neg for ResType {
 
 pub struct Interpreter {
     parser: Parser,
-    variables: Rc<RefCell<HashMap<String, i128>>>
+    variables: Rc<RefCell<HashMap<String, ResType>>>
 }
 
 impl Interpreter {
-    fn new(parser: Parser, variables: Rc<RefCell<HashMap<String, i128>>>) -> Interpreter {
+    fn new(parser: Parser, variables: Rc<RefCell<HashMap<String, ResType>>>) -> Interpreter {
         Interpreter {
             parser: parser,
             variables: variables
@@ -495,7 +495,8 @@ impl Interpreter {
             },
             Token::DIV => {
                 match right_val {
-                    0 => Err(Error::DivisonByZero),
+                    ResType::Int(0) => Err(Error::DivisonByZero),
+                    ResType::Float(0.0) => Err(Error::DivisonByZero),
                     _ => Ok(left_val / right_val)
                 }
             },
@@ -552,7 +553,7 @@ impl Interpreter {
     }
 }
 
-pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, i128>>>) -> Result<String, String>{
+pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, ResType>>>) -> Result<String, String>{
     let text = String::from(input.trim());
     let lexer = Lexer::new(text);
 
