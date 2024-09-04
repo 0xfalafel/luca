@@ -766,7 +766,7 @@ mod tests {
     fn test_expression_variable2() {
         let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
 
-        let mut interpreter = make_interpreter("bob=(525+84)/4", Some(vars.clone()));
+        let mut interpreter = make_interpreter("bob=(525+83)/4", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("bob + 48", Some(vars));
         let result = interpreter.interpret();
@@ -800,6 +800,27 @@ mod tests {
         let mut interpreter = make_interpreter("-16.0 + 4", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(ResType::Float(-12.0)));
+    }
+
+    #[test]
+    fn test_division1() {
+        let mut interpreter = make_interpreter("20/4", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Int(5)));
+    }
+
+    #[test]
+    fn test_division2() {
+        let mut interpreter = make_interpreter("-5/2", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Float(-2.5)));
+    }
+
+    #[test]
+    fn test_division_zero() {
+        let mut interpreter = make_interpreter("120/0", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Err(Error::DivisonByZero));
     }
 
 }
