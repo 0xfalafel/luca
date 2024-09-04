@@ -963,4 +963,11 @@ mod tests {
         let result = interpreter.interpret();
         assert_eq!(result, Ok(ResType::Money(47.0, Currency::Dollar)));
     }
+
+    #[test]
+    fn test_money_add() {
+        let mut interpreter = make_interpreter("8 + 22€", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Money(30.0, Currency::Euro)));
+    }
 }
