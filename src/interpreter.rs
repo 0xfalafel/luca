@@ -735,10 +735,26 @@ impl Interpreter {
         match &node.token {
             Token::VAR(var_name) => {
                 let var_list = self.variables.borrow();
+
                 match var_list.get(var_name) {
-                    Some(val) => {Ok(*val)},
-                    None => Err(Error::UndefinedVariable)
-                }                    
+                    Some(val) => return Ok(*val),
+                    None => {}
+                };
+
+                // if variable ends with an 's', we check if the singular is a variable
+                if let Some(last_char) = var_name.chars().nth(var_name.len()-1) {
+                    
+                    if last_char == 's' {
+                        let singular_varname: String = var_name.chars().take(var_name.len()-1).collect();
+
+                        match var_list.get(&singular_varname) {
+                            Some(val) => return Ok(*val),
+                            _ => {}
+                        }
+                    }
+                }
+                
+                Err(Error::UndefinedVariable)
             },
             _ => panic!("Token is not a variable")
         }
@@ -1135,5 +1151,18 @@ mod tests {
         let mut interpreter = make_interpreter("4ab + 2 ab", Some(vars));
         let result = interpreter.interpret();
         assert_eq!(result, Ok(ResType::Int(-24)));
+    }
+
+    #[test]
+    fn scenario_cinema() {
+        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+
+        let mut interpreter = make_interpreter("enfant=4€", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("adulte=12€", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("2adultes+3 enfants", Some(vars));
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Money(36.0, Currency::Euro)));
     }
 }
