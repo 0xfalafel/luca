@@ -619,20 +619,50 @@ impl Div for ResType {
     type Output = Self; 
     
     fn div(self, other: Self) -> ResType {
-        if matches!(self, ResType::Float(_)) || matches!(other, ResType::Float(_)) {
-            ResType::Float(self.get_f64() / other.get_f64())
-        
-        } else { // Both Integers
-            let left_val = self.get_i128();
-            let right_val = other.get_i128();
+        match (self, other) {
+            
+            // Both numbers are of type Money
+            (left, right) if matches!(left, ResType::Money(_, _)) && matches!(right, ResType::Money(_, _)) => {
+                let currency_left = left.get_currency().unwrap();
+                let currency_right = right.get_currency().unwrap();
 
-            // If the divison returns a round value give an Integer
-            if left_val % right_val == 0 {
-                ResType::Int(self.get_i128() / other.get_i128())
+                if currency_left != currency_right {
+                    panic!("We don't support conversions at the moment");
+                }
+                
+                ResType::Money(left.get_f64() / right.get_f64(), currency_left)
+            },
+            
+            // Left number is of type Money
+            (left, right) if matches!(left, ResType::Money(_, _)) => {
+                let currency_left = left.get_currency().unwrap();
+                ResType::Money(left.get_f64() / right.get_f64(), currency_left)
+            }
 
-            // Otherwise, we return a Float
-            } else {
-                ResType::Float(self.get_f64() / other.get_f64())
+            // Right number is of type Money
+            (left, right) if matches!(right, ResType::Money(_, _)) => {
+                let currency_left = right.get_currency().unwrap();
+                ResType::Money(left.get_f64() / right.get_f64(), currency_left)
+            }
+
+            // One of the types is Float
+            (left_value, right_value) if matches!(left_value, ResType::Float(_)) || matches!(right_value, ResType::Float(_)) => {
+                ResType::Float(left_value.get_f64() / right_value.get_f64())
+            },
+
+            // Both are Integers
+            _ => {
+                let left_val = self.get_i128();
+                let right_val = other.get_i128();
+
+                // If the divison returns a round value give an Integer
+                if left_val % right_val == 0 {
+                    ResType::Int(self.get_i128() / other.get_i128())
+
+                // Otherwise, we return a Float
+                } else {
+                    ResType::Float(self.get_f64() / other.get_f64())
+                }
             }
         }
     }
