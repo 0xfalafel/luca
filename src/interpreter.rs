@@ -768,4 +768,19 @@ mod tests {
         let result = interpreter.interpret();
         assert_eq!(result, Ok(ResType::Int(5)));
     }
+
+    #[test]
+    fn test_float() {
+        let mut interpreter = make_interpreter("4.0", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Float(4.0)));
+    }
+
+    #[test]
+    fn test_negative_float() {
+        let mut interpreter = make_interpreter("-16.0 + 4", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Float(-12.0)));
+    }
+
 }
