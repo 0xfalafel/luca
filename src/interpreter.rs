@@ -630,7 +630,7 @@ impl fmt::Display for ResType {
             ResType::Int(val)  => {write!(f, "{}", val)},
             ResType::Float(val) => {write!(f, "{:?}", val)},
             ResType::Money(val, currency) => {
-                write!(f, "{:?} {}", val, currency)
+                write!(f, "{:.2} {}", val, currency)
             },
         }
     }
