@@ -1074,8 +1074,14 @@ mod tests {
 
     #[test]
     fn test_money_div() {
-        let mut interpreter = make_interpreter("25€ /4", None);
+        let mut interpreter = make_interpreter("25€ / 4", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(ResType::Money(6.25, Currency::Euro)));
+    }
+
+    #[test]
+    fn test_handling_spaces() {
+        let mut interpreter = make_interpreter("4€ b", None);
+        let _ = interpreter.interpret();
     }
 }
