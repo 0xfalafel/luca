@@ -37,7 +37,6 @@ factor      : INTEGER | LPAREN expr RPAREN | VAR
 //
 // EOF (end-of-file) is  used to indicate that there is no more input left
 
-
 /// Token are used to represent the differents elements given as an input.
 /// The input is separated in a bunch of tokens.
 #[derive(Debug, Clone, PartialEq)]
@@ -52,7 +51,14 @@ enum Token {
     RPAREN,
     ASSIGN,
     VAR(String),
+    MONEY(Money),
     EOF,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+enum Money {
+    Euro,
+    Dollar
 }
 
 #[derive(Debug, Clone)]
@@ -198,6 +204,14 @@ impl Lexer {
             '=' => {
                 self.advance();
                 Ok(Token::ASSIGN)
+            },
+            '€' => {
+                self.advance();
+                Ok(Token::MONEY(Money::Euro))
+            },
+            '$' => {
+                self.advance();
+                Ok(Token::MONEY(Money::Dollar))
             },
             _ => {Err(Error::InvalidSyntax)}
         }
