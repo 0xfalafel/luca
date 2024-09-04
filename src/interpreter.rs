@@ -997,4 +997,25 @@ mod tests {
         let result = interpreter.interpret();
         assert_eq!(result, Ok(ResType::Money(30.0, Currency::Euro)));
     }
+
+    #[test]
+    fn test_money_sub() {
+        let mut interpreter = make_interpreter("500€ - 1000€", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Money(-500.0, Currency::Euro)));
+    }
+
+    #[test]
+    fn test_money_mul() {
+        let mut interpreter = make_interpreter("$33 * -4", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Money(-132.0, Currency::Dollar)));
+    }
+
+    #[test]
+    fn test_money_div() {
+        let mut interpreter = make_interpreter("25€ /4", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Money(6.25, Currency::Euro)));
+    }
 }
