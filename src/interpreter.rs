@@ -38,9 +38,10 @@ factor      : INTEGER | LPAREN expr RPAREN | VAR
 
 /// Token are used to represent the differents elements given as an input.
 /// The input is separated in a bunch of tokens.
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 enum Token {
     INTEGER(i128),
+    Float(f64),
     PLUS,
     MINUS,
     MUL,
