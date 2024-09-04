@@ -364,8 +364,23 @@ impl Parser {
     }
 
     /// term : factor ((MUL | DIV) factor)*
+    ///      | factor (VAR)            <-- implicit multiplication of variables. Like 4a + 12
     fn term(&mut self) -> Result<AST, Error> {
         let mut node = self.factor()?;
+
+        let token = self.current_token.clone();
+        match token {
+            Token::VAR(name) => {
+                self.eat(Token::VAR(name.clone()))?;
+                let var_node = AST::new(Token::VAR(name), vec![]);
+
+                let new_node = AST::new(Token::MUL,
+                    vec![node, var_node]
+                );
+                return Ok(new_node);
+            },
+            _ => {}
+        }
 
         while self.current_token == Token::MUL || self.current_token == Token::DIV {
             
@@ -1083,5 +1098,16 @@ mod tests {
     fn test_handling_spaces() {
         let mut interpreter = make_interpreter("4€ b", None);
         let _ = interpreter.interpret();
+    }
+
+    #[test]
+    fn implicit_multiplication() {
+        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+
+        let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("4a", Some(vars));
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Int(8)));
     }
 }
