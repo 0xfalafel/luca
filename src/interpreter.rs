@@ -147,7 +147,9 @@ impl Lexer {
         let input_text = &self.text[str_start..];
 
         let end_of_variable = input_text
-            .find(|c: char| c == '=' || c == '€' || c == '$' || c.is_whitespace())
+            .find(|c: char| c == '=' || c == '€' || c == '$'
+                || c == '+' || c == '-' || c == '*' || c == '/'
+                || c.is_whitespace())
             .unwrap_or(input_text.len());
 
         
@@ -991,7 +993,7 @@ mod tests {
 
     #[test]
     fn test_money_add() {
-        let mut interpreter = make_interpreter("8 + 22€", None);
+        let mut interpreter = make_interpreter("22€ + 8", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(ResType::Money(30.0, Currency::Euro)));
     }
