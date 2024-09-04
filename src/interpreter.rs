@@ -535,10 +535,40 @@ impl Sub for ResType {
     type Output = Self; 
     
     fn sub(self, other: Self) -> ResType {
-        if matches!(self, ResType::Float(_)) || matches!(other, ResType::Float(_)) {
-            ResType::Float(self.get_f64() - other.get_f64())
-        } else { // Both Int
-            ResType::Int(self.get_i128() - other.get_i128())
+        match (self, other) {
+            
+            // Both numbers are of type Money
+            (left, right) if matches!(left, ResType::Money(_, _)) && matches!(right, ResType::Money(_, _)) => {
+                let currency_left = left.get_currency().unwrap();
+                let currency_right = right.get_currency().unwrap();
+
+                if currency_left != currency_right {
+                    panic!("We don't support conversions at the moment");
+                }
+                
+                ResType::Money(left.get_f64() - right.get_f64(), currency_left)
+            },
+            
+            // Left number is of type Money
+            (left, right) if matches!(left, ResType::Money(_, _)) => {
+                let currency_left = left.get_currency().unwrap();
+                ResType::Money(left.get_f64() - right.get_f64(), currency_left)
+            }
+
+            // Right number is of type Money
+            (left, right) if matches!(right, ResType::Money(_, _)) => {
+                let currency_left = right.get_currency().unwrap();
+                ResType::Money(left.get_f64() - right.get_f64(), currency_left)
+            }
+
+            // One of the types is Float
+            (left_value, right_value) if matches!(left_value, ResType::Float(_)) || matches!(right_value, ResType::Float(_)) => {
+                ResType::Float(left_value.get_f64() - right_value.get_f64())
+            },
+            // Both Integers
+            _ => {
+                ResType::Int(self.get_i128() - other.get_i128())
+            }
         }
     }
 }
