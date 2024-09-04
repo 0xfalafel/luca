@@ -4,6 +4,7 @@ use std::io::Write;
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::ops::{Add, Sub, Neg, Mul, Div};
+use std::fmt;
 
 
 #[derive(Debug, Eq, PartialEq)]
@@ -361,8 +362,8 @@ impl Parser {
 //#############################################################
 
 /// Result of parsing the AST
-#[derive(Debug, PartialEq)]
-enum ResType {
+#[derive(Debug, PartialEq, Copy, Clone)]
+pub enum ResType {
     Int(i128),
     Float(f64)
 }
@@ -442,6 +443,16 @@ impl Neg for ResType {
     }
 }
 
+impl fmt::Display for ResType {
+
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ResType::Int(val) => {write!(f, "{}", val)},
+            ResType::Float(val) => {write!(f, "{}", val)},
+        }
+    }
+}
+
 //#############################################################
 //   Interpreter
 //#############################################################
@@ -471,7 +482,7 @@ impl Interpreter {
             Token::VAR(var_name) => {
                 let var_list = self.variables.borrow();
                 match var_list.get(var_name) {
-                    Some(val) => {Ok(ResType::Int(*val))},
+                    Some(val) => {Ok(*val)},
                     None => Err(Error::UndefinedVariable)
                 }                    
             },
@@ -546,7 +557,7 @@ impl Interpreter {
         }
     }
 
-    fn interpret(&mut self) -> Result<i128, Error> {
+    fn interpret(&mut self) -> Result<ResType, Error> {
         let tree = self.parser.parse()?;
         let result = self.visit(&tree)?;
         Ok(result)
@@ -561,7 +572,9 @@ pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, ResType>>>) ->
         Ok(parser) => {
             let mut interpreter = Interpreter::new(parser, variables);
             match interpreter.interpret() {
-                Ok(result) => Ok(format!("{}", result)),
+                Ok(result) => {
+                    Ok(format!("{}", result))
+                },
                 Err(_) => Err("Invalid syntax".to_string())
             }
         },
@@ -571,7 +584,7 @@ pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, ResType>>>) ->
 
 #[allow(unused)]
 fn main() {
-    let variables: Rc<RefCell<HashMap<String, i128>>> = Rc::new(RefCell::new(HashMap::new()));
+    let variables: Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
 
     loop {
         // show the interactive prompt
