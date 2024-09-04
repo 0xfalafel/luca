@@ -56,9 +56,19 @@ enum Token {
 }
 
 #[derive(Debug, Clone, PartialEq, Copy)]
-enum Currency {
+pub enum Currency {
     Euro,
     Dollar
+}
+
+impl fmt::Display for Currency {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let symbol = match self {
+            Currency::Euro => '€',
+            Currency::Dollar => '$',
+        };
+        write!(f, "{}", symbol)
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -453,7 +463,8 @@ impl Parser {
 #[derive(Debug, PartialEq, Copy, Clone)]
 pub enum ResType {
     Int(i128),
-    Float(f64)
+    Float(f64),
+    Money(f64, Currency)
 }
 
 impl ResType {
@@ -461,13 +472,15 @@ impl ResType {
         match self {
             ResType::Int(val) => {val},
             ResType::Float(val) => {val as i128}
+            ResType::Money(val, _currency) => {val as i128}
         }
     }
     
     fn get_f64(self) -> f64 {
         match self {
-            ResType::Float(val) => {val}
+            ResType::Float(val) => {val},
             ResType::Int(val) => {val as f64},
+            ResType::Money(val, _currency) => {val},
         }
     }
 }
@@ -538,6 +551,7 @@ impl Neg for ResType {
         match self {
             ResType::Int(val) => ResType::Int(-val),
             ResType::Float(val) => ResType::Float(-val),
+            ResType::Money(val, currency) => ResType::Money(-val, currency),
         }        
     }
 }
@@ -548,6 +562,9 @@ impl fmt::Display for ResType {
         match self {
             ResType::Int(val)  => {write!(f, "{}", val)},
             ResType::Float(val) => {write!(f, "{:?}", val)},
+            ResType::Money(val, currency) => {
+                write!(f, "{:?}{}", val, currency)
+            },
         }
     }
 }
@@ -629,6 +646,20 @@ impl Interpreter {
         match &node.token {
             Token::PLUS  => {  Ok(val) },
             Token::MINUS => { Ok(-val) },
+            Token::MONEY(currency) => {
+                let number = self.visit(&node.children[0])?;
+
+                match number {
+                    ResType::Int(val) => {
+                        Ok(ResType::Money(val as f64, *currency))
+                    },
+                    ResType::Float(val) => {
+                        Ok(ResType::Money(val, *currency))
+                    },
+                    _ => panic!("Unknown number type in Money creation")
+                }
+
+            }
             _ => {panic!("Invalid token type for an unary node")}
         }
     }
@@ -654,7 +685,7 @@ impl Interpreter {
             },
             Token::VAR(_) => Ok(self.visit_variable(node)?),
             Token::ASSIGN => Ok(self.visit_assign(node)?),
-            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV=> {
+            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_)=> {
                 match node.children.len() {
                     1 => Ok(self.visit_unaryop(node)?),
                     2 => Ok(self.visit_binop(node)?),
@@ -882,4 +913,17 @@ mod tests {
         assert_eq!(result, Err(Error::DivisonByZero));
     }
 
+    #[test]
+    fn test_money1() {
+        let mut interpreter = make_interpreter("12€", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Money(12.0, Currency::Euro)));
+    }
+
+    #[test]
+    fn test_money2() {
+        let mut interpreter = make_interpreter("$47", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Money(47.0, Currency::Dollar)));
+    }
 }
