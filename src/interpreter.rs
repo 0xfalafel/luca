@@ -476,8 +476,8 @@ impl fmt::Display for ResType {
 
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            ResType::Int(val) => {write!(f, "{}", val)},
-            ResType::Float(val) => {write!(f, "{}", val)},
+            ResType::Int(val)  => {write!(f, "{}", val)},
+            ResType::Float(val) => {write!(f, "{:?}", val)},
         }
     }
 }
@@ -502,6 +502,7 @@ impl Interpreter {
     fn visit_num(&self, node: &AST) -> ResType {
         match node.token {
             Token::INTEGER(i) => ResType::Int(i),
+            Token::FLOAT(f) => ResType::Float(f),
             _ => panic!("Error: end node is not an integer")
         }
     }
@@ -570,7 +571,7 @@ impl Interpreter {
 
     fn visit(&mut self, node: &AST) -> Result<ResType, Error> {
         match node.token {
-            Token::INTEGER(_i) => {
+            Token::INTEGER(_) | Token::FLOAT(_) => {
                 Ok(self.visit_num(node))
             },
             Token::VAR(_) => Ok(self.visit_variable(node)?),
@@ -589,6 +590,7 @@ impl Interpreter {
     fn interpret(&mut self) -> Result<ResType, Error> {
         let tree = self.parser.parse()?;
         let result = self.visit(&tree)?;
+        // println!("res: {:?}", result);
         Ok(result)
     }
 }
