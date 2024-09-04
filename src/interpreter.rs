@@ -1,3 +1,4 @@
+use core::f64;
 use std::collections::HashMap;
 use std::{i128, io};
 use std::io::Write;
@@ -11,7 +12,8 @@ use std::fmt;
 enum Error {
     InvalidSyntax,
     UndefinedVariable,
-    DivisonByZero
+    DivisonByZero,
+    IncorrectFloat // Could not parse the float
 }
 
 /*
@@ -41,7 +43,7 @@ factor      : INTEGER | LPAREN expr RPAREN | VAR
 #[derive(Debug, Clone, PartialEq)]
 enum Token {
     INTEGER(i128),
-    Float(f64),
+    FLOAT(f64),
     PLUS,
     MINUS,
     MUL,
@@ -91,14 +93,18 @@ impl Lexer {
         }
     }
 
-    /// Return a (multidigit) integer consumed from the input.
-    fn integer(&mut self) -> i128 {
+    /// Return a (multidigit) Token::INTEGER or TOKEN::FLOAT consumed from the input.
+    fn number(&mut self) -> Result<Token, Error> {
+        let mut is_float = false;
         let int_start = self.pos;
 
         loop {
             if let Some (char) = self.get_char() {
                 if char.is_ascii_digit() {
                     self.advance()
+                } else if char == '.' {
+                    is_float = true;
+                    self.advance();
                 } else {
                     break;
                 }
@@ -106,7 +112,23 @@ impl Lexer {
                 break;
             }
         }
-        return i128::from_str_radix(&self.text[int_start..self.pos], 10).unwrap();
+
+        let ascii_number = &self.text[int_start..self.pos];
+
+        match is_float {
+            false => {
+                let val: i128 = i128::from_str_radix(ascii_number, 10).unwrap();
+                Ok(Token::INTEGER(val))
+            },
+            true => {
+                if let Ok(val) = ascii_number.parse::<f64>() {
+                    Ok(Token::FLOAT(val))
+                } else {
+                    Err(Error::IncorrectFloat)
+                }
+            }
+        }
+
     }
 
     /// Retun a string
@@ -144,7 +166,7 @@ impl Lexer {
 
         match char {
             char if char.is_ascii_digit() => {
-                Ok(Token::INTEGER(self.integer()))
+                Ok(self.number()?)
             },
             char if char.is_alphabetic() => {
                 Ok(Token::VAR(self.variable()))
