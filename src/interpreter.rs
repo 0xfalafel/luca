@@ -100,45 +100,39 @@ impl Lexer {
     /// advance `self.pos` until the next non-whitespace character
     fn skip_whitespace(&mut self) {
 
-        for char in self.text[self.pos..].chars() {
-            if char.is_whitespace() {
-                self.pos += 1;
-            } else {
-                break;
-            }
+        while self.pos < self.text.len() && self.text.chars().nth(self.pos).unwrap().is_whitespace() {
+            self.pos += 1;
         }
     }
 
     /// Return a (multidigit) Token::INTEGER or TOKEN::FLOAT consumed from the input.
     fn number(&mut self) -> Result<Token, Error> {
         let mut is_float = false;
-        let int_start = self.pos;
 
-        loop {
-            if let Some (char) = self.get_char() {
+        let mut ascii_number = String::from("");
+
+        // dumb code is smart code
+        while let Some (char) = self.get_char() {
                 if char.is_ascii_digit() {
-                    self.advance()
+                    self.advance();
+                    ascii_number.push(char);
                 } else if char == '.' {
                     is_float = true;
                     self.advance();
+                    ascii_number.push(char);
                 } else {
                     break;
                 }
-            } else {
-                break;
-            }
         }
-
-        let ascii_number = &self.text[int_start..self.pos];
 
         match is_float {
             false => {
-                let val: i128 = i128::from_str_radix(ascii_number, 10).unwrap();
+                let val: i128 = i128::from_str_radix(&ascii_number, 10).unwrap();
                 Ok(Token::INTEGER(val))
             },
             true => {
-                if let Ok(val) = ascii_number.parse::<f64>() {
-                    Ok(Token::FLOAT(val))
+                if let Ok(val) = &ascii_number.parse::<f64>() {
+                    Ok(Token::FLOAT(*val))
                 } else {
                     Err(Error::IncorrectFloat)
                 }
@@ -150,16 +144,16 @@ impl Lexer {
     /// Retun a string
     fn variable(&mut self) -> String {
         let str_start = self.pos;
+        let input_text = &self.text[str_start..];
 
-        while let Some(char) = self.get_char() {
-            if char.is_alphabetic() {
-                self.advance()
-            } else {
-                break;
-            }
-        }
+        let end_of_variable = input_text
+            .find(|c: char| c == '=' || c == '€' || c == '$' || c.is_whitespace())
+            .unwrap_or(input_text.len());
 
-        let new_var = String::from(&self.text[str_start..self.pos]);
+        
+        self.pos = str_start + end_of_variable;
+        
+        let new_var = String::from(&input_text[..end_of_variable]);
         new_var
     }
 
@@ -171,7 +165,8 @@ impl Lexer {
 
         // get the next non-whitespace char, or EOF
         let char = loop {
-            match self.get_char() {
+            let my_char = self.get_char();
+            match my_char {
                 None => return Ok(Token::EOF),
                 Some(char) if char.is_whitespace() => {
                     self.skip_whitespace()
@@ -183,9 +178,6 @@ impl Lexer {
         match char {
             char if char.is_ascii_digit() => {
                 Ok(self.number()?)
-            },
-            char if char.is_alphabetic() => {
-                Ok(Token::VAR(self.variable()))
             },
             '+' => {
                 self.advance();
@@ -222,6 +214,9 @@ impl Lexer {
             '$' => {
                 self.advance();
                 Ok(Token::MONEY(Currency::Dollar))
+            },
+            char if char.is_alphabetic() => {
+                Ok(Token::VAR(self.variable()))
             },
             _ => {Err(Error::InvalidSyntax)}
         }
