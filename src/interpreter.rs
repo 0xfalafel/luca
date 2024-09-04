@@ -455,8 +455,19 @@ impl Div for ResType {
     fn div(self, other: Self) -> ResType {
         if matches!(self, ResType::Float(_)) || matches!(other, ResType::Float(_)) {
             ResType::Float(self.get_f64() / other.get_f64())
-        } else { // Both Int
-            ResType::Int(self.get_i128() / other.get_i128())
+        
+        } else { // Both Integers
+            let left_val = self.get_i128();
+            let right_val = other.get_i128();
+
+            // If the divison returns a round value give an Integer
+            if left_val % right_val == 0 {
+                ResType::Int(self.get_i128() / other.get_i128())
+
+            // Otherwise, we return a Float
+            } else {
+                ResType::Float(self.get_f64() / other.get_f64())
+            }
         }
     }
 }
@@ -535,11 +546,19 @@ impl Interpreter {
                 Ok(left_val * right_val)
             },
             Token::DIV => {
+                // Let's catch division by zero before the happend
+                // because there is no checked_div function for f64.
+                
                 match right_val {
-                    ResType::Int(0) => Err(Error::DivisonByZero),
-                    ResType::Float(0.0) => Err(Error::DivisonByZero),
-                    _ => Ok(left_val / right_val)
-                }
+                    ResType::Int(0) => return Err(Error::DivisonByZero),
+                    ResType::Float(val) => {
+                        if val == 0.0 {return Err(Error::DivisonByZero)}},
+                    _ => {}
+                };
+
+                // Division has been implemented as a trait for ResType
+                let res = left_val / right_val;
+                Ok(res)
             },
             _ => panic!("Unkown BinOp Token in the AST")
         }
