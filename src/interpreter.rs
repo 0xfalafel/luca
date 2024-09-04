@@ -144,7 +144,7 @@ impl Lexer {
     /// Retun a string
     fn variable(&mut self) -> String {
         let str_start = self.pos;
-        let input_text = &self.text[str_start..];
+        let input_text: String = self.text.chars().skip(self.pos).collect();
 
         let end_of_variable = input_text
             .find(|c: char| c == '=' || c == '€' || c == '$'
@@ -155,7 +155,7 @@ impl Lexer {
         
         self.pos = str_start + end_of_variable;
         
-        let new_var = String::from(&input_text[..end_of_variable]);
+        let new_var: String = input_text.chars().take(end_of_variable).collect();
         new_var
     }
 
