@@ -156,6 +156,7 @@ impl Lexer {
         self.pos = str_start + end_of_variable;
         
         let new_var: String = input_text.chars().take(end_of_variable).collect();
+        // println!("new_var: {:?}", new_var);
         new_var
     }
 
@@ -363,23 +364,20 @@ impl Parser {
         }
     }
 
-    /// term : factor ((MUL | DIV) factor)*
-    ///      | factor (VAR)            <-- implicit multiplication of variables. Like 4a + 12
+    /// term : factor (VAR)* ((MUL | DIV) factor)*
+    ///      | factor (VAR)*            <-- implicit multiplication of variables. Like 4ab + 12 TODO
     fn term(&mut self) -> Result<AST, Error> {
         let mut node = self.factor()?;
 
-        let token = self.current_token.clone();
-        match token {
-            Token::VAR(name) => {
-                self.eat(Token::VAR(name.clone()))?;
-                let var_node = AST::new(Token::VAR(name), vec![]);
-
-                let new_node = AST::new(Token::MUL,
-                    vec![node, var_node]
-                );
-                return Ok(new_node);
-            },
-            _ => {}
+        while matches!(self.current_token, Token::VAR(_)) {
+            match self.current_token.clone() {
+                Token::VAR(name) => {
+                    self.eat(Token::VAR(name.clone()))?;
+                    let var_node = AST::new(Token::VAR(name.clone()), vec![]);
+                    node = AST::new(Token::MUL, vec![node, var_node]);
+                },
+                _ => {}
+            }                
         }
 
         while self.current_token == Token::MUL || self.current_token == Token::DIV {
@@ -1109,5 +1107,33 @@ mod tests {
         let mut interpreter = make_interpreter("4a", Some(vars));
         let result = interpreter.interpret();
         assert_eq!(result, Ok(ResType::Int(8)));
+    }
+
+    #[test]
+    #[ignore]
+    fn implicit_multiplication2() {
+        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+
+        let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("b=-3", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("4ab", Some(vars));
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Int(-24)));
+    }
+
+    #[test]
+    #[ignore]
+    fn implicit_multiplication3() {
+        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+
+        let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("b=3", Some(vars.clone()));
+        _ = interpreter.interpret();
+        let mut interpreter = make_interpreter("4ab + 2 ab", Some(vars));
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(ResType::Int(-24)));
     }
 }
