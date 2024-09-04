@@ -251,7 +251,7 @@ impl Parser {
         }
     }
 
-    /// factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN | VAR
+    /// factor : (PLUS | MINUS) factor | INTEGER | FLOAT | LPAREN expr RPAREN | VAR
     fn factor(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
         
@@ -270,6 +270,12 @@ impl Parser {
             // INTEGER
             Token::INTEGER(i) => {
                 self.eat(Token::INTEGER(i))?;
+                let node = AST::new(token, vec![]);
+                Ok(node)
+            },
+            // FLOAT
+            Token::FLOAT(f) => {
+                self.eat(Token::FLOAT(f))?;
                 let node = AST::new(token, vec![]);
                 Ok(node)
             },
@@ -637,7 +643,7 @@ fn main() {
 mod tests {
     use super::*;
 
-    fn make_interpreter(text: &str, variables: Option<Rc<RefCell<HashMap<String, i128>>>>) -> Interpreter {
+    fn make_interpreter(text: &str, variables: Option<Rc<RefCell<HashMap<String, ResType>>>>) -> Interpreter {
         
         // Create an empty variables array if none is defined
         let vars = match variables {
@@ -656,35 +662,35 @@ mod tests {
     fn test_expression1() {
         let mut interpreter = make_interpreter("3", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(3));
+        assert_eq!(result, Ok(ResType::Int(3)));
     }
 
     #[test]
     fn test_expression2() {
         let mut interpreter = make_interpreter("2 + 7 * 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(30));
+        assert_eq!(result, Ok(ResType::Int(30)));
     }
 
     #[test]
     fn test_expression3() {
         let mut interpreter = make_interpreter("7 - 8 / 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(5));
+        assert_eq!(result, Ok(ResType::Int(5)));
     }
 
     #[test]
     fn test_expression4() {
         let mut interpreter = make_interpreter("14 + 2 * 3 - 6 / 2", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(17));
+        assert_eq!(result, Ok(ResType::Int(17)));
     }
 
     #[test]
     fn test_expression5() {
         let mut interpreter = make_interpreter("7 + 3 * (10 / (12 / (3 + 1) - 1))", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(22));
+        assert_eq!(result, Ok(ResType::Int(22)));
     }
 
     #[test]
@@ -693,14 +699,14 @@ mod tests {
             "7 + 3 * (10 / (12 / (3 + 1) - 1)) / (2 + 3) - 5 - 3 + (8)", None
         );
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(10));
+        assert_eq!(result, Ok(ResType::Int(10)));
     }
 
     #[test]
     fn test_expression7() {
         let mut interpreter = make_interpreter("7 + (((3 + 2)))", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(12));
+        assert_eq!(result, Ok(ResType::Int(12)));
     }
 
     #[test]
@@ -714,41 +720,41 @@ mod tests {
     fn test_expression_unary() {
         let mut interpreter = make_interpreter("---42", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(-42));
+        assert_eq!(result, Ok(ResType::Int(-42)));
     }
 
     #[test]
     fn test_expression_unary2() {
         let mut interpreter = make_interpreter("-6*-7 - 3", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(39));
+        assert_eq!(result, Ok(ResType::Int(39)));
     }
 
     #[test]
     fn test_expression_variable1() {
-        let vars : Rc<RefCell<HashMap<String, i128>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("a=5", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("a", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(5));
+        assert_eq!(result, Ok(ResType::Int(5)));
     }
 
     #[test]
     fn test_expression_variable2() {
-        let vars : Rc<RefCell<HashMap<String, i128>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("bob=(525+84)/4", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("bob + 48", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(200));
+        assert_eq!(result, Ok(ResType::Int(200)));
     }
 
     #[test]
     fn test_expression_variable3() {
-        let vars : Rc<RefCell<HashMap<String, i128>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
         _ = interpreter.interpret();
@@ -758,6 +764,6 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("a+b", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(5));
+        assert_eq!(result, Ok(ResType::Int(5)));
     }
 }
