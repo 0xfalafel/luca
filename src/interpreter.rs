@@ -51,12 +51,12 @@ enum Token {
     RPAREN,
     ASSIGN,
     VAR(String),
-    MONEY(Money),
+    MONEY(Currency),
     EOF,
 }
 
-#[derive(Debug, Clone, PartialEq)]
-enum Money {
+#[derive(Debug, Clone, PartialEq, Copy)]
+enum Currency {
     Euro,
     Dollar
 }
@@ -207,11 +207,11 @@ impl Lexer {
             },
             '€' => {
                 self.advance();
-                Ok(Token::MONEY(Money::Euro))
+                Ok(Token::MONEY(Currency::Euro))
             },
             '$' => {
                 self.advance();
-                Ok(Token::MONEY(Money::Dollar))
+                Ok(Token::MONEY(Currency::Dollar))
             },
             _ => {Err(Error::InvalidSyntax)}
         }
@@ -265,22 +265,11 @@ impl Parser {
         }
     }
 
-    /// factor : (PLUS | MINUS) factor | INTEGER | FLOAT | LPAREN expr RPAREN | VAR
-    fn factor(&mut self) -> Result<AST, Error> {
+    /// number : INTEGER | FLOAT
+    fn number(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
-        
+
         match token {
-            // (PLUS | MINUS) factor
-            Token::PLUS | Token::MINUS=> {
-                match token {
-                    Token::PLUS => self.eat(Token::PLUS)?,
-                    Token::MINUS => self.eat(Token::MINUS)?,
-                    _ => {panic!()}
-                }
-                let children = vec![self.factor()?];
-                let node = AST::new(token, children); 
-                Ok(node)
-            },
             // INTEGER
             Token::INTEGER(i) => {
                 self.eat(Token::INTEGER(i))?;
@@ -291,6 +280,62 @@ impl Parser {
             Token::FLOAT(f) => {
                 self.eat(Token::FLOAT(f))?;
                 let node = AST::new(token, vec![]);
+                Ok(node)
+            },
+            _ => {Err(Error::InvalidSyntax)}
+        }
+    }
+
+    /// value : (MONEY) number | number (MONEY)
+    fn value(&mut self) -> Result<AST, Error> {
+        let token = self.current_token.clone();
+
+        match token {
+            // MONEY
+            Token::MONEY(currency) => {
+                self.eat(Token::MONEY(currency))?;
+                let node: AST = AST::new(Token::MONEY(currency), vec![self.number()?]);
+                Ok(node)
+            },
+
+            // INTEGER
+            Token::INTEGER(_) | Token::FLOAT(_) => {
+                let node = self.number()?;
+
+                // MONEY: check if our value ends with a currency, like 12€
+                match self.current_token {
+
+                    Token::MONEY(currency) => {
+                        self.eat(Token::MONEY(currency))?;
+                        let node: AST = AST::new(Token::MONEY(currency), vec![node]);
+                        Ok(node)
+                    },
+
+                    // Otherwise, just return the number 22 -> Int(22)
+                    _ => {Ok(node)}
+                }
+            },
+            _ => {Err(Error::InvalidSyntax)}
+        }
+    }
+
+    /// factor : (PLUS | MINUS) factor | number | LPAREN expr RPAREN | VAR
+    fn factor(&mut self) -> Result<AST, Error> {
+        let token = self.current_token.clone();
+        
+        match token {
+            Token::MONEY(_) | Token::INTEGER(_) | Token::FLOAT(_) => {
+                self.value()
+            },
+            // (PLUS | MINUS) factor
+            Token::PLUS | Token::MINUS=> {
+                match token {
+                    Token::PLUS => self.eat(Token::PLUS)?,
+                    Token::MINUS => self.eat(Token::MINUS)?,
+                    _ => {panic!()}
+                }
+                let children = vec![self.factor()?];
+                let node = AST::new(token, children); 
                 Ok(node)
             },
             // LPAREN expr RPAREN
