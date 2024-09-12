@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=Luca
+Comment=A smart companion calculator
+Categories=Science;Utility;
+
+Icon=applications-other
+Exec=luca
+Terminal=false
