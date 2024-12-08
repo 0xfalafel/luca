@@ -4,7 +4,7 @@ Type=Application
 
 Name=Luca
 Comment=A smart companion calculator
-Categories=Science;Utility;
+Categories=Science;
 
 Icon=applications-other
 Exec=luca

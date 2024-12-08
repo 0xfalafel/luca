@@ -25,7 +25,8 @@
         "build-commands": [
             "cargo --offline fetch --manifest-path Cargo.toml --verbose",
             "cargo --offline build --release --verbose",
-            "install -Dm755 ./data/luca.desktop -t /app/share/applications/pro.lasne.luca.desktop",
+            "install -Dm644 ./data/pro.lasne.luca.desktop -t /app/share/applications/",
+            "install -Dm644 ./data/pro.lasne.luca.appdata.xml -t /app/share/appdata/",
             "install -Dm755 ./target/release/luca -t /app/bin/"
         ],
         "sources": [{
