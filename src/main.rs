@@ -166,6 +166,6 @@ fn load_css() {
 
 fn main() {
 
-    let app = RelmApp::new("io.github.falafel.luca");
+    let app = RelmApp::new("pro.lasne.luca");
     app.run::<AppModel>(());
 }
