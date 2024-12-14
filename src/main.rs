@@ -2,6 +2,7 @@ use gtk::{gdk, glib, glib::clone};
 use gtk::prelude::{GtkWindowExt, OrientableExt, WidgetExt};
 use relm4::{gtk, Component, ComponentController, ComponentParts, ComponentSender, Controller, RelmApp, SimpleComponent};
 use granite::prelude::SettingsExt;
+use clap::Parser;
 
 mod input_pane;
 use input_pane::{LucaInput, MsgInput};
@@ -164,7 +165,28 @@ fn load_css() {
     }
 }
 
+
+// We support a --cli argument to run the app in the terminal
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+	// CLI mode
+    #[arg(short, long, action = clap::ArgAction::SetTrue, help = "Run in cli mode")]
+	cli: bool,
+}
+
+/// CLI mode: we create a small interpreter without launching the UI
+fn cli() {
+    println!("Hi mom!");
+}
+
 fn main() {
+    let args = Args::parse();
+
+    if args.cli {
+        cli();
+        return;
+    }
 
     let app = RelmApp::new("pro.lasne.luca");
     app.run::<AppModel>(());
