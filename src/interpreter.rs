@@ -1,7 +1,6 @@
 use core::f64;
 use std::collections::HashMap;
-use std::{i128, io};
-use std::io::Write;
+use std::i128;
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::ops::{Add, Sub, Neg, Mul, Div};
