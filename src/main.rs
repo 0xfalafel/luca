@@ -18,7 +18,10 @@ use std::io;
 use std::io::Write;
 
 mod interpreter;
-use crate::interpreter::{solve, ResType};
+use crate::interpreter::solve;
+
+mod units;
+use crate::units::ResType;
 
 
 // Application model

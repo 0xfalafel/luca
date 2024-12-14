@@ -1,7 +1,8 @@
 use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
-use crate::interpreter::{solve, ResType};
+use crate::interpreter::solve;
+use crate::units::ResType;
 use std::collections::HashMap;
 use std::cell::RefCell;
 use std::rc::Rc;
