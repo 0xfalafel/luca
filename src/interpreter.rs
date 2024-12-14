@@ -638,32 +638,6 @@ pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, ResType>>>) ->
     }
 }
 
-#[allow(unused)]
-fn main() {
-    let variables: Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
-
-    loop {
-        // show the interactive prompt
-        print!("calc> ");
-        let mut input = String::new();
-        io::stdout().flush().unwrap();
-    
-        // read input from user
-    
-        io::stdin()
-            .read_line(&mut input)
-            .expect("Failed to read line");
-
-        if input.eq("") || input.eq("exit\n") {
-            break;
-        }
-
-        match solve(input, variables.clone()) {
-            Ok(result) => println!("{}", result),
-            Err(_) => println!("Invalid syntax")
-        }
-    }
-}
 
 
 #[cfg(test)]
