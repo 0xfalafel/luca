@@ -2,7 +2,6 @@ use gtk::{gdk, glib, glib::clone};
 use gtk::prelude::{GtkWindowExt, OrientableExt, WidgetExt};
 use relm4::{gtk, Component, ComponentController, ComponentParts, ComponentSender, Controller, RelmApp, SimpleComponent};
 use granite::prelude::SettingsExt;
-use clap::Parser;
 
 mod input_pane;
 use input_pane::{LucaInput, MsgInput};
@@ -10,7 +9,16 @@ use input_pane::{LucaInput, MsgInput};
 mod result_pane;
 use result_pane::{ResultView, ResultMsg};
 
+// Things needed for --cli
+use clap::Parser;
+use std::rc::Rc;
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::io;
+use std::io::Write;
+
 mod interpreter;
+use crate::interpreter::{solve, ResType};
 
 
 // Application model
@@ -177,7 +185,29 @@ struct Args {
 
 /// CLI mode: we create a small interpreter without launching the UI
 fn cli() {
-    println!("Hi mom!");
+    let variables: Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+
+    loop {
+        // show the interactive prompt
+        print!("calc> ");
+        let mut input = String::new();
+        io::stdout().flush().unwrap();
+    
+        // read input from user
+    
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+
+        if input.eq("") || input.eq("exit\n") {
+            break;
+        }
+
+        match solve(input, variables.clone()) {
+            Ok(result) => println!("{}", result),
+            Err(_) => println!("Invalid syntax")
+        }
+    }
 }
 
 fn main() {
