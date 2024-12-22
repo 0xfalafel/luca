@@ -10,7 +10,7 @@ mod result_pane;
 use result_pane::{ResultView, ResultMsg};
 
 mod interpreter;
-
+mod units;
 
 // Application model
 #[derive(Debug)]
