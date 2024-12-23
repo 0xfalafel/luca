@@ -61,12 +61,27 @@ impl Add<f64> for Percentage {
     }
 }
 
-
 impl Sub<f64> for Percentage {
     type Output = f64;
 
     fn sub(self, rhs: f64) -> Self::Output {
         rhs - (rhs * self.value / 100.0)
+    }
+}
+
+impl Mul<f64> for Percentage {
+    type Output = f64;
+
+    fn mul(self, rhs: f64) -> Self::Output {
+        rhs * self.value / 100.0
+    }
+}
+
+impl Div<f64> for Percentage {
+    type Output = f64;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        rhs * 100.0 / self.value
     }
 }
 
@@ -86,7 +101,7 @@ macro_rules! arithmetic_op_percentage_for_f64 {
 arithmetic_op_percentage_for_f64!(Add add);
 arithmetic_op_percentage_for_f64!(Sub sub);
 arithmetic_op_percentage_for_f64!(Mul mul);
-// arithmetic_op_percentage_for_f64!(Div div);
+arithmetic_op_percentage_for_f64!(Div div);
 
 
 impl Add<i128> for Percentage {
@@ -107,15 +122,6 @@ impl Add<Percentage> for i128 {
         rhs.add(self)
     }
 }
-
-impl Mul<f64> for Percentage {
-    type Output = f64;
-
-    fn mul(self, rhs: f64) -> Self::Output {
-        rhs * self.value / 100.0
-    }
-}
-
 
 impl Neg for Percentage {
     type Output = Percentage;
