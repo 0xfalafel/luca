@@ -821,42 +821,42 @@ mod tests {
     fn test_money1() {
         let mut interpreter = make_interpreter("12€", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(12.0, Currency::Euros)));
+        assert_eq!(result, Ok(ResType::Money(Money::new(12.0, Currency::Euros))));
     }
 
     #[test]
     fn test_money2() {
         let mut interpreter = make_interpreter("$47", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(47.0, Currency::Dollars)));
+        assert_eq!(result, Ok(ResType::Money(Money::new(47.0, Currency::Dollars))));
     }
 
     #[test]
     fn test_money_add() {
         let mut interpreter = make_interpreter("22€ + 8", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(30.0, Currency::Euros)));
+        assert_eq!(result, Ok(ResType::Money(Money::new(30.0, Currency::Euros))));
     }
 
     #[test]
     fn test_money_sub() {
         let mut interpreter = make_interpreter("500€ - 1000€", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(-500.0, Currency::Euros)));
+        assert_eq!(result, Ok(ResType::Money(Money::new(-500.0, Currency::Euros))));
     }
 
     #[test]
     fn test_money_mul() {
         let mut interpreter = make_interpreter("$33 * -4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(-132.0, Currency::Dollars)));
+        assert_eq!(result, Ok(ResType::Money(Money::new(-132.0, Currency::Dollars))));
     }
 
     #[test]
     fn test_money_div() {
         let mut interpreter = make_interpreter("25€ / 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(6.25, Currency::Euros)));
+        assert_eq!(result, Ok(ResType::Money(Money::new(6.25, Currency::Euros))));
     }
 
     #[test]
@@ -914,6 +914,6 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("2adultes+3 enfants", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(36.0, Currency::Euros)));
+        assert_eq!(result, Ok(ResType::Money(Money::new(36.0, Currency::Euros))));
     }
 }
