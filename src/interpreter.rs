@@ -4,11 +4,9 @@ use std::{i128, io};
 use std::io::Write;
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::fmt;
 
 use crate::units::restype::ResType;
 use crate::units::money::{Money, Currency};
-use crate::units::math_utils::try_to_f64;
 
 #[derive(Debug, Eq, PartialEq)]
 enum Error {
@@ -536,7 +534,10 @@ impl Interpreter {
                 };
 
                 // Division has been implemented as a trait for ResType
-                let res = left_val / right_val;
+                let res = match left_val / right_val {
+                    Ok(val) => val,
+                    Err(_) => return Err(Error::CalculationError)
+                };  // Todo: use more explicit errors
                 Ok(res)
             },
             _ => panic!("Unkown BinOp Token in the AST")
@@ -554,10 +555,10 @@ impl Interpreter {
 
                 match number {
                     ResType::Int(val) => {
-                        Ok(ResType::Money(val as f64, *currency))
+                        Ok(ResType::Money(Money::new(val as f64, *currency)))
                     },
                     ResType::Float(val) => {
-                        Ok(ResType::Money(val, *currency))
+                        Ok(ResType::Money(Money::new(val, *currency)))
                     },
                     _ => panic!("Unknown number type in Money creation")
                 }
