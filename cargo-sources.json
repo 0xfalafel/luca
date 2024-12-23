@@ -145,6 +145,19 @@
     {
         "type": "archive",
         "archive-type": "tar-gzip",
+        "url": "https://static.crates.io/crates/duplicate/duplicate-2.0.0.crate",
+        "sha256": "97af9b5f014e228b33e77d75ee0e6e87960124f0f4b16337b586a6bec91867b1",
+        "dest": "cargo/vendor/duplicate-2.0.0"
+    },
+    {
+        "type": "inline",
+        "contents": "{\"package\": \"97af9b5f014e228b33e77d75ee0e6e87960124f0f4b16337b586a6bec91867b1\", \"files\": {}}",
+        "dest": "cargo/vendor/duplicate-2.0.0",
+        "dest-filename": ".cargo-checksum.json"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
         "url": "https://static.crates.io/crates/equivalent/equivalent-1.0.1.crate",
         "sha256": "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5",
         "dest": "cargo/vendor/equivalent-1.0.1"
@@ -860,6 +873,19 @@
     {
         "type": "archive",
         "archive-type": "tar-gzip",
+        "url": "https://static.crates.io/crates/proc-macro2-diagnostics/proc-macro2-diagnostics-0.10.1.crate",
+        "sha256": "af066a9c399a26e020ada66a034357a868728e72cd426f3adcd35f80d88d88c8",
+        "dest": "cargo/vendor/proc-macro2-diagnostics-0.10.1"
+    },
+    {
+        "type": "inline",
+        "contents": "{\"package\": \"af066a9c399a26e020ada66a034357a868728e72cd426f3adcd35f80d88d88c8\", \"files\": {}}",
+        "dest": "cargo/vendor/proc-macro2-diagnostics-0.10.1",
+        "dest-filename": ".cargo-checksum.json"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
         "url": "https://static.crates.io/crates/quote/quote-1.0.37.crate",
         "sha256": "b5b9d34b8991d19d98081b46eacdd8eb58c6f2b201139f7c5f643cc155a633af",
         "dest": "cargo/vendor/quote-1.0.37"
@@ -1263,6 +1289,19 @@
     {
         "type": "archive",
         "archive-type": "tar-gzip",
+        "url": "https://static.crates.io/crates/version_check/version_check-0.9.5.crate",
+        "sha256": "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a",
+        "dest": "cargo/vendor/version_check-0.9.5"
+    },
+    {
+        "type": "inline",
+        "contents": "{\"package\": \"0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a\", \"files\": {}}",
+        "dest": "cargo/vendor/version_check-0.9.5",
+        "dest-filename": ".cargo-checksum.json"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
         "url": "https://static.crates.io/crates/wasi/wasi-0.11.0+wasi-snapshot-preview1.crate",
         "sha256": "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423",
         "dest": "cargo/vendor/wasi-0.11.0+wasi-snapshot-preview1"
@@ -1479,6 +1518,19 @@
         "type": "inline",
         "contents": "{\"package\": \"68a9bda4691f099d435ad181000724da8e5899daa10713c2d432552b9ccd3a6f\", \"files\": {}}",
         "dest": "cargo/vendor/winnow-0.6.18",
+        "dest-filename": ".cargo-checksum.json"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
+        "url": "https://static.crates.io/crates/yansi/yansi-1.0.1.crate",
+        "sha256": "cfe53a6657fd280eaa890a3bc59152892ffa3e30101319d168b781ed6529b049",
+        "dest": "cargo/vendor/yansi-1.0.1"
+    },
+    {
+        "type": "inline",
+        "contents": "{\"package\": \"cfe53a6657fd280eaa890a3bc59152892ffa3e30101319d168b781ed6529b049\", \"files\": {}}",
+        "dest": "cargo/vendor/yansi-1.0.1",
         "dest-filename": ".cargo-checksum.json"
     },
     {
