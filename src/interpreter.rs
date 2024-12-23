@@ -5,6 +5,7 @@ use std::io::Write;
 use std::rc::Rc;
 use std::cell::RefCell;
 
+use crate::units::percentage::Percentage;
 use crate::units::restype::ResType;
 use crate::units::money::{Money, Currency};
 
@@ -53,6 +54,7 @@ enum Token {
     ASSIGN,
     VAR(String),
     MONEY(Currency),
+    PERCENTAGE,
     EOF,
 }
 
@@ -203,6 +205,10 @@ impl Lexer {
                 self.advance();
                 Ok(Token::MONEY(Currency::Dollars))
             },
+            '%' => {
+                self.advance();
+                Ok(Token::PERCENTAGE)
+            },
             char if char.is_alphabetic() => {
                 Ok(Token::VAR(self.variable()))
             },
@@ -279,7 +285,7 @@ impl Parser {
         }
     }
 
-    /// value : (MONEY) number | number (MONEY)
+    /// value : (MONEY) number | number (MONEY | PERCENTAGE)
     fn value(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
 
@@ -295,14 +301,19 @@ impl Parser {
             Token::INTEGER(_) | Token::FLOAT(_) => {
                 let node = self.number()?;
 
-                // MONEY: check if our value ends with a currency, like 12€
                 match self.current_token {
-
+                    // MONEY: check if our value ends with a currency, like 12€
                     Token::MONEY(currency) => {
                         self.eat(Token::MONEY(currency))?;
                         let node: AST = AST::new(Token::MONEY(currency), vec![node]);
                         Ok(node)
                     },
+                    // PERCENTAGE: check if our value ends with a percentage, like 25%
+                    Token::PERCENTAGE => {
+                        self.eat(Token::PERCENTAGE)?;
+                        let node: AST = AST::new(Token::PERCENTAGE, vec![node]);
+                        Ok(node)
+                    }
 
                     // Otherwise, just return the number 22 -> Int(22)
                     _ => {Ok(node)}
@@ -550,6 +561,7 @@ impl Interpreter {
         match &node.token {
             Token::PLUS  => {  Ok(val) },
             Token::MINUS => { Ok(-val) },
+            Token::PERCENTAGE => { Ok(ResType::Percent(Percentage::new(val.into()))) }
             Token::MONEY(currency) => {
                 let number = self.visit(&node.children[0])?;
 
@@ -589,7 +601,7 @@ impl Interpreter {
             },
             Token::VAR(_) => Ok(self.visit_variable(node)?),
             Token::ASSIGN => Ok(self.visit_assign(node)?),
-            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_)=> {
+            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_) | Token::PERCENTAGE => {
                 match node.children.len() {
                     1 => Ok(self.visit_unaryop(node)?),
                     2 => Ok(self.visit_binop(node)?),
