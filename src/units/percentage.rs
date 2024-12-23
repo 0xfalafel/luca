@@ -61,13 +61,6 @@ impl Add<f64> for Percentage {
     }
 }
 
-impl Add<Percentage> for f64 {
-    type Output = f64;
-
-    fn add(self, rhs: Percentage) -> Self::Output {
-        rhs.add(self)
-    }
-}
 
 impl Sub<f64> for Percentage {
     type Output = f64;
@@ -77,13 +70,24 @@ impl Sub<f64> for Percentage {
     }
 }
 
-impl Sub<Percentage> for f64 {
-    type Output = f64;
-
-    fn sub(self, rhs: Percentage) -> Self::Output {
-        rhs.sub(self)
+macro_rules! arithmetic_op_percentage_for_f64 {
+    ($trait_name:ident $operation:ident) => {
+        //   Add, Sub, ...
+        impl $trait_name<Percentage> for f64 {
+            type Output = f64;
+        
+            // add, sub
+            fn $operation(self, rhs: Percentage) -> Self::Output {
+                rhs.$operation(self)
+            }
+        }        
     }
 }
+arithmetic_op_percentage_for_f64!(Add add);
+arithmetic_op_percentage_for_f64!(Sub sub);
+arithmetic_op_percentage_for_f64!(Mul mul);
+// arithmetic_op_percentage_for_f64!(Div div);
+
 
 impl Add<i128> for Percentage {
     type Output = Result<f64, PrecisonLossError>;
@@ -112,12 +116,6 @@ impl Mul<f64> for Percentage {
     }
 }
 
-impl Mul<Percentage> for f64 {
-    type Output = f64;
-    fn mul(self, rhs: Percentage) -> Self::Output {
-        rhs.mul(self)
-    }
-}
 
 impl Neg for Percentage {
     type Output = Percentage;
