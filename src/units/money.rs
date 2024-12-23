@@ -257,6 +257,17 @@ impl Mul<Percentage> for Money {
     }
 }
 
+impl Div<Percentage> for Money {
+    type Output = Money;
+
+    fn div(self, rhs: Percentage) -> Self::Output {
+        Money {
+            amount: self.amount * 100.0 / rhs.value,
+            currency: self.currency
+        }
+    }
+}
+
 impl Neg for Money {
     type Output =  Money;
 
