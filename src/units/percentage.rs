@@ -103,6 +103,9 @@ arithmetic_op_percentage_for_f64!(Sub sub);
 arithmetic_op_percentage_for_f64!(Mul mul);
 arithmetic_op_percentage_for_f64!(Div div);
 
+/*
+    Arithmetic operations for i128
+*/
 
 impl Add<i128> for Percentage {
     type Output = Result<f64, PrecisonLossError>;
@@ -115,13 +118,57 @@ impl Add<i128> for Percentage {
     }
 }
 
-impl Add<Percentage> for i128 {
+impl Sub<i128> for Percentage {
     type Output = Result<f64, PrecisonLossError>;
 
-    fn add(self, rhs: Percentage) -> Self::Output {
-        rhs.add(self)
+    fn sub(self, rhs: i128) -> Self::Output {
+        // TODO, check if we can do thing while still being an i128
+        let rhs: f64 = try_to_f64(rhs)?;
+        let res = rhs - (rhs * self.value / 100.0);
+        Ok(res)
     }
 }
+
+impl Mul<i128> for Percentage {
+    type Output = Result<f64, PrecisonLossError>;
+
+    fn mul(self, rhs: i128) -> Self::Output {
+        // TODO, check if we can do thing while still being an i128
+        let rhs: f64 = try_to_f64(rhs)?;
+        let res = rhs * self.value / 100.0;
+        Ok(res)
+    }
+}
+
+impl Div<i128> for Percentage {
+    type Output = Result<f64, PrecisonLossError>;
+
+    fn div(self, rhs: i128) -> Self::Output {
+        // TODO, check if we can do thing while still being an i128
+        let rhs: f64 = try_to_f64(rhs)?;
+        let res = rhs * 100.0 / self.value;
+        Ok(res)
+    }
+}
+
+// Implement all the symetric operation: Add<Percentage> for i128
+
+macro_rules! arithmetic_op_percentage_for_i128 {
+    ($trait_name:ident $operation:ident) => {
+
+        impl $trait_name<Percentage> for i128 {
+            type Output = Result<f64, PrecisonLossError>;
+
+            fn $operation(self, rhs: Percentage) -> Self::Output {
+                rhs.$operation(self)
+            }
+        }
+    }
+}
+arithmetic_op_percentage_for_i128!(Add add);
+arithmetic_op_percentage_for_i128!(Sub sub);
+arithmetic_op_percentage_for_i128!(Mul mul);
+arithmetic_op_percentage_for_i128!(Div div);
 
 impl Neg for Percentage {
     type Output = Percentage;
