@@ -1,3 +1,4 @@
+#[derive(Debug, PartialEq, Eq)]
 pub struct PrecisonLossError;
 
 pub fn try_to_f64(v: i128) -> Result<f64, PrecisonLossError> {

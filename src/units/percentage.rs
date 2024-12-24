@@ -206,4 +206,59 @@ mod tests {
 
     // #[test]
     // fn div_zero() { assert_eq!(Percentage::new(13.0) / Percentage::new(0.0), Percentage { value: 0.0})}
+
+    // Tests for f64 + Percentage
+    #[test]
+    fn f64_add() {
+        assert_eq!(100.0_f64 + Percentage::new(5.0), 105.0);
+    }
+
+    #[test]
+    fn f64_sub() {
+        assert_eq!(100.0_f64 - Percentage::new(10.0), 90.0);
+    }
+    
+    #[test]
+    fn f64_mul() {
+        assert_eq!(100.0_f64 * Percentage::new(5.0), 5.0);
+    }
+
+    #[test]
+    fn f64_div() { 
+        assert_eq!(5.0_f64 / Percentage::new(1.0), 500.0);
+    }
+    
+    // Tests for Percentage + f64
+    #[test]
+    fn op_f64() {
+        assert_eq!(Percentage::new(5.0) + 100.0_f64, 105.0);
+        assert_eq!(Percentage::new(10.0) - 100.0_f64, 90.0);
+        assert_eq!(Percentage::new(5.0) * 100.0_f64, 5.0);
+        assert_eq!(Percentage::new(1.0) / 5.0_f64, 500.0);
+    }
+
+
+    // Tests for Percentage + i128
+    #[test]
+    fn percentage_i128() {
+        assert_eq!(Percentage::new(5.0) + 100_i128, Ok(105.0));
+        assert_eq!(Percentage::new(10.0) - 100_i128, Ok(90.0));
+        assert_eq!(Percentage::new(5.0) * 100_i128, Ok(5.0));
+        assert_eq!(Percentage::new(1.0) / 5_i128, Ok(500.0));
+    }
+    
+    // Tests for i128 + Percentage
+    #[test]
+    fn i128_percentage() {
+        assert_eq!(100_i128 + Percentage::new(5.0), Ok(105.0));
+        assert_eq!(100_i128 - Percentage::new(10.0), Ok(90.0));
+        assert_eq!(100_i128 * Percentage::new(5.0), Ok(5.0));
+        assert_eq!(5_i128 / Percentage::new(1.0), Ok(500.0));
+    }
+
+    // PrecisionLossError
+    #[test]
+    fn precisionlosserror() {
+        assert_eq!(i128::MAX - Percentage::new(2.0), Err(PrecisonLossError));
+    }
 }

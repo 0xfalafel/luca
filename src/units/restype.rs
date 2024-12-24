@@ -12,6 +12,7 @@ pub enum ResType {
     Percent(Percentage)
 }
 
+#[allow(unused)]
 #[derive(Debug, PartialEq, Eq)]
 pub enum CalculationError {
     PrecisonLoss,
