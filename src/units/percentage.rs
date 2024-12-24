@@ -259,6 +259,6 @@ mod tests {
     // PrecisionLossError
     #[test]
     fn precisionlosserror() {
-        assert_eq!(i128::MAX - Percentage::new(2.0), Err(PrecisonLossError));
+        assert_eq!(123456789123456789 - Percentage::new(2.0), Err(PrecisonLossError));
     }
 }
