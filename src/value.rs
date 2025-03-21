@@ -2,13 +2,7 @@ use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Neg};
 
 use num_rational::BigRational;
-
-#[derive(Debug, Clone, PartialEq)]
-
-enum Unit {
-    Euros,
-    Dollars
-}
+use crate::units::unit::UnitIdentifier;
 
 #[derive(Debug, Clone, PartialEq)]
 
