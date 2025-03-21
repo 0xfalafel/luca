@@ -539,9 +539,9 @@ impl Interpreter {
         let val = self.visit(&node.children[0])?;
 
         match &node.token {
-            Token::PLUS  => {  Ok(val) },
-            Token::MINUS => { Ok(-val) },
-            Token::PERCENTAGE => { Ok(ResType::Percent(Percentage::new(val.into()))) }
+            Token::PLUS  => Ok(val),
+            Token::MINUS => Ok(-val),
+            Token::PERCENTAGE => Ok(ResType::Percent(Percentage::new(val.into()))),
             Token::MONEY(currency) => {
                 let number = self.visit(&node.children[0])?;
 
@@ -554,7 +554,6 @@ impl Interpreter {
                     },
                     _ => panic!("Unknown number type in Money creation")
                 }
-
             }
             _ => {panic!("Invalid token type for an unary node")}
         }
@@ -576,9 +575,7 @@ impl Interpreter {
 
     fn visit(&mut self, node: &AST) -> Result<ResType, Error> {
         match node.token {
-            Token::INTEGER(_) => {
-                Ok(self.visit_num(node))
-            },
+            Token::INTEGER(_) => Ok(self.visit_num(node)),
             Token::VAR(_) => Ok(self.visit_variable(node)?),
             Token::ASSIGN => Ok(self.visit_assign(node)?),
             Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_) | Token::PERCENTAGE => {
