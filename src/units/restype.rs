@@ -4,6 +4,7 @@ use std::ops::{Add, Div, Mul, Neg, Sub};
 use crate::units::percentage::Percentage;
 use crate::units::money::Money;
 
+#[allow(unused)]
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum ResType {
     Int(i128),

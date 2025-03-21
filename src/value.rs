@@ -2,8 +2,9 @@ use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Neg};
 
 use num_rational::BigRational;
-use num_traits::FromPrimitive;
 use crate::units::unit::Unit;
+#[cfg(test)]
+use num_traits::FromPrimitive;
 
 #[derive(Debug, Clone, PartialEq)]
 
@@ -19,11 +20,15 @@ impl Value {
             unit: vec![]
         }
     }
+
+    pub fn set_unit(self, unit: Unit) -> Value {
+        Value { number: self.number, unit: vec![unit] }
+    }
 }
 
+// Helper function to create Value with Unit in tests
 #[cfg(test)]
 impl Value {
-
     pub fn from_f64_with_unit(number: f64, unit: Unit) -> Value {
         Value {
             number: BigRational::from_f64(number).unwrap(),

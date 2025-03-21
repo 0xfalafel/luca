@@ -1,6 +1,6 @@
 use compact_str::CompactString;
 
-pub type ConversionFactor = f64;
+// pub type ConversionFactor = f64;
 pub type CanonicalName = CompactString;
 
 /// A unit can either be a base/fundamental unit or it is derived from another unit.
@@ -20,7 +20,11 @@ pub struct Unit {
 
 
 impl Unit {
-    
+    pub fn percent() ->Unit {
+        Unit { symbol: "%".into(), name: "percent".into(), kind: UnitKind::Base }
+    }
+
+    #[allow(unused)]
     pub fn meter() -> Unit {
         Unit { symbol: "m".into(), name: "meter".into(), kind: UnitKind::Base }
     }

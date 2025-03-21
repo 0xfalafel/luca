@@ -22,7 +22,6 @@ mod interpreter;
 mod units;
 mod value;
 use crate::interpreter::solve;
-use crate::units::restype::ResType;
 
 // Application model
 #[derive(Debug)]

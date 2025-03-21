@@ -6,9 +6,9 @@ use std::str::FromStr;
 use num_rational::BigRational;
 use num_bigint::BigInt;
 
-use crate::units::percentage::Percentage;
-use crate::units::money::{Money, Currency};
+// use crate::units::money::{Money, Currency};
 
+use crate::units::unit::Unit;
 use crate::value::Value;
 
 #[derive(Debug, Eq, PartialEq)]
@@ -57,6 +57,13 @@ enum Token {
     MONEY(Currency),
     PERCENTAGE,
     EOF,
+}
+
+// Currency Type
+#[derive(Debug, Eq, PartialEq, Clone, Copy)]
+pub enum Currency {
+    Euros,
+    Dollars
 }
 
 #[derive(Debug, Clone)]
@@ -533,13 +540,15 @@ impl Interpreter {
         match &node.token {
             Token::PLUS  => Ok(val),
             Token::MINUS => Ok(-val),
-            Token::PERCENTAGE => {
-                todo!();
-                // Ok(Value::Percent(Percentage::new(val.into())))
-            },
+            Token::PERCENTAGE => Ok(val.set_unit(Unit::percent())),
             Token::MONEY(currency) => {
-                todo!();
-                // let number = self.visit(&node.children[0])?;
+                let number = self.visit(&node.children[0])?;
+
+                // Maybe this should be matched somewhere else ?
+                match currency {
+                    Currency::Euros   => Ok(number.set_unit(Unit::euro())),
+                    Currency::Dollars => Ok(number.set_unit(Unit::dollar())),
+                }
 
                 // match number {
                 //     Value::from_int(val) => {
