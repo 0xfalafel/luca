@@ -7,7 +7,6 @@ use std::str::FromStr;
 use num_rational::BigRational;
 
 use crate::units::percentage::Percentage;
-use crate::units::restype::ResType;
 use crate::units::money::{Money, Currency};
 
 use crate::value::Value;
@@ -448,31 +447,31 @@ impl Parser {
 
 pub struct Interpreter {
     parser: Parser,
-    variables: Rc<RefCell<HashMap<String, ResType>>>
+    variables: Rc<RefCell<HashMap<String, Value>>>
 }
 
 impl Interpreter {
-    fn new(parser: Parser, variables: Rc<RefCell<HashMap<String, ResType>>>) -> Interpreter {
+    fn new(parser: Parser, variables: Rc<RefCell<HashMap<String, Value>>>) -> Interpreter {
         Interpreter {
             parser: parser,
             variables: variables
         }
     }
 
-    fn visit_num(&self, node: &AST) -> ResType {
-        match node.token {
-            Token::INTEGER(i) => ResType::Int(i),
+    fn visit_num(&self, node: &AST) -> Value {
+        match &node.token {
+            Token::INTEGER(i) => Value::new(i.clone()),
             _ => panic!("Error: end node is not an integer")
         }
     }
 
-    fn visit_variable(&self, node: &AST) -> Result<ResType, Error> {
+    fn visit_variable(&self, node: &AST) -> Result<Value, Error> {
         match &node.token {
             Token::VAR(var_name) => {
                 let var_list = self.variables.borrow();
 
                 match var_list.get(var_name) {
-                    Some(val) => return Ok(*val),
+                    Some(val) => return Ok(val.clone()),
                     None => {}
                 };
 
@@ -483,7 +482,7 @@ impl Interpreter {
                         let singular_varname: String = var_name.chars().take(var_name.len()-1).collect();
 
                         match var_list.get(&singular_varname) {
-                            Some(val) => return Ok(*val),
+                            Some(val) => return Ok(val.clone()),
                             _ => {}
                         }
                     }
@@ -495,7 +494,7 @@ impl Interpreter {
         }
     }
 
-    fn visit_binop(&mut self, node: &AST) -> Result<ResType, Error> {
+    fn visit_binop(&mut self, node: &AST) -> Result<Value, Error> {
         let left_val = self.visit(&node.children[0])?;
         let right_val = self.visit(&node.children[1])?;
 
@@ -514,13 +513,13 @@ impl Interpreter {
                 // because there is no checked_div function for f64.
                 
                 match right_val {
-                    ResType::Int(0) => return Err(Error::DivisonByZero),
-                    ResType::Float(val) => {
+                    Value::Int(0) => return Err(Error::DivisonByZero),
+                    Value::Float(val) => {
                         if val == 0.0 {return Err(Error::DivisonByZero)}},
                     _ => {}
                 };
 
-                // Division has been implemented as a trait for ResType
+                // Division has been implemented as a trait for Value
                 let res = match left_val / right_val {
                     Ok(val) => val,
                     Err(_) => return Err(Error::CalculationError)
@@ -531,22 +530,22 @@ impl Interpreter {
         }
     }
 
-    fn visit_unaryop(&mut self, node: &AST) -> Result<ResType, Error> {
+    fn visit_unaryop(&mut self, node: &AST) -> Result<Value, Error> {
         let val = self.visit(&node.children[0])?;
 
         match &node.token {
             Token::PLUS  => Ok(val),
             Token::MINUS => Ok(-val),
-            Token::PERCENTAGE => Ok(ResType::Percent(Percentage::new(val.into()))),
+            Token::PERCENTAGE => Ok(Value::Percent(Percentage::new(val.into()))),
             Token::MONEY(currency) => {
                 let number = self.visit(&node.children[0])?;
 
                 match number {
-                    ResType::Int(val) => {
-                        Ok(ResType::Money(Money::new(val as f64, *currency)))
+                    Value::Int(val) => {
+                        Ok(Value::Money(Money::new(val as f64, *currency)))
                     },
-                    ResType::Float(val) => {
-                        Ok(ResType::Money(Money::new(val, *currency)))
+                    Value::Float(val) => {
+                        Ok(Value::Money(Money::new(val, *currency)))
                     },
                     _ => panic!("Unknown number type in Money creation")
                 }
@@ -555,7 +554,7 @@ impl Interpreter {
         }
     }
 
-    fn visit_assign(&mut self, node: &AST) -> Result<ResType, Error> {
+    fn visit_assign(&mut self, node: &AST) -> Result<Value, Error> {
         let right_val = self.visit(&node.children[1])?;
 
         match &node.children[0].token {
@@ -569,7 +568,7 @@ impl Interpreter {
         Ok(right_val)
     }
 
-    fn visit(&mut self, node: &AST) -> Result<ResType, Error> {
+    fn visit(&mut self, node: &AST) -> Result<Value, Error> {
         match node.token {
             Token::INTEGER(_) => Ok(self.visit_num(node)),
             Token::VAR(_) => Ok(self.visit_variable(node)?),
@@ -585,7 +584,7 @@ impl Interpreter {
         }
     }
 
-    fn interpret(&mut self) -> Result<ResType, Error> {
+    fn interpret(&mut self) -> Result<Value, Error> {
         let tree = self.parser.parse()?;
         let result = self.visit(&tree)?;
         // println!("res: {:?}", result);
@@ -593,7 +592,7 @@ impl Interpreter {
     }
 }
 
-pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, ResType>>>) -> Result<String, String>{
+pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, Value>>>) -> Result<String, String>{
     let text = String::from(input.trim());
     let lexer = Lexer::new(text);
 
@@ -617,7 +616,7 @@ pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, ResType>>>) ->
 mod tests {
     use super::*;
 
-    fn make_interpreter(text: &str, variables: Option<Rc<RefCell<HashMap<String, ResType>>>>) -> Interpreter {
+    fn make_interpreter(text: &str, variables: Option<Rc<RefCell<HashMap<String, Value>>>>) -> Interpreter {
         
         // Create an empty variables array if none is defined
         let vars = match variables {
@@ -636,35 +635,35 @@ mod tests {
     fn test_expression1() {
         let mut interpreter = make_interpreter("3", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(3)));
+        assert_eq!(result, Ok(Value::Int(3)));
     }
 
     #[test]
     fn test_expression2() {
         let mut interpreter = make_interpreter("2 + 7 * 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(30)));
+        assert_eq!(result, Ok(Value::Int(30)));
     }
 
     #[test]
     fn test_expression3() {
         let mut interpreter = make_interpreter("7 - 8 / 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(5)));
+        assert_eq!(result, Ok(Value::Int(5)));
     }
 
     #[test]
     fn test_expression4() {
         let mut interpreter = make_interpreter("14 + 2 * 3 - 6 / 2", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(17)));
+        assert_eq!(result, Ok(Value::Int(17)));
     }
 
     #[test]
     fn test_expression5() {
         let mut interpreter = make_interpreter("7 + 3 * (10 / (12 / (3 + 1) - 1))", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(22)));
+        assert_eq!(result, Ok(Value::Int(22)));
     }
 
     #[test]
@@ -673,14 +672,14 @@ mod tests {
             "7 + 3 * (10 / (12 / (3 + 1) - 1)) / (2 + 3) - 5 - 3 + (8)", None
         );
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(10)));
+        assert_eq!(result, Ok(Value::Int(10)));
     }
 
     #[test]
     fn test_expression7() {
         let mut interpreter = make_interpreter("7 + (((3 + 2)))", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(12)));
+        assert_eq!(result, Ok(Value::Int(12)));
     }
 
     #[test]
@@ -694,41 +693,41 @@ mod tests {
     fn test_expression_unary() {
         let mut interpreter = make_interpreter("---42", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(-42)));
+        assert_eq!(result, Ok(Value::Int(-42)));
     }
 
     #[test]
     fn test_expression_unary2() {
         let mut interpreter = make_interpreter("-6*-7 - 3", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(39)));
+        assert_eq!(result, Ok(Value::Int(39)));
     }
 
     #[test]
     fn test_expression_variable1() {
-        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("a=5", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("a", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(5)));
+        assert_eq!(result, Ok(Value::Int(5)));
     }
 
     #[test]
     fn test_expression_variable2() {
-        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("bob=(525+83)/4", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("bob + 48", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(200)));
+        assert_eq!(result, Ok(Value::Int(200)));
     }
 
     #[test]
     fn test_expression_variable3() {
-        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
         _ = interpreter.interpret();
@@ -738,35 +737,35 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("a+b", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(5)));
+        assert_eq!(result, Ok(Value::Int(5)));
     }
 
     #[test]
     fn test_float() {
         let mut interpreter = make_interpreter("4.0", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Float(4.0)));
+        assert_eq!(result, Ok(Value::Float(4.0)));
     }
 
     #[test]
     fn test_negative_float() {
         let mut interpreter = make_interpreter("-16.0 + 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Float(-12.0)));
+        assert_eq!(result, Ok(Value::Float(-12.0)));
     }
 
     #[test]
     fn test_division1() {
         let mut interpreter = make_interpreter("20/4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(5)));
+        assert_eq!(result, Ok(Value::Int(5)));
     }
 
     #[test]
     fn test_division2() {
         let mut interpreter = make_interpreter("-5/2", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Float(-2.5)));
+        assert_eq!(result, Ok(Value::Float(-2.5)));
     }
 
     #[test]
@@ -780,42 +779,42 @@ mod tests {
     fn test_money1() {
         let mut interpreter = make_interpreter("12€", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(Money::new(12.0, Currency::Euros))));
+        assert_eq!(result, Ok(Value::Money(Money::new(12.0, Currency::Euros))));
     }
 
     #[test]
     fn test_money2() {
         let mut interpreter = make_interpreter("$47", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(Money::new(47.0, Currency::Dollars))));
+        assert_eq!(result, Ok(Value::Money(Money::new(47.0, Currency::Dollars))));
     }
 
     #[test]
     fn test_money_add() {
         let mut interpreter = make_interpreter("22€ + 8", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(Money::new(30.0, Currency::Euros))));
+        assert_eq!(result, Ok(Value::Money(Money::new(30.0, Currency::Euros))));
     }
 
     #[test]
     fn test_money_sub() {
         let mut interpreter = make_interpreter("500€ - 1000€", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(Money::new(-500.0, Currency::Euros))));
+        assert_eq!(result, Ok(Value::Money(Money::new(-500.0, Currency::Euros))));
     }
 
     #[test]
     fn test_money_mul() {
         let mut interpreter = make_interpreter("$33 * -4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(Money::new(-132.0, Currency::Dollars))));
+        assert_eq!(result, Ok(Value::Money(Money::new(-132.0, Currency::Dollars))));
     }
 
     #[test]
     fn test_money_div() {
         let mut interpreter = make_interpreter("25€ / 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(Money::new(6.25, Currency::Euros))));
+        assert_eq!(result, Ok(Value::Money(Money::new(6.25, Currency::Euros))));
     }
 
     #[test]
@@ -826,19 +825,19 @@ mod tests {
 
     #[test]
     fn implicit_multiplication() {
-        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("4a", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(8)));
+        assert_eq!(result, Ok(Value::Int(8)));
     }
 
     #[test]
     #[ignore]
     fn implicit_multiplication2() {
-        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
         _ = interpreter.interpret();
@@ -846,13 +845,13 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("4ab", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(-24)));
+        assert_eq!(result, Ok(Value::Int(-24)));
     }
 
     #[test]
     #[ignore]
     fn implicit_multiplication3() {
-        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
         _ = interpreter.interpret();
@@ -860,12 +859,12 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("4ab + 2 ab", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Int(-24)));
+        assert_eq!(result, Ok(Value::Int(-24)));
     }
 
     #[test]
     fn scenario_cinema() {
-        let vars : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+        let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
         let mut interpreter = make_interpreter("enfant=4€", Some(vars.clone()));
         _ = interpreter.interpret();
@@ -873,6 +872,6 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("2adultes+3 enfants", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(ResType::Money(Money::new(36.0, Currency::Euros))));
+        assert_eq!(result, Ok(Value::Money(Money::new(36.0, Currency::Euros))));
     }
 }
