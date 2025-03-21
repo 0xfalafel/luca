@@ -3,7 +3,7 @@ use std::ops::{Add, Sub, Mul, Div, Neg};
 
 use num_rational::BigRational;
 use crate::units::unit::Unit;
-use num_traits::FromPrimitive;
+use num_traits::{FromPrimitive, ToPrimitive};
 
 #[derive(Debug, Clone, PartialEq)]
 
@@ -57,12 +57,23 @@ impl Value {
 
 impl fmt::Display for Value {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // TODO: at the moment, this only displays the first unit
-        if let Some(unit) = self.unit.first() {
-            write!(f, "{}{}", self.number, unit.symbol)
-        } else {
-            write!(f, "{}", self.number)
+        // Nothing to worry about here
+        if self.number.is_integer() {
+            return print_num(&self.number, &self.unit, f)
         }
+        
+        match self.number.to_f64() {
+            Some(float) => print_num(&float, &self.unit, f), // display a float
+            None => print_num(&self.number, &self.unit, f), // still display a fraction
+        }
+    }
+}
+
+fn print_num<T: std::fmt::Display>(num: &T, unit: &Vec<Unit>,f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    if let Some(unit) = unit.first() {
+        write!(f, "{}{}", num, unit.symbol)
+    } else {
+        write!(f, "{}", num)
     }
 }
 
