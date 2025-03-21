@@ -5,6 +5,7 @@ use std::str::FromStr;
 
 use num_rational::BigRational;
 use num_bigint::BigInt;
+use num_traits::FromPrimitive;
 
 // use crate::units::money::{Money, Currency};
 
@@ -16,8 +17,9 @@ enum Error {
     InvalidSyntax,
     UndefinedVariable,
     DivisonByZero,
-    IncorrectFloat, // Could not parse the float
-    CalculationError
+    CalculationError,
+    IntParsingFailed,
+    FloatParsingFailed,
 }
 
 /*
@@ -103,23 +105,37 @@ impl Lexer {
     /// Return a (multidigit) Token::INTEGER or TOKEN::FLOAT consumed from the input.
     fn number(&mut self) -> Result<Token, Error> {
         let mut ascii_number = String::from("");
+        let mut is_float = false;
 
         // dumb code is smart code
         while let Some (char) = self.get_char() {
                 if char.is_ascii_digit() {
                     self.advance();
                     ascii_number.push(char);
-                } else if char == '.' {
+                } else if char == '.' || char == ',' {
+                    is_float = true;
                     self.advance();
-                    ascii_number.push(char);
+                    ascii_number.push('.');
                 } else {
                     break;
                 }
         }
 
-        match BigRational::from_str(&ascii_number) {
-            Ok(val) => Ok(Token::INTEGER(val)),
-            Err(_) => Err(Error::IncorrectFloat)
+        if !is_float {
+            match BigRational::from_str(&ascii_number) {
+                Ok(val) => Ok(Token::INTEGER(val)),
+                Err(_) => Err(Error::IntParsingFailed)
+            }    
+        } else { // we parse a float
+            let val = match f64::from_str(&ascii_number) {
+                Ok(val) => val,
+                Err(_) => return Err(Error::FloatParsingFailed)
+            };
+
+            match BigRational::from_f64(val) {
+                Some(num) => Ok(Token::INTEGER(num)),
+                None => Err(Error::FloatParsingFailed)
+            }
         }
     }
 
