@@ -1,6 +1,5 @@
 use core::f64;
 use std::collections::HashMap;
-use std::i128;
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::str::FromStr;
@@ -46,7 +45,6 @@ factor      : INTEGER | LPAREN expr RPAREN | VAR
 #[derive(Debug, Clone, PartialEq)]
 enum Token {
     INTEGER(BigRational),
-    FLOAT(f64),
     PLUS,
     MINUS,
     MUL,
@@ -264,12 +262,6 @@ impl Parser {
                 let node = AST::new(token, vec![]);
                 Ok(node)
             },
-            // FLOAT
-            Token::FLOAT(f) => {
-                self.eat(Token::FLOAT(f))?;
-                let node = AST::new(token, vec![]);
-                Ok(node)
-            },
             _ => {Err(Error::InvalidSyntax)}
         }
     }
@@ -287,7 +279,7 @@ impl Parser {
             },
 
             // INTEGER
-            Token::INTEGER(_) | Token::FLOAT(_) => {
+            Token::INTEGER(_) => {
                 let node = self.number()?;
 
                 match self.current_token {
@@ -317,7 +309,7 @@ impl Parser {
         let token = self.current_token.clone();
         
         match token {
-            Token::MONEY(_) | Token::INTEGER(_) | Token::FLOAT(_) => {
+            Token::MONEY(_) | Token::INTEGER(_) => {
                 self.value()
             },
             // (PLUS | MINUS) factor
@@ -474,7 +466,6 @@ impl Interpreter {
     fn visit_num(&self, node: &AST) -> ResType {
         match node.token {
             Token::INTEGER(i) => ResType::Int(i),
-            Token::FLOAT(f) => ResType::Float(f),
             _ => panic!("Error: end node is not an integer")
         }
     }
@@ -585,7 +576,7 @@ impl Interpreter {
 
     fn visit(&mut self, node: &AST) -> Result<ResType, Error> {
         match node.token {
-            Token::INTEGER(_) | Token::FLOAT(_) => {
+            Token::INTEGER(_) => {
                 Ok(self.visit_num(node))
             },
             Token::VAR(_) => Ok(self.visit_variable(node)?),
