@@ -2,7 +2,7 @@ use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
 use crate::interpreter::solve;
-use crate::units::restype::ResType;
+use crate::value::Value;
 use std::collections::HashMap;
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -46,7 +46,7 @@ impl SimpleComponent for LucaInput {
 
             // interpret the text from the input pane
             let mut results = String::new();
-            let variables : Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+            let variables : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
             
             for line in text.lines() {
 

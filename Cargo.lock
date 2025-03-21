@@ -693,7 +693,9 @@ dependencies = [
  "duplicate",
  "glib-build-tools",
  "granite-rs",
+ "num-bigint",
  "num-rational",
+ "num-traits",
  "relm4",
  "relm4-components",
 ]

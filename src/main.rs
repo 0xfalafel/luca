@@ -11,6 +11,7 @@ use result_pane::{ResultView, ResultMsg};
 
 // Things needed for --cli
 use clap::Parser;
+use value::Value;
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -187,7 +188,7 @@ struct Args {
 
 /// CLI mode: we create a small interpreter without launching the UI
 fn cli() {
-    let variables: Rc<RefCell<HashMap<String, ResType>>> = Rc::new(RefCell::new(HashMap::new()));
+    let variables: Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
     loop {
         // show the interactive prompt

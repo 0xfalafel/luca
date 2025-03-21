@@ -5,6 +5,7 @@ use std::cell::RefCell;
 use std::str::FromStr;
 
 use num_rational::BigRational;
+use num_bigint::BigInt;
 
 use crate::units::percentage::Percentage;
 use crate::units::money::{Money, Currency};
@@ -511,13 +512,10 @@ impl Interpreter {
             Token::DIV => {
                 // Let's catch division by zero before the happend
                 // because there is no checked_div function for f64.
-                
-                match right_val {
-                    Value::Int(0) => return Err(Error::DivisonByZero),
-                    Value::Float(val) => {
-                        if val == 0.0 {return Err(Error::DivisonByZero)}},
-                    _ => {}
-                };
+
+                if right_val.number == BigRational::from(BigInt::from(0)) {
+                    return Err(Error::DivisonByZero)
+                }
 
                 // Division has been implemented as a trait for Value
                 let res = match left_val / right_val {
@@ -536,19 +534,23 @@ impl Interpreter {
         match &node.token {
             Token::PLUS  => Ok(val),
             Token::MINUS => Ok(-val),
-            Token::PERCENTAGE => Ok(Value::Percent(Percentage::new(val.into()))),
+            Token::PERCENTAGE => {
+                todo!();
+                // Ok(Value::Percent(Percentage::new(val.into())))
+            },
             Token::MONEY(currency) => {
-                let number = self.visit(&node.children[0])?;
+                todo!();
+                // let number = self.visit(&node.children[0])?;
 
-                match number {
-                    Value::Int(val) => {
-                        Ok(Value::Money(Money::new(val as f64, *currency)))
-                    },
-                    Value::Float(val) => {
-                        Ok(Value::Money(Money::new(val, *currency)))
-                    },
-                    _ => panic!("Unknown number type in Money creation")
-                }
+                // match number {
+                //     Value::Int(val) => {
+                //         Ok(Value::Money(Money::new(val as f64, *currency)))
+                //     },
+                //     Value::Float(val) => {
+                //         Ok(Value::Money(Money::new(val, *currency)))
+                //     },
+                //     _ => panic!("Unknown number type in Money creation")
+                // }
             }
             _ => {panic!("Invalid token type for an unary node")}
         }
@@ -560,11 +562,12 @@ impl Interpreter {
         match &node.children[0].token {
             Token::VAR(var_name) => {
                 let mut var = self.variables.borrow_mut();
-                var.insert(var_name.clone(), right_val);
+                var.insert(var_name.clone(), right_val.clone());
                 // self.variables.set(insert(var_name.clone(), right_val));
             },
             _ => panic!("Assignement without a variable")
         }
+        
         Ok(right_val)
     }
 
