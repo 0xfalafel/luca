@@ -175,6 +175,19 @@ impl Mul<Value> for Value {
             })
         }
 
+        // If only one of the operands has a unit, we keep the same unit
+        if self.unit.is_empty() || rhs.unit.is_empty() {
+            let unit = match self.unit.is_empty() {
+                true  => rhs.unit,
+                false => self.unit,
+            };
+
+            return Ok(Value { 
+                number: self.number * rhs.number,
+                unit: unit
+            })
+        }
+
         // Normal multiplication
 
         // TODO: implement a new type contructor
