@@ -122,6 +122,22 @@ impl Sub<Value> for Value {
     type Output = Result<Value, CalculationError>;
 
     fn sub(self, rhs: Value) -> Self::Output {
+
+        // Handle the special case of percentage substraction:
+        // 100€ - 10% = 90€
+        if self.is_percent() || rhs.is_percent() {
+            let (percentage, val, unit) = match self.is_percent() {
+                true  => (self.number, rhs.number, rhs.unit),
+                false => (rhs.number, self.number, self.unit)
+            };
+
+            return Ok(Value { 
+                number: val.clone() - val * percentage / BigRational::from_u8(100).unwrap(),
+                unit: unit
+            })
+        }
+
+
         Ok(Value {
             number: self.number - rhs.number,
             unit: same_type(self.unit, rhs.unit)?
@@ -134,6 +150,22 @@ impl Mul<Value> for Value {
     type Output = Result<Value, CalculationError>;
 
     fn mul(self, rhs: Value) -> Self::Output {
+        // Handle the special case of percentage substraction:
+        // 100€ * 10% = 10€
+        if self.is_percent() || rhs.is_percent() {
+            let (percentage, val, unit) = match self.is_percent() {
+                true  => (self.number, rhs.number, rhs.unit),
+                false => (rhs.number, self.number, self.unit)
+            };
+
+            return Ok(Value { 
+                number: val * percentage / BigRational::from_u8(100).unwrap(),
+                unit: unit
+            })
+        }
+
+        // Normal multiplication
+
         // TODO: implement a new type contructor
         if self.unit != rhs.unit { 
             return Err(CalculationError::IncompatibleTypes)
@@ -150,6 +182,20 @@ impl Div<Value> for Value {
     type Output = Result<Value, CalculationError>;
 
     fn div(self, rhs: Value) -> Self::Output {
+        // Handle the special case of percentage substraction:
+        // 100€ / 10% = 100€ * 10 / 100 = 1000€
+        if self.is_percent() || rhs.is_percent() {
+            let (percentage, val, unit) = match self.is_percent() {
+                true  => (self.number, rhs.number, rhs.unit),
+                false => (rhs.number, self.number, self.unit)
+            };
+
+            return Ok(Value { 
+                number: val * BigRational::from_u8(100).unwrap() / percentage,
+                unit: unit
+            })
+        }
+        
         // TODO: implement a new type contructor
         if self.unit != rhs.unit { 
             return Err(CalculationError::IncompatibleTypes)
