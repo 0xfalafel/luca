@@ -19,6 +19,7 @@ use std::io::Write;
 
 mod interpreter;
 mod units;
+mod value;
 use crate::interpreter::solve;
 use crate::units::restype::ResType;
 

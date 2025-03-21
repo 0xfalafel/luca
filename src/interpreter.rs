@@ -10,6 +10,8 @@ use crate::units::percentage::Percentage;
 use crate::units::restype::ResType;
 use crate::units::money::{Money, Currency};
 
+use crate::value::Value;
+
 #[derive(Debug, Eq, PartialEq)]
 enum Error {
     InvalidSyntax,
@@ -242,8 +244,8 @@ impl Parser {
     }
 
     /// Consume one 'token' if we have the correct 'token type', else send an error
-    fn eat(&mut self, token: Token) -> Result<(), Error> {
-        if token == self.current_token {
+    fn eat(&mut self, token: &Token) -> Result<(), Error> {
+        if *token == self.current_token {
             self.current_token = self.lexer.get_next_token()?;
             Ok(())
         } else {
@@ -255,15 +257,9 @@ impl Parser {
     fn number(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
 
-        match token {
-            // INTEGER
-            Token::INTEGER(i) => {
-                self.eat(Token::INTEGER(i))?;
-                let node = AST::new(token, vec![]);
-                Ok(node)
-            },
-            _ => {Err(Error::InvalidSyntax)}
-        }
+        self.eat(&token)?;
+        let node = AST::new(token, vec![]);
+        Ok(node)
     }
 
     /// value : (MONEY) number | number (MONEY | PERCENTAGE)
@@ -273,7 +269,7 @@ impl Parser {
         match token {
             // MONEY
             Token::MONEY(currency) => {
-                self.eat(Token::MONEY(currency))?;
+                self.eat(&Token::MONEY(currency))?;
                 let node: AST = AST::new(Token::MONEY(currency), vec![self.number()?]);
                 Ok(node)
             },
@@ -285,13 +281,13 @@ impl Parser {
                 match self.current_token {
                     // MONEY: check if our value ends with a currency, like 12€
                     Token::MONEY(currency) => {
-                        self.eat(Token::MONEY(currency))?;
+                        self.eat(&Token::MONEY(currency))?;
                         let node: AST = AST::new(Token::MONEY(currency), vec![node]);
                         Ok(node)
                     },
                     // PERCENTAGE: check if our value ends with a percentage, like 25%
                     Token::PERCENTAGE => {
-                        self.eat(Token::PERCENTAGE)?;
+                        self.eat(&Token::PERCENTAGE)?;
                         let node: AST = AST::new(Token::PERCENTAGE, vec![node]);
                         Ok(node)
                     }
@@ -315,8 +311,8 @@ impl Parser {
             // (PLUS | MINUS) factor
             Token::PLUS | Token::MINUS=> {
                 match token {
-                    Token::PLUS => self.eat(Token::PLUS)?,
-                    Token::MINUS => self.eat(Token::MINUS)?,
+                    Token::PLUS => self.eat(&Token::PLUS)?,
+                    Token::MINUS => self.eat(&Token::MINUS)?,
                     _ => {panic!()}
                 }
                 let children = vec![self.factor()?];
@@ -325,13 +321,13 @@ impl Parser {
             },
             // LPAREN expr RPAREN
             Token::LPAREN => {
-                self.eat(Token::LPAREN)?;
+                self.eat(&Token::LPAREN)?;
                 let node = self.expr()?;
-                self.eat(Token::RPAREN)?;
+                self.eat(&Token::RPAREN)?;
                 Ok(node)
             },
             Token::VAR(name) => {
-                self.eat(Token::VAR(name.clone()))?;
+                self.eat(&Token::VAR(name.clone()))?;
                 let node = AST::new(Token::VAR(name), vec![]);
                 Ok(node)
             },
@@ -349,7 +345,7 @@ impl Parser {
         while matches!(self.current_token, Token::VAR(_)) {
             match self.current_token.clone() {
                 Token::VAR(name) => {
-                    self.eat(Token::VAR(name.clone()))?;
+                    self.eat(&Token::VAR(name.clone()))?;
                     let var_node = AST::new(Token::VAR(name.clone()), vec![]);
                     node = AST::new(Token::MUL, vec![node, var_node]);
                 },
@@ -361,12 +357,12 @@ impl Parser {
             
             match self.current_token {
                 Token::MUL => {
-                    self.eat(Token::MUL)?;
+                    self.eat(&Token::MUL)?;
                     let children: Vec<AST> = vec![node, self.factor()?];
                     node = AST::new(Token::MUL, children);
                 },
                 Token::DIV => {
-                    self.eat(Token::DIV)?;
+                    self.eat(&Token::DIV)?;
                     let children: Vec<AST> = vec![node, self.factor()?];
                     node = AST::new(Token::DIV, children);
                 }
@@ -384,12 +380,12 @@ impl Parser {
 
             match self.current_token {
                 Token::PLUS => {
-                    self.eat(Token::PLUS)?;
+                    self.eat(&Token::PLUS)?;
                     let children: Vec<AST> = vec![node, self.term()?];
                     node = AST::new(Token::PLUS, children);
                 },
                 Token::MINUS => {
-                    self.eat(Token::MINUS)?;
+                    self.eat(&Token::MINUS)?;
                     let children: Vec<AST> = vec![node, self.term()?];
                     node = AST::new(Token::MINUS, children);
                 },
@@ -405,9 +401,9 @@ impl Parser {
         
         // Make a copy of the variable name
         let var_name = self.current_token.clone();    
-        self.eat(var_name.clone())?;
+        self.eat(&var_name.clone())?;
         
-        self.eat(Token::ASSIGN)?; // `=`
+        self.eat(&Token::ASSIGN)?; // `=`
 
         let node = AST::new(
             Token::ASSIGN, vec![
