@@ -3,6 +3,9 @@ use std::collections::HashMap;
 use std::i128;
 use std::rc::Rc;
 use std::cell::RefCell;
+use std::str::FromStr;
+
+use num_rational::BigRational;
 
 use crate::units::percentage::Percentage;
 use crate::units::restype::ResType;
@@ -42,7 +45,7 @@ factor      : INTEGER | LPAREN expr RPAREN | VAR
 /// The input is separated in a bunch of tokens.
 #[derive(Debug, Clone, PartialEq)]
 enum Token {
-    INTEGER(i128),
+    INTEGER(BigRational),
     FLOAT(f64),
     PLUS,
     MINUS,
@@ -93,8 +96,6 @@ impl Lexer {
 
     /// Return a (multidigit) Token::INTEGER or TOKEN::FLOAT consumed from the input.
     fn number(&mut self) -> Result<Token, Error> {
-        let mut is_float = false;
-
         let mut ascii_number = String::from("");
 
         // dumb code is smart code
@@ -103,7 +104,6 @@ impl Lexer {
                     self.advance();
                     ascii_number.push(char);
                 } else if char == '.' {
-                    is_float = true;
                     self.advance();
                     ascii_number.push(char);
                 } else {
@@ -111,20 +111,10 @@ impl Lexer {
                 }
         }
 
-        match is_float {
-            false => {
-                let val: i128 = i128::from_str_radix(&ascii_number, 10).unwrap();
-                Ok(Token::INTEGER(val))
-            },
-            true => {
-                if let Ok(val) = &ascii_number.parse::<f64>() {
-                    Ok(Token::FLOAT(*val))
-                } else {
-                    Err(Error::IncorrectFloat)
-                }
-            }
+        match BigRational::from_str(&ascii_number) {
+            Ok(val) => Ok(Token::INTEGER(val)),
+            Err(_) => Err(Error::IncorrectFloat)
         }
-
     }
 
     /// Retun a string
