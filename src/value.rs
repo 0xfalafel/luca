@@ -54,7 +54,12 @@ impl Value {
 
 impl fmt::Display for Value {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.number)
+        // TODO: at the moment, this only displays the first unit
+        if let Some(unit) = self.unit.first() {
+            write!(f, "{}{}", self.number, unit.symbol)
+        } else {
+            write!(f, "{}", self.number)
+        }
     }
 }
 
