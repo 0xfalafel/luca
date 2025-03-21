@@ -67,19 +67,34 @@ pub enum CalculationError {
     IncompatibleTypes
 }
 
+/// Used for Addition and Substraction
+fn same_type(left: Vec<Unit>, right: Vec<Unit>) -> Result<Vec<Unit>, CalculationError>{
+    match (left, right) {
+        // We don't have any unit
+        (left, right) if left.is_empty() && right.is_empty() => Ok(vec![]),
+
+        // Only one side has unit, let's convert this to the unit
+        // ex: 12€ + 4 = 16€
+        (left, right) if left.is_empty()  => Ok(right),
+        (left, right) if right.is_empty() => Ok(left),
+        
+        // We have the same type on both sides. Keep the type
+        // ex: 12€ + 4€ = 16€
+        (left, right) if left == right => Ok(left),
+
+        // TODO: try to convert between types
+
+        _ => Err(CalculationError::IncompatibleTypes)
+    }
+}
+
 impl Add<Value> for Value {
     type Output = Result<Value, CalculationError>;
 
     fn add(self, rhs: Value) -> Self::Output {
-        // TODO: implement a new type contructor
-        if self.unit != rhs.unit { 
-            return Err(CalculationError::IncompatibleTypes)
-        }
-
-        // If the types are compatible, procced with the addition
         Ok(Value {
             number: self.number + rhs.number,
-            unit: self.unit
+            unit: same_type(self.unit, rhs.unit)?
         })
     }
 }
@@ -88,15 +103,9 @@ impl Sub<Value> for Value {
     type Output = Result<Value, CalculationError>;
 
     fn sub(self, rhs: Value) -> Self::Output {
-        // TODO: implement a new type contructor
-        if self.unit != rhs.unit { 
-            return Err(CalculationError::IncompatibleTypes)
-        }
-
-        // If the types are compatible, procced with the substraction
         Ok(Value {
             number: self.number - rhs.number,
-            unit: self.unit
+            unit: same_type(self.unit, rhs.unit)?
         })
     }
 }
@@ -141,3 +150,4 @@ impl Neg for Value {
         Value { number: -self.number, unit: self.unit }
     }
 }
+
