@@ -1,4 +1,3 @@
-use core::f64;
 use std::collections::HashMap;
 use std::rc::Rc;
 use std::cell::RefCell;
@@ -543,10 +542,10 @@ impl Interpreter {
                 // let number = self.visit(&node.children[0])?;
 
                 // match number {
-                //     Value::Int(val) => {
+                //     Value::from_int(val) => {
                 //         Ok(Value::Money(Money::new(val as f64, *currency)))
                 //     },
-                //     Value::Float(val) => {
+                //     Value::from_float(val) => {
                 //         Ok(Value::Money(Money::new(val, *currency)))
                 //     },
                 //     _ => panic!("Unknown number type in Money creation")
@@ -617,6 +616,8 @@ pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, Value>>>) -> R
 
 #[cfg(test)]
 mod tests {
+    use crate::units::unit::Unit;
+
     use super::*;
 
     fn make_interpreter(text: &str, variables: Option<Rc<RefCell<HashMap<String, Value>>>>) -> Interpreter {
@@ -638,35 +639,35 @@ mod tests {
     fn test_expression1() {
         let mut interpreter = make_interpreter("3", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(3)));
+        assert_eq!(result, Ok(Value::from_int(3)));
     }
 
     #[test]
     fn test_expression2() {
         let mut interpreter = make_interpreter("2 + 7 * 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(30)));
+        assert_eq!(result, Ok(Value::from_int(30)));
     }
 
     #[test]
     fn test_expression3() {
         let mut interpreter = make_interpreter("7 - 8 / 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(5)));
+        assert_eq!(result, Ok(Value::from_int(5)));
     }
 
     #[test]
     fn test_expression4() {
         let mut interpreter = make_interpreter("14 + 2 * 3 - 6 / 2", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(17)));
+        assert_eq!(result, Ok(Value::from_int(17)));
     }
 
     #[test]
     fn test_expression5() {
         let mut interpreter = make_interpreter("7 + 3 * (10 / (12 / (3 + 1) - 1))", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(22)));
+        assert_eq!(result, Ok(Value::from_int(22)));
     }
 
     #[test]
@@ -675,14 +676,14 @@ mod tests {
             "7 + 3 * (10 / (12 / (3 + 1) - 1)) / (2 + 3) - 5 - 3 + (8)", None
         );
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(10)));
+        assert_eq!(result, Ok(Value::from_int(10)));
     }
 
     #[test]
     fn test_expression7() {
         let mut interpreter = make_interpreter("7 + (((3 + 2)))", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(12)));
+        assert_eq!(result, Ok(Value::from_int(12)));
     }
 
     #[test]
@@ -696,14 +697,14 @@ mod tests {
     fn test_expression_unary() {
         let mut interpreter = make_interpreter("---42", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(-42)));
+        assert_eq!(result, Ok(Value::from_int(-42)));
     }
 
     #[test]
     fn test_expression_unary2() {
         let mut interpreter = make_interpreter("-6*-7 - 3", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(39)));
+        assert_eq!(result, Ok(Value::from_int(39)));
     }
 
     #[test]
@@ -714,7 +715,7 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("a", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(5)));
+        assert_eq!(result, Ok(Value::from_int(5)));
     }
 
     #[test]
@@ -725,7 +726,7 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("bob + 48", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(200)));
+        assert_eq!(result, Ok(Value::from_int(200)));
     }
 
     #[test]
@@ -740,35 +741,35 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("a+b", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(5)));
+        assert_eq!(result, Ok(Value::from_int(5)));
     }
 
     #[test]
     fn test_float() {
         let mut interpreter = make_interpreter("4.0", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Float(4.0)));
+        assert_eq!(result, Ok(Value::from_float(4.0)));
     }
 
     #[test]
     fn test_negative_float() {
         let mut interpreter = make_interpreter("-16.0 + 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Float(-12.0)));
+        assert_eq!(result, Ok(Value::from_float(-12.0)));
     }
 
     #[test]
     fn test_division1() {
         let mut interpreter = make_interpreter("20/4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(5)));
+        assert_eq!(result, Ok(Value::from_int(5)));
     }
 
     #[test]
     fn test_division2() {
         let mut interpreter = make_interpreter("-5/2", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Float(-2.5)));
+        assert_eq!(result, Ok(Value::from_float(-2.5)));
     }
 
     #[test]
@@ -782,42 +783,42 @@ mod tests {
     fn test_money1() {
         let mut interpreter = make_interpreter("12€", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Money(Money::new(12.0, Currency::Euros))));
+        assert_eq!(result, Ok(Value::from_f64_with_unit(12.0, Unit::euro())))
     }
 
     #[test]
     fn test_money2() {
         let mut interpreter = make_interpreter("$47", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Money(Money::new(47.0, Currency::Dollars))));
+        assert_eq!(result, Ok(Value::from_f64_with_unit(47.0, Unit::dollar())));
     }
 
     #[test]
     fn test_money_add() {
         let mut interpreter = make_interpreter("22€ + 8", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Money(Money::new(30.0, Currency::Euros))));
+        assert_eq!(result, Ok(Value::from_f64_with_unit(30.0, Unit::euro())));
     }
 
     #[test]
     fn test_money_sub() {
         let mut interpreter = make_interpreter("500€ - 1000€", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Money(Money::new(-500.0, Currency::Euros))));
+        assert_eq!(result, Ok(Value::from_f64_with_unit(-500.0, Unit::euro())));
     }
 
     #[test]
     fn test_money_mul() {
         let mut interpreter = make_interpreter("$33 * -4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Money(Money::new(-132.0, Currency::Dollars))));
+        assert_eq!(result, Ok(Value::from_f64_with_unit(-132.0, Unit::dollar())));
     }
 
     #[test]
     fn test_money_div() {
         let mut interpreter = make_interpreter("25€ / 4", None);
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Money(Money::new(6.25, Currency::Euros))));
+        assert_eq!(result, Ok(Value::from_f64_with_unit(6.25, Unit::euro())));
     }
 
     #[test]
@@ -834,7 +835,7 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("4a", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(8)));
+        assert_eq!(result, Ok(Value::from_int(8)));
     }
 
     #[test]
@@ -848,7 +849,7 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("4ab", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(-24)));
+        assert_eq!(result, Ok(Value::from_int(-24)));
     }
 
     #[test]
@@ -862,7 +863,7 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("4ab + 2 ab", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Int(-24)));
+        assert_eq!(result, Ok(Value::from_int(-24)));
     }
 
     #[test]
@@ -875,6 +876,6 @@ mod tests {
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("2adultes+3 enfants", Some(vars));
         let result = interpreter.interpret();
-        assert_eq!(result, Ok(Value::Money(Money::new(36.0, Currency::Euros))));
+        assert_eq!(result, Ok(Value::from_f64_with_unit(36.0, Unit::euro())));
     }
 }

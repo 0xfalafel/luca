@@ -2,7 +2,8 @@ use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Neg};
 
 use num_rational::BigRational;
-use crate::units::unit::UnitIdentifier;
+use num_traits::FromPrimitive;
+use crate::units::unit::Unit;
 
 #[derive(Debug, Clone, PartialEq)]
 
@@ -19,6 +20,32 @@ impl Value {
         }
     }
 }
+
+#[cfg(test)]
+impl Value {
+
+    pub fn from_f64_with_unit(number: f64, unit: Unit) -> Value {
+        Value {
+            number: BigRational::from_f64(number).unwrap(),
+            unit: vec![unit]
+        }
+    }
+
+    pub fn from_int(number: i64) -> Value {
+        Value {
+            number: BigRational::from_i64(number).unwrap(),
+            unit: vec![] 
+        }
+    }
+    
+    pub fn from_float(number: f64) -> Value {
+        Value {
+            number: BigRational::from_f64(number).unwrap(),
+            unit: vec![] 
+        }
+    }
+}
+
 
 impl fmt::Display for Value {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
