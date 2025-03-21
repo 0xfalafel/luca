@@ -139,6 +139,16 @@ impl Lexer {
         }
     }
 
+    fn keyword_or_variable(&mut self) -> Result<Token, Error> {
+        let var = self.variable();
+
+        if var == "of" || var == "de" {
+            return Ok(Token::MUL)
+        }
+
+        Ok(Token::VAR(var))
+    }
+
     /// Retun a string
     fn variable(&mut self) -> String {
         let str_start = self.pos;
@@ -221,7 +231,8 @@ impl Lexer {
                 Ok(Token::PERCENTAGE)
             },
             char if char.is_alphabetic() => {
-                Ok(Token::VAR(self.variable()))
+                self.keyword_or_variable()
+                // Ok(Token::VAR(self.variable()))
             },
             _ => {Err(Error::InvalidSyntax)}
         }
