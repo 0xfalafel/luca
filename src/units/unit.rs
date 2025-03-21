@@ -20,7 +20,7 @@ pub struct Unit {
 
 
 impl Unit {
-    pub fn percent() ->Unit {
+    pub fn percent() -> Unit {
         Unit { symbol: "%".into(), name: "percent".into(), kind: UnitKind::Base }
     }
 

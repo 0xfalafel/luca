@@ -3,7 +3,6 @@ use std::ops::{Add, Sub, Mul, Div, Neg};
 
 use num_rational::BigRational;
 use crate::units::unit::Unit;
-#[cfg(test)]
 use num_traits::FromPrimitive;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -23,6 +22,10 @@ impl Value {
 
     pub fn set_unit(self, unit: Unit) -> Value {
         Value { number: self.number, unit: vec![unit] }
+    }
+
+    pub fn is_percent(&self) -> bool {
+        self.unit == vec![Unit::percent()]
     }
 }
 
@@ -67,7 +70,7 @@ pub enum CalculationError {
     IncompatibleTypes
 }
 
-/// Used for Addition and Substraction
+/// Used to determine the final type for Addition and Substraction
 fn same_type(left: Vec<Unit>, right: Vec<Unit>) -> Result<Vec<Unit>, CalculationError>{
     match (left, right) {
         // We don't have any unit
@@ -92,6 +95,22 @@ impl Add<Value> for Value {
     type Output = Result<Value, CalculationError>;
 
     fn add(self, rhs: Value) -> Self::Output {
+
+        // Handle the special case of percentage addition:
+        // 100€ + 10% = 110€
+        if self.is_percent() || rhs.is_percent() {
+            let (percentage, val, unit) = match self.is_percent() {
+                true  => (self.number, rhs.number, rhs.unit),
+                false => (rhs.number, self.number, self.unit)
+            };
+
+            return Ok(Value { 
+                number: val.clone() + val * percentage / BigRational::from_u8(100).unwrap(),
+                unit: unit
+            })
+        }
+
+        // Otherwise, let's do a normal addition
         Ok(Value {
             number: self.number + rhs.number,
             unit: same_type(self.unit, rhs.unit)?
