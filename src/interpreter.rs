@@ -247,6 +247,7 @@ impl Lexer {
 
 /// The parser consume the tokens and create an AST tree
 
+#[derive(Debug)]
 struct AST {
     token: Token,
     children: Vec<AST>
@@ -264,7 +265,7 @@ impl AST {
 #[derive(Debug, Clone)]
 pub struct Parser {
     lexer: Lexer,
-    current_token: Token
+    current_token: Token,
 }
 
 impl Parser {
@@ -273,7 +274,7 @@ impl Parser {
 
         Ok(Parser {
             lexer: lexer,
-            current_token: token
+            current_token: token,
         })
     }
 
@@ -403,8 +404,14 @@ impl Parser {
                 },
                 Token::OF => {
                     self.eat(&Token::OF)?;
-                    let children: Vec<AST> = vec![node, self.factor()?];
-                    node = AST::new(Token::MUL, children);
+
+                    // We only consider Token::OF if the previous token is a precentage.
+                    // I.E: 20% of 120 = 20% * 120
+                    //      20 of 120 doesn't mean anything, and we ignore it
+                    if node.token == Token::PERCENTAGE {
+                        let children: Vec<AST> = vec![node, self.factor()?];
+                        node = AST::new(Token::MUL, children);
+                    }
                 },
                 _ => {panic!("Incorrect token in term()")}
             }
