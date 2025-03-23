@@ -58,6 +58,7 @@ enum Token {
     VAR(String),
     MONEY(Currency),
     PERCENTAGE,
+    OF, // Keyword of for percentage
     EOF,
 }
 
@@ -143,7 +144,7 @@ impl Lexer {
         let var = self.variable();
 
         if var == "of" || var == "de" {
-            return Ok(Token::MUL)
+            return Ok(Token::OF)
         }
 
         Ok(Token::VAR(var))
@@ -372,6 +373,7 @@ impl Parser {
 
     /// term : factor (VAR)* ((MUL | DIV) factor)*
     ///      | factor (VAR)*            <-- implicit multiplication of variables. Like 4ab + 12 TODO
+    ///      | percentage OF factor
     fn term(&mut self) -> Result<AST, Error> {
         let mut node = self.factor()?;
 
@@ -386,7 +388,7 @@ impl Parser {
             }                
         }
 
-        while self.current_token == Token::MUL || self.current_token == Token::DIV {
+        while self.current_token == Token::MUL || self.current_token == Token::DIV || self.current_token == Token::OF {
             
             match self.current_token {
                 Token::MUL => {
@@ -398,7 +400,12 @@ impl Parser {
                     self.eat(&Token::DIV)?;
                     let children: Vec<AST> = vec![node, self.factor()?];
                     node = AST::new(Token::DIV, children);
-                }
+                },
+                Token::OF => {
+                    self.eat(&Token::OF)?;
+                    let children: Vec<AST> = vec![node, self.factor()?];
+                    node = AST::new(Token::MUL, children);
+                },
                 _ => {panic!("Incorrect token in term()")}
             }
         }
