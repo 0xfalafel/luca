@@ -872,6 +872,13 @@ mod tests {
     }
 
     #[test]
+    fn test_percentage_of() {
+        let mut interpreter = make_interpreter("20% of (50+50)", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(Value::from_int(20)));
+    }
+
+    #[test]
     fn test_handling_spaces() {
         let mut interpreter = make_interpreter("4€ b", None);
         let _ = interpreter.interpret();
