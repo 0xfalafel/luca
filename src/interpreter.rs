@@ -590,16 +590,6 @@ impl Interpreter {
                     Currency::Euros   => Ok(number.set_unit(Unit::euro())),
                     Currency::Dollars => Ok(number.set_unit(Unit::dollar())),
                 }
-
-                // match number {
-                //     Value::from_int(val) => {
-                //         Ok(Value::Money(Money::new(val as f64, *currency)))
-                //     },
-                //     Value::from_float(val) => {
-                //         Ok(Value::Money(Money::new(val, *currency)))
-                //     },
-                //     _ => panic!("Unknown number type in Money creation")
-                // }
             }
             _ => {panic!("Invalid token type for an unary node")}
         }
