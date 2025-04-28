@@ -928,4 +928,11 @@ mod tests {
 
         assert_eq!(result, Ok(Value::from_float(22.87)));
     }    
+
+    #[test]
+    fn simple_symbol() {
+        let mut interpreter = make_interpreter("€", None);
+        let _ = interpreter.interpret();
+    }
+
 }
