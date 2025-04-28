@@ -868,23 +868,23 @@ mod tests {
         let mut interpreter = make_interpreter("4€ b", None);
         let _ = interpreter.interpret();
     }
-
+    
     #[test]
     fn implicit_multiplication() {
         let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
-
+        
         let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("4a", Some(vars));
         let result = interpreter.interpret();
         assert_eq!(result, Ok(Value::from_int(8)));
     }
-
+    
     #[test]
     #[ignore]
     fn implicit_multiplication2() {
         let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
-
+        
         let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("b=-3", Some(vars.clone()));
@@ -893,12 +893,12 @@ mod tests {
         let result = interpreter.interpret();
         assert_eq!(result, Ok(Value::from_int(-24)));
     }
-
+    
     #[test]
     #[ignore]
     fn implicit_multiplication3() {
         let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
-
+        
         let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("b=3", Some(vars.clone()));
@@ -907,11 +907,11 @@ mod tests {
         let result = interpreter.interpret();
         assert_eq!(result, Ok(Value::from_int(-24)));
     }
-
+    
     #[test]
     fn scenario_cinema() {
         let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
-
+        
         let mut interpreter = make_interpreter("enfant=4€", Some(vars.clone()));
         _ = interpreter.interpret();
         let mut interpreter = make_interpreter("adulte=12€", Some(vars.clone()));
@@ -920,4 +920,12 @@ mod tests {
         let result = interpreter.interpret();
         assert_eq!(result, Ok(Value::from_f64_with_unit(36.0, Unit::euro())));
     }
+
+    #[test]
+    fn comma_sub() {
+        let mut interpreter = make_interpreter("872,87 - 850", None);
+        let result = interpreter.interpret();
+
+        assert_eq!(result, Ok(Value::from_float(22.87)));
+    }    
 }
