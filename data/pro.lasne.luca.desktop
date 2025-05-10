@@ -6,6 +6,6 @@ Name=Luca
 Comment=A smart companion calculator
 Categories=Science;
 
-Icon=applications-other
+Icon=accessories-calculator
 Exec=luca
 Terminal=false
