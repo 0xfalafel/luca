@@ -166,11 +166,11 @@ impl Lexer {
         let token = match var.as_str() {
             "of" | "de" => Token::OF, // Percentage
             "en" | "as" => Token::AS, // Conversion
-            "m" => Token::UNIT(UnitSymbol::Meter),
-            "km" => Token::UNIT(UnitSymbol::Kilometer),
-            "dm" => Token::UNIT(UnitSymbol::Decimeter),
-            "cm" => Token::UNIT(UnitSymbol::Centimeter),
-            "mm" => Token::UNIT(UnitSymbol::Millimeter),
+            "m" | "meter" | "metre" => Token::UNIT(UnitSymbol::Meter),
+            "km" | "kilometer" | "kilometre" => Token::UNIT(UnitSymbol::Kilometer),
+            "dm" | "decimeter" | "decimetre" => Token::UNIT(UnitSymbol::Decimeter),
+            "cm" | "centimeter" | "centimetre" => Token::UNIT(UnitSymbol::Centimeter),
+            "mm" | "millimeter" | "millimetre" => Token::UNIT(UnitSymbol::Millimeter),
             _ => Token::VAR(var)
         };
 
