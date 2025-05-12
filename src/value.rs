@@ -47,7 +47,7 @@ impl Value {
     }
 
     pub fn is_percent(&self) -> bool {
-        self.unit == vec![Unit::percent()]
+        self.unit == ComposedUnit::new_with_unit(Unit::percent())
     }
 }
 
@@ -57,21 +57,21 @@ impl Value {
     pub fn from_f64_with_unit(number: f64, unit: Unit) -> Value {
         Value {
             number: BigRational::from_f64(number).unwrap(),
-            unit: vec![unit]
+            unit: ComposedUnit::new_with_unit(unit),
         }
     }
 
     pub fn from_int(number: i64) -> Value {
         Value {
             number: BigRational::from_i64(number).unwrap(),
-            unit: vec![] 
+            unit: ComposedUnit::new(),
         }
     }
     
     pub fn from_float(number: f64) -> Value {
         Value {
             number: BigRational::from_f64(number).unwrap(),
-            unit: vec![] 
+            unit: ComposedUnit::new(),
         }
     }
 }
