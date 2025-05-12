@@ -60,6 +60,7 @@ enum Token {
     PERCENTAGE,
     OF, // Keyword of for percentage
     UNIT(UnitSymbol),
+    AS, // Conversion
     EOF,
 }
 
@@ -506,7 +507,7 @@ impl Parser {
                     self.expr()
                 }
             },
-            _ => {self.expr()}
+            _ => self.expr()
         }
     }
 
