@@ -6,7 +6,11 @@ use crate::units::unit::Unit;
 use num_traits::{FromPrimitive, ToPrimitive};
 
 #[derive(Debug, Clone, PartialEq)]
+pub enum ValueError {
+    InvalidConversion
+}
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct Value {
     pub number: BigRational,
     unit: Vec<Unit>
@@ -22,6 +26,23 @@ impl Value {
 
     pub fn set_unit(self, unit: Unit) -> Value {
         Value { number: self.number, unit: vec![unit] }
+    }
+
+    pub fn convert_to_unit(&self, unit: &Unit) -> Result <Value, ValueError> {
+        if self.unit.len() > 1 {
+            panic!("We need to fix this when we will create the ComposedUnit type")
+        }
+        if self.unit.len() == 0 {
+            return Ok(self.clone().set_unit(unit.clone()))
+        }
+
+        let self_unit = &self.unit[0];
+
+        if let Some(conversion_factor) = self_unit.conversion_factor(unit) {
+
+            return Ok(Value { number: self.number.clone() * BigRational::from_float(conversion_factor).unwrap(), unit: vec![unit.clone()] })
+        }
+        Err(ValueError::InvalidConversion)
     }
 
     pub fn is_percent(&self) -> bool {
