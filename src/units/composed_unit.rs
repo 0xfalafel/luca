@@ -27,3 +27,22 @@ impl ComposedUnit {
         self.numerator.is_empty() && self.denominator.is_empty()
     }
 }
+
+impl fmt::Display for ComposedUnit {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut output = String::new();
+
+        for unit in self.numerator.iter() {
+            output.push_str(&unit.symbol);
+        }
+
+        if !self.denominator.is_empty() {
+            output.push('/');
+
+            for unit in self.denominator.iter() {
+                output.push_str(&unit.symbol);
+            }
+        }
+        write!(f, "{}", output)
+    }
+}
