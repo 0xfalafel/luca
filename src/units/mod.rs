@@ -3,3 +3,4 @@ pub mod money;
 pub mod restype;
 pub mod math_utils;
 pub mod unit;
+pub mod composed_unit;
