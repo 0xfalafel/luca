@@ -78,13 +78,13 @@ mod tests {
     fn m_to_cm() {
         let m = Unit::meter();
         let cm = Unit::centimeter();
-        assert_eq!(Some(100.0), m.conversion_factor(cm));
+        assert_eq!(Some(100.0), m.conversion_factor(&cm));
     }
 
     #[test]
     fn cm_to_m() {
         let m = Unit::meter();
         let cm = Unit::centimeter();
-        assert_eq!(Some(0.01), cm.conversion_factor(m));
+        assert_eq!(Some(0.01), cm.conversion_factor(&m));
     }
 }
