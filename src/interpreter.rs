@@ -95,6 +95,12 @@ impl Lexer {
         self.text.chars().nth(self.pos)
     }
 
+    /// Look at the `n` char after the current `pos`
+    #[allow(unused)]
+    fn peek(&self, n: usize) -> Option<char> {
+        self.text.chars().nth(self.pos+n)
+    }
+
     /// advance `self.pos` until the next non-whitespace character
     fn skip_whitespace(&mut self) {
 
