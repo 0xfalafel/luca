@@ -906,6 +906,13 @@ mod tests {
     }
 
     #[test]
+    fn meter() {
+        let mut interpreter = make_interpreter("10 m", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(Value::from_f64_with_unit(10.0, Unit::meter())));        
+    }
+
+    #[test]
     fn test_handling_spaces() {
         let mut interpreter = make_interpreter("4€ b", None);
         let _ = interpreter.interpret();
