@@ -60,6 +60,7 @@ enum Token {
     PERCENTAGE,
     OF, // Keyword of for percentage
     UNIT(UnitSymbol),
+    AS, // Conversion
     EOF,
 }
 
