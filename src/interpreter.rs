@@ -618,7 +618,15 @@ impl Interpreter {
                     Currency::Dollars => Ok(number.set_unit(Unit::dollar())),
                 }
             },
-            _ => {panic!("Invalid token type for an unary node")}
+            Token::UNIT(unit) => {
+                let number = self.visit(&node.children[0])?;
+
+                // Maybe this should be matched somewhere else ?
+                match unit {
+                    UnitSymbol::Meter   => Ok(number.set_unit(Unit::meter())),
+                }
+            },
+            _ => panic!("Invalid token type for an unary node")
         }
     }
 
@@ -642,7 +650,7 @@ impl Interpreter {
             Token::INTEGER(_) => Ok(self.visit_num(node)),
             Token::VAR(_) => Ok(self.visit_variable(node)?),
             Token::ASSIGN => Ok(self.visit_assign(node)?),
-            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_) | Token::PERCENTAGE => {
+            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_) | Token::PERCENTAGE | Token::UNIT(_) => {
                 match node.children.len() {
                     1 => Ok(self.visit_unaryop(node)?),
                     2 => Ok(self.visit_binop(node)?),
