@@ -81,25 +81,39 @@ pub enum CalculationError {
     IncompatibleTypes
 }
 
+/// Todo: Create a composed unit, and implement the function under as traits
+
 /// Used to determine the final type for Addition and Substraction
-fn same_type(left: Vec<Unit>, right: Vec<Unit>) -> Result<Vec<Unit>, CalculationError>{
+fn same_unit(left: &Vec<Unit>, right: &Vec<Unit>) -> Option<Vec<Unit>> {
     match (left, right) {
         // We don't have any unit
-        (left, right) if left.is_empty() && right.is_empty() => Ok(vec![]),
+        (left, right) if left.is_empty() && right.is_empty() => Some(vec![]),
 
         // Only one side has unit, let's convert this to the unit
         // ex: 12€ + 4 = 16€
-        (left, right) if left.is_empty()  => Ok(right),
-        (left, right) if right.is_empty() => Ok(left),
+        (left, right) if left.is_empty()  => Some(right.clone()),
+        (left, right) if right.is_empty() => Some(left.clone()),
         
         // We have the same type on both sides. Keep the type
         // ex: 12€ + 4€ = 16€
-        (left, right) if left == right => Ok(left),
+        (left, right) if left == right => Some(left.clone()),
 
         // TODO: try to convert between types
 
-        _ => Err(CalculationError::IncompatibleTypes)
+        _ => None
     }
+}
+
+/// Return the conversion factor between 2 units
+fn conversion_factor(left: &Vec<Unit>, right: &Vec<Unit>) -> Option<f64> {
+    if left.len() != 1 || right.len() != 1 {
+        return None
+    }
+
+    let l = &left[0];
+    let r = &right[0];
+
+    l.conversion_factor(r)
 }
 
 impl Add<Value> for Value {
@@ -121,11 +135,21 @@ impl Add<Value> for Value {
             })
         }
 
-        // Otherwise, let's do a normal addition
-        Ok(Value {
-            number: self.number + rhs.number,
-            unit: same_type(self.unit, rhs.unit)?
-        })
+        // If the have the same type, let's do a normal addition
+        if let Some(unit) = same_unit(&self.unit, &rhs.unit) {
+            Ok(Value {
+                number: self.number + rhs.number,
+                unit: unit
+            })
+        } else if let Some(conversion_factor) = conversion_factor(&self.unit, &rhs.unit) {
+            Ok(Value {
+                number: self.number + (rhs.number / BigRational::from_float(conversion_factor).unwrap()),
+                unit: self.unit
+            })
+        } else {
+            Err(CalculationError::IncompatibleTypes)
+        }
+
     }
 }
 
@@ -148,11 +172,15 @@ impl Sub<Value> for Value {
             })
         }
 
-
-        Ok(Value {
-            number: self.number - rhs.number,
-            unit: same_type(self.unit, rhs.unit)?
-        })
+        // If the have the same type, let's do a normal substraction
+        if let Some(unit) = same_unit(&self.unit, &rhs.unit) {
+            return Ok(Value {
+                number: self.number - rhs.number,
+                unit: unit
+            })
+        } else {
+            Err(CalculationError::IncompatibleTypes)
+        }
     }
 }
 
