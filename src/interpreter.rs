@@ -249,7 +249,6 @@ impl Lexer {
             },
             char if char.is_alphabetic() => {
                 self.keyword_or_variable()
-                // Ok(Token::VAR(self.variable()))
             },
             _ => Err(Error::InvalidSyntax)
         }
@@ -439,7 +438,7 @@ impl Parser {
                         node = AST::new(Token::MUL, children);
                     }
                 },
-                _ => {panic!("Incorrect token in term()")}
+                _ => panic!("Incorrect token in term()")
             }
         }
         Ok(node)
