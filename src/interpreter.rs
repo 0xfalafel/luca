@@ -373,7 +373,7 @@ impl Parser {
                 match token {
                     Token::PLUS => self.eat(&Token::PLUS)?,
                     Token::MINUS => self.eat(&Token::MINUS)?,
-                    _ => {panic!()}
+                    _ => panic!()
                 }
                 let children = vec![self.factor()?];
                 let node = AST::new(token, children); 
@@ -461,7 +461,7 @@ impl Parser {
                     let children: Vec<AST> = vec![node, self.term()?];
                     node = AST::new(Token::MINUS, children);
                 },
-                _ => {panic!("Incorrect token in expr()")}
+                _ => panic!("Incorrect token in expr()")
             }
         }
 
