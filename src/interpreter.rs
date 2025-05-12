@@ -20,6 +20,7 @@ enum Error {
     CalculationError,
     IntParsingFailed,
     FloatParsingFailed,
+    FailedConversion,
 }
 
 /*
@@ -454,7 +455,7 @@ impl Parser {
         Ok(node)
     }
 
-    /// expr    : term   ((PLUS | MINUS) term)*
+    /// expr    : term   ((PLUS | MINUS) term)* (AS Unit)
     fn expr(&mut self) -> Result<AST, Error> {
         let mut node = self.term()?;
 
@@ -472,6 +473,18 @@ impl Parser {
                     node = AST::new(Token::MINUS, children);
                 },
                 _ => panic!("Incorrect token in expr()")
+            }
+        }
+
+        if self.current_token == Token::AS {
+            self.eat(&Token::AS)?;
+
+            if let Token::UNIT(unit) = self.current_token {
+                self.eat(&Token::UNIT(unit))?;
+                let children: Vec<AST> = vec![node];
+                node = AST::new(Token::UNIT(unit), children);
+            } else {
+                return Err(Error::InvalidSyntax)
             }
         }
 
@@ -627,16 +640,21 @@ impl Interpreter {
                     Currency::Dollars => Ok(number.set_unit(Unit::dollar())),
                 }
             },
-            Token::UNIT(unit) => {
+            Token::UNIT(unit_symbol) => {
                 let number = self.visit(&node.children[0])?;
 
                 // Maybe this should be matched somewhere else ?
-                match unit {
-                    UnitSymbol::Meter => Ok(number.set_unit(Unit::meter())),
-                    UnitSymbol::Kilometer => Ok(number.set_unit(Unit::meter().with_prefix("kilo"))),
-                    UnitSymbol::Decimeter => Ok(number.set_unit(Unit::meter().with_prefix("deci"))),
-                    UnitSymbol::Centimeter => Ok(number.set_unit(Unit::centimeter())),
-                    UnitSymbol::Millimeter => Ok(number.set_unit(Unit::meter().with_prefix("milli"))),
+                let unit = match unit_symbol {
+                    UnitSymbol::Meter => Unit::meter(),
+                    UnitSymbol::Kilometer => Unit::meter().with_prefix("kilo"),
+                    UnitSymbol::Decimeter => Unit::meter().with_prefix("deci"),
+                    UnitSymbol::Centimeter => Unit::centimeter(),
+                    UnitSymbol::Millimeter => Unit::meter().with_prefix("milli"),
+                };
+
+                match number.convert_to_unit(&unit) {
+                    Ok(val) => Ok(val),
+                    Err(_e) => Err(Error::FailedConversion)
                 }
             },
             _ => panic!("Invalid token type for an unary node")
