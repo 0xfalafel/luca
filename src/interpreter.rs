@@ -253,6 +253,16 @@ impl Lexer {
             _ => Err(Error::InvalidSyntax)
         }
     }
+
+    /// Take a look at what the next token will be, without consuming it.
+    pub fn peek_next_token(&self) -> Option<Token> {
+        let mut lex = self.clone();
+
+        match lex.get_next_token() {
+            Ok(token) => Some(token),
+            Err(_) => None,
+        }
+    }
 }
 
 
@@ -489,16 +499,10 @@ impl Parser {
     
     /// statement   : expr | assignement
     fn statement(&mut self) -> Result<AST, Error> {
-        match self.current_token {
-            Token::VAR(_) => {
-                let mut lex = self.lexer.clone();
-                if lex.get_next_token()? == Token::ASSIGN {
-                    self.assignement()
-                } else {
-                    self.expr()
-                }
-            },
-            _ => {self.expr()}
+        if matches!(self.current_token, Token::VAR(_)) && self.lexer.peek_next_token() == Some(Token::ASSIGN) {
+            self.assignement()
+        } else {
+            self.expr()
         }
     }
 
