@@ -317,7 +317,7 @@ impl Parser {
         Ok(node)
     }
 
-    /// value : (MONEY) number | number (MONEY | PERCENTAGE)
+    /// value : (MONEY) number | number (MONEY | PERCENTAGE | UNIT)
     fn value(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
 
@@ -345,10 +345,16 @@ impl Parser {
                         self.eat(&Token::PERCENTAGE)?;
                         let node: AST = AST::new(Token::PERCENTAGE, vec![node]);
                         Ok(node)
-                    }
+                    },
+                    // UNIT: check if our value ends with a unit, like 15m
+                    Token::UNIT(unit) => {
+                        self.eat(&Token::UNIT(unit))?;
+                        let node: AST = AST::new(Token::UNIT(unit), vec![node]);
+                        Ok(node)
+                    },
 
                     // Otherwise, just return the number 22 -> Int(22)
-                    _ => {Ok(node)}
+                    _ => Ok(node)
                 }
             },
             _ => {Err(Error::InvalidSyntax)}
