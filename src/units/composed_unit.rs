@@ -22,4 +22,8 @@ impl ComposedUnit {
             denominator: vec![],
         }
     }
+
+    pub fn is_empty(&self) -> bool {
+        self.numerator.is_empty() && self.denominator.is_empty()
+    }
 }
