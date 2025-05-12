@@ -646,10 +646,10 @@ impl Interpreter {
                 // Maybe this should be matched somewhere else ?
                 let unit = match unit_symbol {
                     UnitSymbol::Meter => Unit::meter(),
-                    UnitSymbol::Kilometer => Unit::meter().with_prefix("kilo"),
-                    UnitSymbol::Decimeter => Unit::meter().with_prefix("deci"),
+                    UnitSymbol::Kilometer => Unit::kilometer(),
+                    UnitSymbol::Decimeter => Unit::decimeter(),
                     UnitSymbol::Centimeter => Unit::centimeter(),
-                    UnitSymbol::Millimeter => Unit::meter().with_prefix("milli"),
+                    UnitSymbol::Millimeter => Unit::millimeter(),
                 };
 
                 match number.convert_to_unit(&unit) {
