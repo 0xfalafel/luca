@@ -74,6 +74,7 @@ pub enum Currency {
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum UnitSymbol {
     Meter,
+    Centimeter,
 }
 
 
@@ -160,6 +161,7 @@ impl Lexer {
         let token = match var.as_str() {
             "of" | "de" => Token::OF,
             "m" => Token::UNIT(UnitSymbol::Meter),
+            "cm" => Token::UNIT(UnitSymbol::Centimeter),
             _ => Token::VAR(var)
         };
 
@@ -625,7 +627,8 @@ impl Interpreter {
 
                 // Maybe this should be matched somewhere else ?
                 match unit {
-                    UnitSymbol::Meter   => Ok(number.set_unit(Unit::meter())),
+                    UnitSymbol::Meter => Ok(number.set_unit(Unit::meter())),
+                    UnitSymbol::Centimeter => Ok(number.set_unit(Unit::centimeter())),
                 }
             },
             _ => panic!("Invalid token type for an unary node")
@@ -910,6 +913,13 @@ mod tests {
         let mut interpreter = make_interpreter("10 m", None);
         let result = interpreter.interpret();
         assert_eq!(result, Ok(Value::from_f64_with_unit(10.0, Unit::meter())));        
+    }
+
+    #[test]
+    fn centimeter() {
+        let mut interpreter = make_interpreter("100cm", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(Value::from_f64_with_unit(100.0, Unit::centimeter())));        
     }
 
     #[test]
