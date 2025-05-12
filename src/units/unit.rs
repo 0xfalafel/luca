@@ -77,9 +77,10 @@ impl Unit {
         Unit { symbol: "m".into(), name: "meter".into(), kind: UnitKind::Base }
     }
 
-    pub fn centimeter() -> Unit {
-        Unit::meter().with_prefix("centi")
-    }
+    pub fn kilometer()  -> Unit { Unit::meter().with_prefix("kilo") }
+    pub fn decimeter()  -> Unit { Unit::meter().with_prefix("deci") }
+    pub fn centimeter() -> Unit { Unit::meter().with_prefix("centi") }
+    pub fn millimeter() -> Unit { Unit::meter().with_prefix("milli") }
 
     pub fn euro() -> Unit {
         Unit { symbol: "€".into(), name: "euro".into(), kind: UnitKind::Base }
