@@ -59,6 +59,7 @@ enum Token {
     MONEY(Currency),
     PERCENTAGE,
     OF, // Keyword of for percentage
+    UNIT(UnitSymbol),
     EOF,
 }
 
@@ -68,6 +69,13 @@ pub enum Currency {
     Euros,
     Dollars
 }
+
+// Currency Type
+#[derive(Debug, Eq, PartialEq, Clone, Copy)]
+pub enum UnitSymbol {
+    Meter,
+}
+
 
 #[derive(Debug, Clone)]
 struct Lexer {
@@ -149,11 +157,13 @@ impl Lexer {
     fn keyword_or_variable(&mut self) -> Result<Token, Error> {
         let var = self.variable();
 
-        if var == "of" || var == "de" {
-            return Ok(Token::OF)
-        }
+        let token = match var.as_str() {
+            "of" | "de" => Token::OF,
+            "m" => Token::UNIT(UnitSymbol::Meter),
+            _ => Token::VAR(var)
+        };
 
-        Ok(Token::VAR(var))
+        Ok(token)
     }
 
     /// Retun a string
@@ -601,7 +611,7 @@ impl Interpreter {
                     Currency::Euros   => Ok(number.set_unit(Unit::euro())),
                     Currency::Dollars => Ok(number.set_unit(Unit::dollar())),
                 }
-            }
+            },
             _ => {panic!("Invalid token type for an unary node")}
         }
     }
