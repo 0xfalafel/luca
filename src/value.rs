@@ -3,6 +3,7 @@ use std::ops::{Add, Sub, Mul, Div, Neg};
 
 use num_rational::BigRational;
 use crate::units::unit::Unit;
+use crate::units::composed_unit::ComposedUnit;
 use num_traits::{FromPrimitive, ToPrimitive};
 
 #[derive(Debug, Clone, PartialEq)]
@@ -13,19 +14,19 @@ pub enum ValueError {
 #[derive(Debug, Clone, PartialEq)]
 pub struct Value {
     pub number: BigRational,
-    unit: Vec<Unit>
+    unit: ComposedUnit,
 }
 
 impl Value {
     pub fn new(number: BigRational) -> Value {
         Value {
             number: number,
-            unit: vec![]
+            unit: ComposedUnit::new(),
         }
     }
 
     pub fn set_unit(self, unit: Unit) -> Value {
-        Value { number: self.number, unit: vec![unit] }
+        Value { number: self.number, unit: ComposedUnit::new_with_unit(unit) }
     }
 
     pub fn convert_to_unit(&self, unit: &Unit) -> Result <Value, ValueError> {
