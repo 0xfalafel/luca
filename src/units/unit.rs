@@ -18,6 +18,13 @@ pub struct Unit {
     kind: UnitKind,
 }
 
+impl Unit {
+    pub fn conversion_factor(&self, dest_unit: Unit) -> Option<f64> {
+
+
+        Some(10.0)
+    }
+}
 
 impl Unit {
     pub fn percent() -> Unit {
