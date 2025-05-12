@@ -74,7 +74,10 @@ pub enum Currency {
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum UnitSymbol {
     Meter,
+    Kilometer,
+    Decimeter,
     Centimeter,
+    Millimeter,
 }
 
 
@@ -161,7 +164,10 @@ impl Lexer {
         let token = match var.as_str() {
             "of" | "de" => Token::OF,
             "m" => Token::UNIT(UnitSymbol::Meter),
+            "km" => Token::UNIT(UnitSymbol::Kilometer),
+            "dm" => Token::UNIT(UnitSymbol::Decimeter),
             "cm" => Token::UNIT(UnitSymbol::Centimeter),
+            "mm" => Token::UNIT(UnitSymbol::Millimeter),
             _ => Token::VAR(var)
         };
 
@@ -628,7 +634,10 @@ impl Interpreter {
                 // Maybe this should be matched somewhere else ?
                 match unit {
                     UnitSymbol::Meter => Ok(number.set_unit(Unit::meter())),
+                    UnitSymbol::Kilometer => Ok(number.set_unit(Unit::meter().with_prefix("kilo"))),
+                    UnitSymbol::Decimeter => Ok(number.set_unit(Unit::meter().with_prefix("deci"))),
                     UnitSymbol::Centimeter => Ok(number.set_unit(Unit::centimeter())),
+                    UnitSymbol::Millimeter => Ok(number.set_unit(Unit::meter().with_prefix("milli"))),
                 }
             },
             _ => panic!("Invalid token type for an unary node")
