@@ -43,6 +43,29 @@ impl Unit {
 
         Some(convertion_factor_self / convertion_factor_other)
     }
+
+    /// Create derived units like kilometer from meter.
+    pub fn with_prefix(&self, prefix: &str) -> Unit {
+        match prefix {
+            "kilo" => Unit {
+                symbol: format!("k{}", self.symbol).into(), name: format!("kilo{}", self.name).into(),
+                kind: UnitKind::Derived(1000.0, Box::new(self.clone()))
+            },
+            "deci" => Unit {
+                symbol: format!("d{}", self.symbol).into(), name: format!("deci{}", self.name).into(),
+                kind: UnitKind::Derived(0.1, Box::new(self.clone()))
+            },
+            "centi" => Unit {
+                symbol: format!("c{}", self.symbol).into(), name: format!("centi{}", self.name).into(),
+                kind: UnitKind::Derived(0.01, Box::new(self.clone()))
+            },
+            "milli" => Unit {
+                symbol: format!("m{}", self.symbol).into(), name: format!("milli{}", self.name).into(),
+                kind: UnitKind::Derived(0.001, Box::new(self.clone()))
+            },
+            _ => panic!("Unknow prefix")
+        }
+    }
 }
 
 impl Unit {
@@ -55,10 +78,7 @@ impl Unit {
     }
 
     pub fn centimeter() -> Unit {
-        Unit {
-            symbol: "cm".into(), name: "centimeter".into(),
-            kind: UnitKind::Derived(0.01, Box::new(Unit::meter()))
-        }
+        Unit::meter().with_prefix("centi")
     }
 
     pub fn euro() -> Unit {
