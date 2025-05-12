@@ -92,7 +92,7 @@ impl fmt::Display for Value {
 
 fn print_num<T: std::fmt::Display>(num: &T, unit: &Vec<Unit>,f: &mut fmt::Formatter<'_>) -> fmt::Result {
     if let Some(unit) = unit.first() {
-        write!(f, "{} {}", num, unit.symbol)
+        write!(f, "{} {}", num, unit.symbol)
     } else {
         write!(f, "{}", num)
     }
