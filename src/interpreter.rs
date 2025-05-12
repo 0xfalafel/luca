@@ -508,7 +508,6 @@ impl Parser {
 
 
     fn parse(&mut self) -> Result<AST, Error> {
-        //self.expr()
         self.statement()
     }
 }
