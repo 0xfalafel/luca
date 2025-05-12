@@ -1,17 +1,17 @@
 use compact_str::CompactString;
 
-// pub type ConversionFactor = f64;
+pub type ConversionFactor = f64;
 pub type CanonicalName = CompactString;
 
 /// A unit can either be a base/fundamental unit or it is derived from another unit.
 /// In the latter case, a conversion factor to the defining unit has to be specified.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum UnitKind {
     Base,
-    // Derived(ConversionFactor, Unit),
+    Derived(ConversionFactor, Box<Unit>),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Unit {
     pub symbol: CompactString,
     pub name: CanonicalName,
@@ -24,9 +24,15 @@ impl Unit {
         Unit { symbol: "%".into(), name: "percent".into(), kind: UnitKind::Base }
     }
 
-    #[allow(unused)]
     pub fn meter() -> Unit {
         Unit { symbol: "m".into(), name: "meter".into(), kind: UnitKind::Base }
+    }
+
+    pub fn centimeter() -> Unit {
+        Unit {
+            symbol: "cm".into(), name: "centimeter".into(),
+            kind: UnitKind::Derived(0.01, Box::new(Unit::meter()))
+        }
     }
 
     pub fn euro() -> Unit {
