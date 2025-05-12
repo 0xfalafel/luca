@@ -950,6 +950,13 @@ mod tests {
         let result = interpreter.interpret();
         assert_eq!(result, Ok(Value::from_f64_with_unit(100.0, Unit::centimeter())));        
     }
+    
+    #[test]
+    fn km_to_millimeter() {
+        let mut interpreter = make_interpreter("10 km as millimeter", None);
+        let result = interpreter.interpret();
+        assert_eq!(result, Ok(Value::from_f64_with_unit(10000000.0, Unit::meter().with_prefix("milli"))));        
+    }
 
     #[test]
     fn test_handling_spaces() {
