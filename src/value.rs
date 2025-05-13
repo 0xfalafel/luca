@@ -114,18 +114,6 @@ fn same_unit(left: &ComposedUnit, right: &ComposedUnit) -> Option<ComposedUnit> 
     }
 }
 
-/// Return the conversion factor between 2 units
-fn conversion_factor(left: &Vec<Unit>, right: &Vec<Unit>) -> Option<f64> {
-    if left.len() != 1 || right.len() != 1 {
-        return None
-    }
-
-    let l = &left[0];
-    let r = &right[0];
-
-    l.conversion_factor(r)
-}
-
 impl Add<Value> for Value {
     type Output = Result<Value, CalculationError>;
 
