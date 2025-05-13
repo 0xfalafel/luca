@@ -94,10 +94,10 @@ pub enum CalculationError {
 /// Todo: Create a composed unit, and implement the function under as traits
 
 /// Used to determine the final type for Addition and Substraction
-fn same_unit(left: &Vec<Unit>, right: &Vec<Unit>) -> Option<Vec<Unit>> {
+fn same_unit(left: &ComposedUnit, right: &ComposedUnit) -> Option<ComposedUnit> {
     match (left, right) {
         // We don't have any unit
-        (left, right) if left.is_empty() && right.is_empty() => Some(vec![]),
+        (left, right) if left.is_empty() && right.is_empty() => Some(ComposedUnit::new()),
 
         // Only one side has unit, let's convert this to the unit
         // ex: 12€ + 4 = 16€
@@ -151,9 +151,9 @@ impl Add<Value> for Value {
                 number: self.number + rhs.number,
                 unit: unit
             })
-        } else if let Some(conversion_factor) = conversion_factor(&self.unit, &rhs.unit) {
+        } else if let Ok(conversion_factor) = &self.unit.conversion_factor(&rhs.unit) {
             Ok(Value {
-                number: self.number + (rhs.number / BigRational::from_float(conversion_factor).unwrap()),
+                number: self.number + (rhs.number / BigRational::from_float(*conversion_factor).unwrap()),
                 unit: self.unit
             })
         } else {
