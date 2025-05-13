@@ -151,11 +151,16 @@ impl Add<Value> for Value {
                 number: self.number + rhs.number,
                 unit: unit
             })
+
+        // We can convert between the unit, do a conversion for `rhs`.
+        // We keep the unit of `self`.
         } else if let Ok(conversion_factor) = &self.unit.conversion_factor(&rhs.unit) {
             Ok(Value {
                 number: self.number + (rhs.number / BigRational::from_float(*conversion_factor).unwrap()),
                 unit: self.unit
             })
+
+        // We can't add different types
         } else {
             Err(CalculationError::IncompatibleTypes)
         }
