@@ -1,8 +1,8 @@
 use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Neg};
 
-use num_rational::BigRational;
 use crate::units::unit::Unit;
+use crate::units::number::Number;
 use crate::units::composed_unit::{ComposedUnit, ComposedUnitError};
 use num_traits::{FromPrimitive, ToPrimitive};
 
@@ -14,19 +14,19 @@ pub enum ValueError {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Value {
-    pub number: BigRational,
+    pub number: Number,
     unit: ComposedUnit,
 }
 
 impl Value {
-    pub fn new(number: BigRational) -> Value {
+    pub fn new(number: Number) -> Value {
         Value {
             number: number,
             unit: ComposedUnit::new(),
         }
     }
 
-    pub fn new_with_unit(number: BigRational, unit: &Unit) -> Value {
+    pub fn new_with_unit(number: Number, unit: &Unit) -> Value {
         Value { number: number, unit: ComposedUnit::new_with_unit(unit.clone()) }
     }
 
@@ -43,7 +43,7 @@ impl Value {
             }
         };
 
-        let factor = match BigRational::from_float(factor) {
+        let factor = match Number::from_float(factor) {
             Some(factor) => factor,
             None => return Err(ValueError::FailedToPraseConversionFactor),
         };
@@ -64,21 +64,21 @@ impl Value {
 impl Value {
     pub fn from_f64_with_unit(number: f64, unit: Unit) -> Value {
         Value {
-            number: BigRational::from_f64(number).unwrap(),
+            number: Number::from_f64(number).unwrap(),
             unit: ComposedUnit::new_with_unit(unit),
         }
     }
 
     pub fn from_int(number: i64) -> Value {
         Value {
-            number: BigRational::from_i64(number).unwrap(),
+            number: Number::from_i64(number).unwrap(),
             unit: ComposedUnit::new(),
         }
     }
     
     pub fn from_float(number: f64) -> Value {
         Value {
-            number: BigRational::from_f64(number).unwrap(),
+            number: Number::from_f64(number).unwrap(),
             unit: ComposedUnit::new(),
         }
     }
@@ -133,7 +133,7 @@ impl Add<Value> for Value {
             };
 
             return Ok(Value { 
-                number: val.clone() + val * percentage / BigRational::from_u8(100).unwrap(),
+                number: val.clone() + val * percentage / Number::from_u8(100).unwrap(),
                 unit: unit
             })
         }
@@ -149,7 +149,7 @@ impl Add<Value> for Value {
         // We keep the unit of `self`.
         } else if let Ok(conversion_factor) = &self.unit.conversion_factor(&rhs.unit) {
             Ok(Value {
-                number: self.number + (rhs.number / BigRational::from_float(*conversion_factor).unwrap()),
+                number: self.number + (rhs.number / Number::from_float(*conversion_factor).unwrap()),
                 unit: self.unit
             })
 
@@ -175,7 +175,7 @@ impl Sub<Value> for Value {
             };
 
             return Ok(Value { 
-                number: val.clone() - val * percentage / BigRational::from_u8(100).unwrap(),
+                number: val.clone() - val * percentage / Number::from_u8(100).unwrap(),
                 unit: unit
             })
         }
@@ -206,7 +206,7 @@ impl Mul<Value> for Value {
             };
 
             return Ok(Value { 
-                number: val * percentage / BigRational::from_u8(100).unwrap(),
+                number: val * percentage / Number::from_u8(100).unwrap(),
                 unit: unit
             })
         }
@@ -251,7 +251,7 @@ impl Div<Value> for Value {
             };
 
             return Ok(Value { 
-                number: val * BigRational::from_u8(100).unwrap() / percentage,
+                number: val * Number::from_u8(100).unwrap() / percentage,
                 unit: unit
             })
         }
@@ -298,9 +298,9 @@ mod tests {
     #[test]
     fn add_m_to_cm() {
         // 12cm + 1 m
-        let cm = Value::new_with_unit(BigRational::from_float(12.0).unwrap(), &Unit::centimeter());
-        let m = Value::new_with_unit(BigRational::one(), &Unit::meter());
-        let res = Value::new_with_unit(BigRational::from_float(121.0).unwrap(), &Unit::centimeter());
+        let cm = Value::new_with_unit(Number::from_float(12.0).unwrap(), &Unit::centimeter());
+        let m = Value::new_with_unit(Number::one(), &Unit::meter());
+        let res = Value::new_with_unit(Number::from_float(121.0).unwrap(), &Unit::centimeter());
         assert_eq!(res, (cm + m).unwrap());
     }
 
