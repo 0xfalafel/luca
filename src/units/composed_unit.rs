@@ -107,12 +107,4 @@ mod tests {
         let mm: ComposedUnit = ComposedUnit::new_with_unit(Unit::millimeter());
         assert_eq!(Ok(1e-6), mm.conversion_factor(&ComposedUnit::new_with_unit(Unit::kilometer())));
     }
-
-
-    // #[test]
-    // fn cm_to_m() {
-    //     let m = Unit::meter();
-    //     let cm = Unit::centimeter();
-    //     assert_eq!(Some(0.01), cm.conversion_factor(&m));
-    // }
 }
