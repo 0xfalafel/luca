@@ -91,3 +91,28 @@ impl fmt::Display for ComposedUnit {
         write!(f, "{}", output)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn composed_uint_m_to_cm() {
+        let m: ComposedUnit = ComposedUnit::new_with_unit(Unit::meter());
+        assert_eq!(Ok(100.0), m.conversion_factor(&ComposedUnit::new_with_unit(Unit::centimeter())));
+    }
+
+    #[test]
+    fn composed_uint_mm_to_km() {
+        let mm: ComposedUnit = ComposedUnit::new_with_unit(Unit::millimeter());
+        assert_eq!(Ok(1e-6), mm.conversion_factor(&ComposedUnit::new_with_unit(Unit::kilometer())));
+    }
+
+
+    // #[test]
+    // fn cm_to_m() {
+    //     let m = Unit::meter();
+    //     let cm = Unit::centimeter();
+    //     assert_eq!(Some(0.01), cm.conversion_factor(&m));
+    // }
+}
