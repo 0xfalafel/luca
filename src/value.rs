@@ -3,12 +3,13 @@ use std::ops::{Add, Sub, Mul, Div, Neg};
 
 use num_rational::BigRational;
 use crate::units::unit::Unit;
-use crate::units::composed_unit::ComposedUnit;
+use crate::units::composed_unit::{ComposedUnit, ComposedUnitError};
 use num_traits::{FromPrimitive, ToPrimitive};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ValueError {
-    InvalidConversion
+    InvalidConversion,
+    FailedToPraseConversionFactor,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -30,7 +31,23 @@ impl Value {
     }
 
     pub fn convert_to_unit(&self, unit: &ComposedUnit) -> Result <Value, ValueError> {
-        let res = ComposedUnit.convert_to_unit(unit);
+        
+        let factor = match self.unit.conversion_factor(unit) {
+            Ok(conversion_factor) => conversion_factor,
+            Err(ComposedUnitError::ConversionError) => {
+                return Err(ValueError::InvalidConversion)
+            }
+        };
+
+        let factor = match BigRational::from_float(factor) {
+            Some(factor) => factor,
+            None => return Err(ValueError::FailedToPraseConversionFactor),
+        };
+
+        Ok( Value {
+            number: &self.number * factor,
+            unit: self.unit.clone(),
+        })
     }
 
     pub fn is_percent(&self) -> bool {

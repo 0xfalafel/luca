@@ -3,7 +3,7 @@ use std::ops::{Add, Sub, Mul, Div, Neg};
 use crate::units::unit::Unit;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum ComposedUnitError {
+pub enum ComposedUnitError {
     ConversionError
 }
 
