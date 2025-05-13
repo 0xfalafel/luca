@@ -11,6 +11,7 @@ use num_traits::FromPrimitive;
 
 use crate::units::unit::Unit;
 use crate::value::Value;
+use crate::units::composed_unit::ComposedUnit;
 
 #[derive(Debug, Eq, PartialEq)]
 enum Error {
@@ -655,7 +656,7 @@ impl Interpreter {
                     UnitSymbol::Millimeter => Unit::millimeter(),
                 };
 
-                match number.convert_to_unit(&unit) {
+                match number.convert_to_unit(&ComposedUnit::new_with_unit(unit)) {
                     Ok(val) => Ok(val),
                     Err(_e) => Err(Error::FailedConversion)
                 }
