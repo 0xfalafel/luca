@@ -26,6 +26,10 @@ impl Value {
         }
     }
 
+    pub fn new_with_unit(number: BigRational, unit: &Unit) -> Value {
+        Value { number: number, unit: ComposedUnit::new_with_unit(unit.clone()) }
+    }
+
     pub fn set_unit(self, unit: Unit) -> Value {
         Value { number: self.number, unit: ComposedUnit::new_with_unit(unit) }
     }
@@ -87,6 +91,7 @@ impl fmt::Display for Value {
     }
 }
 
+#[derive(Debug)]
 pub enum CalculationError {
     IncompatibleTypes
 }
@@ -284,3 +289,19 @@ impl Neg for Value {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use num_traits::One;
+
+    use super::*;
+
+    #[test]
+    fn add_m_to_cm() {
+        // 12cm + 1 m
+        let cm = Value::new_with_unit(BigRational::from_float(12.0).unwrap(), &Unit::centimeter());
+        let m = Value::new_with_unit(BigRational::one(), &Unit::meter());
+        let res = Value::new_with_unit(BigRational::from_float(121.0).unwrap(), &Unit::centimeter());
+        assert_eq!(res, (cm + m).unwrap());
+    }
+
+}
