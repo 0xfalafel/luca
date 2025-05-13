@@ -29,21 +29,8 @@ impl Value {
         Value { number: self.number, unit: ComposedUnit::new_with_unit(unit) }
     }
 
-    pub fn convert_to_unit(&self, unit: &Unit) -> Result <Value, ValueError> {
-        if self.unit.len() > 1 {
-            panic!("We need to fix this when we will create the ComposedUnit type")
-        }
-        if self.unit.len() == 0 {
-            return Ok(self.clone().set_unit(unit.clone()))
-        }
-
-        let self_unit = &self.unit[0];
-
-        if let Some(conversion_factor) = self_unit.conversion_factor(unit) {
-
-            return Ok(Value { number: self.number.clone() * BigRational::from_float(conversion_factor).unwrap(), unit: vec![unit.clone()] })
-        }
-        Err(ValueError::InvalidConversion)
+    pub fn convert_to_unit(&self, unit: &ComposedUnit) -> Result <Value, ValueError> {
+        let res = ComposedUnit.convert_to_unit(unit);
     }
 
     pub fn is_percent(&self) -> bool {
