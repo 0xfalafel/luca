@@ -55,7 +55,7 @@ impl Sub<Number> for Number {
     type Output = Number;
 
     fn sub(self, rhs: Number) -> Self::Output {
-        Number(self.0 + rhs.0)
+        Number(self.0 - rhs.0)
     }
 }
 
@@ -63,7 +63,7 @@ impl Mul<Number> for Number {
     type Output = Number;
 
     fn mul(self, rhs: Number) -> Self::Output {
-        Number(self.0 + rhs.0)
+        Number(self.0 * rhs.0)
     }
 }
 
@@ -71,7 +71,7 @@ impl Div<Number> for Number {
     type Output = Number;
 
     fn div(self, rhs: Number) -> Self::Output {
-        Number(self.0 + rhs.0)
+        Number(self.0 / rhs.0)
     }
 }
 
