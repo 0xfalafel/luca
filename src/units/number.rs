@@ -1,9 +1,24 @@
 use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Neg};
 use num_rational::BigRational;
+use num_traits::float::FloatCore;
+use num_traits::FromPrimitive;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Number(BigRational);
+
+impl Number {
+    pub fn from_u8(n: u8) -> Number {
+        Number(BigRational::from_u8(n).unwrap())
+    }
+
+    pub fn from_float<T: FloatCore>(f: T) -> Option<Number> {
+        match BigRational::from_float(f) {
+            Some(num)=> Some(Number(num)),
+            None => None,
+        }
+    }
+}
 
 impl fmt::Display for Number {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

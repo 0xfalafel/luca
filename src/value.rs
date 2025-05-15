@@ -133,7 +133,7 @@ impl Add<Value> for Value {
             };
 
             return Ok(Value { 
-                number: val.clone() + val * percentage / Number::from_u8(100).unwrap(),
+                number: val.clone() + val * percentage / Number::from_u8(100),
                 unit: unit
             })
         }
