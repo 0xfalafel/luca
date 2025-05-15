@@ -18,6 +18,13 @@ impl Number {
             None => None,
         }
     }
+
+    pub fn from_i64(n: i64) -> Option<Number> {
+        match BigRational::from_i64(n) {
+            Some(num)=> Some(Number(num)),
+            None => None,
+        }
+    }
 }
 
 impl fmt::Display for Number {
