@@ -180,12 +180,22 @@ impl Sub<Value> for Value {
             })
         }
 
-        // If the have the same type, let's do a normal substraction
+        // If the have the same type, let's do a normal addition
         if let Some(unit) = same_unit(&self.unit, &rhs.unit) {
-            return Ok(Value {
+            Ok(Value {
                 number: self.number - rhs.number,
                 unit: unit
             })
+
+        // We can convert between the unit, do a conversion for `rhs`.
+        // We keep the unit of `self`.
+        } else if let Ok(conversion_factor) = &self.unit.conversion_factor(&rhs.unit) {
+            Ok(Value {
+                number: self.number - (rhs.number / Number::from_float(*conversion_factor).unwrap()),
+                unit: self.unit
+            })
+
+        // We can't add different types
         } else {
             Err(CalculationError::IncompatibleTypes)
         }
