@@ -298,7 +298,7 @@ mod tests {
         // 12cm + 1 m
         let cm = Value::new_with_unit(Number::from_float(12.0).unwrap(), &Unit::centimeter());
         let m = Value::new_with_unit(Number::from_u8(1), &Unit::meter());
-        let res = Value::new_with_unit(Number::from_float(121.0).unwrap(), &Unit::centimeter());
+        let res = Value::new_with_unit(Number::from_float(112.0).unwrap(), &Unit::centimeter());
         assert_eq!(res, (cm + m).unwrap());
     }
 
