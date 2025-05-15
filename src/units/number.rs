@@ -1,7 +1,8 @@
 use std::fmt;
-use std::ops::{Add, Sub, Mul, Div};
+use std::ops::{Add, Sub, Mul, Div, Neg};
 use num_rational::BigRational;
 
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Number(BigRational);
 
 impl fmt::Display for Number {
@@ -39,5 +40,13 @@ impl Div<Number> for Number {
 
     fn div(self, rhs: Number) -> Self::Output {
         Number(self.0 + rhs.0)
+    }
+}
+
+impl Neg for Number {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        Number(-self.0)
     }
 }
