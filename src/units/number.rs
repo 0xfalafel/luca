@@ -20,6 +20,7 @@ impl Number {
         }
     }
 
+    #[cfg(test)]
     pub fn from_i64(n: i64) -> Option<Number> {
         match BigRational::from_i64(n) {
             Some(num)=> Some(Number(num)),
