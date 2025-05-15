@@ -3,7 +3,7 @@ use std::ops::{Add, Sub, Mul, Div, Neg};
 use std::str::FromStr;
 use num_rational::{BigRational, ParseRatioError};
 use num_traits::float::FloatCore;
-use num_traits::FromPrimitive;
+use num_traits::{FromPrimitive, ToPrimitive};
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Number(BigRational);
@@ -39,7 +39,10 @@ impl Number {
 
 impl fmt::Display for Number {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ", self.0.to_string())
+        match &self.0.to_f64() {
+            Some(float) => write!(f, "{} ", float),
+            None => write!(f, "{} ", self.0.to_string())
+        }
     }
 }
 
