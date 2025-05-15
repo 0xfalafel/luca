@@ -5,10 +5,11 @@ use std::str::FromStr;
 
 use num_rational::BigRational;
 use num_bigint::BigInt;
-use num_traits::FromPrimitive;
+use num_traits::{FromPrimitive, Num};
 
 // use crate::units::money::{Money, Currency};
 
+use crate::units::number::Number;
 use crate::units::unit::Unit;
 use crate::value::Value;
 use crate::units::composed_unit::ComposedUnit;
@@ -49,7 +50,7 @@ factor      : INTEGER | LPAREN expr RPAREN | VAR
 /// The input is separated in a bunch of tokens.
 #[derive(Debug, Clone, PartialEq)]
 enum Token {
-    INTEGER(BigRational),
+    INTEGER(Number),
     PLUS,
     MINUS,
     MUL,
@@ -144,7 +145,7 @@ impl Lexer {
         }
 
         if !is_float {
-            match BigRational::from_str(&ascii_number) {
+            match Number::from_str(&ascii_number) {
                 Ok(val) => Ok(Token::INTEGER(val)),
                 Err(_) => Err(Error::IntParsingFailed)
             }    
@@ -154,7 +155,7 @@ impl Lexer {
                 Err(_) => return Err(Error::FloatParsingFailed)
             };
 
-            match BigRational::from_f64(val) {
+            match Number::from_float(val) {
                 Some(num) => Ok(Token::INTEGER(num)),
                 None => Err(Error::FloatParsingFailed)
             }
@@ -607,7 +608,7 @@ impl Interpreter {
                 // Let's catch division by zero before the happend
                 // because there is no checked_div function for f64.
 
-                if right_val.number == BigRational::from(BigInt::from(0)) {
+                if right_val.number == Number::from_u8(0) {
                     return Err(Error::DivisonByZero)
                 }
 

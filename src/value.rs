@@ -48,7 +48,7 @@ impl Value {
         };
 
         Ok( Value {
-            number: &self.number * factor,
+            number: self.number.clone() * factor,
             unit: unit.clone(),
         })
     }

@@ -1,6 +1,7 @@
 use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Neg};
-use num_rational::BigRational;
+use std::str::FromStr;
+use num_rational::{BigRational, ParseRatioError};
 use num_traits::float::FloatCore;
 use num_traits::FromPrimitive;
 
@@ -25,6 +26,14 @@ impl Number {
             None => None,
         }
     }
+
+    pub fn from_str(s: &str) -> Result<Number, ParseRatioError> {
+        match BigRational::from_str(s) {
+            Ok(num)=> Ok(Number(num)),
+            Err(e) => Err(e),
+        }
+    }
+
 }
 
 impl fmt::Display for Number {
