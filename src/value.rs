@@ -4,7 +4,6 @@ use std::ops::{Add, Sub, Mul, Div, Neg};
 use crate::units::unit::Unit;
 use crate::units::number::Number;
 use crate::units::composed_unit::{ComposedUnit, ComposedUnitError};
-use num_traits::{FromPrimitive, ToPrimitive};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ValueError {
@@ -64,7 +63,7 @@ impl Value {
 impl Value {
     pub fn from_f64_with_unit(number: f64, unit: Unit) -> Value {
         Value {
-            number: Number::from_f64(number).unwrap(),
+            number: Number::from_float(number).unwrap(),
             unit: ComposedUnit::new_with_unit(unit),
         }
     }
@@ -78,7 +77,7 @@ impl Value {
     
     pub fn from_float(number: f64) -> Value {
         Value {
-            number: Number::from_f64(number).unwrap(),
+            number: Number::from_float(number).unwrap(),
             unit: ComposedUnit::new(),
         }
     }
@@ -175,7 +174,7 @@ impl Sub<Value> for Value {
             };
 
             return Ok(Value { 
-                number: val.clone() - val * percentage / Number::from_u8(100).unwrap(),
+                number: val.clone() - val * percentage / Number::from_u8(100),
                 unit: unit
             })
         }
@@ -206,7 +205,7 @@ impl Mul<Value> for Value {
             };
 
             return Ok(Value { 
-                number: val * percentage / Number::from_u8(100).unwrap(),
+                number: val * percentage / Number::from_u8(100),
                 unit: unit
             })
         }
@@ -251,7 +250,7 @@ impl Div<Value> for Value {
             };
 
             return Ok(Value { 
-                number: val * Number::from_u8(100).unwrap() / percentage,
+                number: val * Number::from_u8(100) / percentage,
                 unit: unit
             })
         }
@@ -291,15 +290,13 @@ impl Neg for Value {
 
 #[cfg(test)]
 mod tests {
-    use num_traits::One;
-
     use super::*;
 
     #[test]
     fn add_m_to_cm() {
         // 12cm + 1 m
         let cm = Value::new_with_unit(Number::from_float(12.0).unwrap(), &Unit::centimeter());
-        let m = Value::new_with_unit(Number::one(), &Unit::meter());
+        let m = Value::new_with_unit(Number::from_u8(1), &Unit::meter());
         let res = Value::new_with_unit(Number::from_float(121.0).unwrap(), &Unit::centimeter());
         assert_eq!(res, (cm + m).unwrap());
     }
