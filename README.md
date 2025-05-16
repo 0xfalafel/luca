@@ -1,5 +1,7 @@
 # Luca
 
+![Luca](./images/luca.png)
+
 A smart calculator app.
 
 ## Build
