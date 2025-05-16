@@ -1,5 +1,8 @@
 use std::fmt;
 use crate::units::unit::Unit;
+use std::ops::{Add, Sub, Mul, Div, Neg};
+
+use super::unit::ConversionFactor;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ComposedUnitError {
@@ -59,7 +62,6 @@ impl ComposedUnit {
         Ok(conversion_factor)
     }
 
-
     // pub fn convert_to_unit(&self, unit: &ComposedUnit) -> Result<(f64, ComposedUnit), ComposedUnitError>{
     //     // If one unit is empty, take the type of the other
     //     if self.is_empty() {
@@ -71,6 +73,14 @@ impl ComposedUnit {
     //     let conversion_factor = self.conversion_factor(unit)?;
     //     Ok((conversion_factor, self.clone()))
     // }
+}
+
+impl Mul<ComposedUnit> for ComposedUnit {
+    type Output = Result<ComposedUnit, ComposedUnitError>;
+
+    fn mul(self, rhs: ComposedUnit) -> Self::Output {
+        Ok(self)
+    }
 }
 
 impl fmt::Display for ComposedUnit {
