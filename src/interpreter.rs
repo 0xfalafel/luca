@@ -1029,4 +1029,10 @@ mod tests {
         assert_eq!(interpreter.interpret(), Err(Error::InvalidSyntax));
     }
 
+    #[test]
+    fn percent_divided() {
+        let result = make_interpreter("30% / 2", None).interpret();
+        assert_eq!(result, Ok(Value::from_f64_with_unit(15.0, Unit::percent())));
+    }
+
 }
