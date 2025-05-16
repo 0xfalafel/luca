@@ -254,7 +254,7 @@ impl Div<Value> for Value {
     fn div(self, rhs: Value) -> Self::Output {
         // Handle the special case of percentage substraction:
         // 100€ / 10% = 100€ * 10 / 100 = 1000€
-        if self.is_percent() || rhs.is_percent() {
+        if rhs.is_percent() {
             let (percentage, val, unit) = match self.is_percent() {
                 true  => (self.number, rhs.number, rhs.unit),
                 false => (rhs.number, self.number, self.unit)
