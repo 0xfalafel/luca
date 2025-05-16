@@ -1,6 +1,8 @@
 use std::fmt;
 use crate::units::unit::Unit;
 
+use super::unit::ConversionFactor;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ComposedUnitError {
     ConversionError
@@ -71,6 +73,16 @@ impl ComposedUnit {
     //     let conversion_factor = self.conversion_factor(unit)?;
     //     Ok((conversion_factor, self.clone()))
     // }
+}
+
+fn unit_in_vector(vec: &Vec<Unit>, unit: &Unit) -> Option<(ConversionFactor, Unit)> {
+    for elem in vec.iter() {
+        if let Some(factor) = elem.conversion_factor(unit) {
+            return Some((factor, elem.clone()));
+        }
+    }
+
+    None
 }
 
 impl fmt::Display for ComposedUnit {
