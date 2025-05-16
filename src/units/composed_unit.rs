@@ -1,4 +1,5 @@
 use std::fmt;
+use std::ops::Mul;
 use crate::units::unit::Unit;
 
 use super::unit::ConversionFactor;
@@ -85,6 +86,29 @@ fn unit_in_vector(vec: &Vec<Unit>, unit: &Unit) -> Option<(ConversionFactor, Uni
     None
 }
 
+impl Mul<ComposedUnit> for ComposedUnit {
+    type Output = (ConversionFactor, ComposedUnit);
+
+    fn mul(self, rhs: ComposedUnit) -> Self::Output {
+        let mut conversion_factor = 1.0;
+        let mut new_numerator = self.numerator.clone();
+
+        for unit in rhs.numerator.iter() {
+            if let Some((factor, u)) = unit_in_vector(&self.numerator, unit) {
+                conversion_factor = conversion_factor * factor;
+                new_numerator.push(u);
+            } else {
+                new_numerator.push(unit.clone());
+            }
+        }
+
+        (conversion_factor, ComposedUnit {
+            numerator: new_numerator,
+            denominator: self.denominator.clone(),
+        })
+    }
+}
+
 impl fmt::Display for ComposedUnit {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut output = String::new();
@@ -118,5 +142,17 @@ mod tests {
     fn composed_uint_mm_to_km() {
         let mm: ComposedUnit = ComposedUnit::new_with_unit(Unit::millimeter());
         assert_eq!(Ok(1e-6), mm.conversion_factor(&ComposedUnit::new_with_unit(Unit::kilometer())));
+    }
+
+    #[test]
+    fn mul_m_cm() {
+        let m: ComposedUnit = ComposedUnit::new_with_unit(Unit::meter());
+        let cm: ComposedUnit = ComposedUnit::new_with_unit(Unit::centimeter());
+
+        let res = m * cm;
+        assert_eq!(res, (100.0, ComposedUnit {
+            numerator: vec![Unit::meter(), Unit::meter()],
+            denominator: vec![],
+        }));
     }
 }
