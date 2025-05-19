@@ -8,7 +8,7 @@ use crate::units::composed_unit::{ComposedUnit, ComposedUnitError};
 #[derive(Debug, Clone, PartialEq)]
 pub enum ValueError {
     InvalidConversion,
-    FailedToPraseConversionFactor,
+    FailedToParseConversionFactor,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -45,7 +45,7 @@ impl Value {
 
         let factor = match Number::from_float(factor) {
             Some(factor) => factor,
-            None => return Err(ValueError::FailedToPraseConversionFactor),
+            None => return Err(ValueError::FailedToParseConversionFactor),
         };
 
         Ok( Value {
@@ -220,7 +220,6 @@ impl Mul<Value> for Value {
                 unit: unit
             })
         }
-
         // If only one of the operands has a unit, we keep the same unit
         if self.unit.is_empty() || rhs.unit.is_empty() {
             let unit = match self.unit.is_empty() {
@@ -234,17 +233,26 @@ impl Mul<Value> for Value {
             })
         }
 
-        // Normal multiplication
-
-        // TODO: implement a new type contructor
-        if self.unit != rhs.unit { 
-            return Err(CalculationError::IncompatibleTypes)
-        }
+        let (factor, new_unit) = self.unit * rhs.unit;
 
         Ok(Value {
-            number: self.number * rhs.number,
-            unit: self.unit
+            number: self.number * (rhs.number * factor)
+                .map_err(|_| CalculationError::IncompatibleTypes)?,
+            unit: new_unit,
         })
+
+
+        // Normal multiplication
+
+        // // TODO: implement a new type contructor
+        // if self.unit != rhs.unit { 
+        //     return Err(CalculationError::IncompatibleTypes)
+        // }
+
+        // Ok(Value {
+        //     number: self.number * rhs.number,
+        //     unit: self.unit
+        // })
     }
 }
 
