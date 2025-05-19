@@ -1,9 +1,10 @@
 use std::collections::HashMap;
 use std::fmt;
+use std::hash::Hash;
 use std::ops::Mul;
 use crate::units::unit::Unit;
 
-use super::unit::ConversionFactor;
+use super::unit::{self, ConversionFactor};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ComposedUnitError {
@@ -12,69 +13,47 @@ pub enum ComposedUnitError {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ComposedUnit {
-    numerator: Vec<Unit>,
-    denominator: Vec<Unit>,
+    units: HashMap<Unit, i64>,
 }
 
 impl ComposedUnit {
     pub fn new() -> ComposedUnit {
         ComposedUnit {
-            numerator: vec![],
-            denominator: vec![],
+            units: HashMap::new(),
         }
     }
 
     pub fn new_with_unit(unit: Unit) -> ComposedUnit {
+        let mut units = HashMap::new();
+        units.insert(unit, 1);
+
         ComposedUnit {
-            numerator: vec![unit],
-            denominator: vec![],
+            units: units,
         }
     }
 
     pub fn is_empty(&self) -> bool {
-        self.numerator.is_empty() && self.denominator.is_empty()
+        self.units.is_empty()
     }
 
-    pub fn conversion_factor(&self, unit: &ComposedUnit) -> Result<f64, ComposedUnitError>{
-        if self.numerator.len() != unit.numerator.len() && self.denominator.len() != unit.denominator.len() {
-            return Err(ComposedUnitError::ConversionError)
-        }
-
+    pub fn conversion_factor(&self, rhs: &ComposedUnit) -> Result<f64, ComposedUnitError>{
         let mut conversion_factor = 1.0;
 
-        for units in self.numerator.iter().zip(unit.numerator.iter()) {
-            let (self_numerator, other_denominator) = units;
-
-            match self_numerator.conversion_factor(other_denominator) {
-                Some(factor) => conversion_factor *= factor,
-                None => return Err(ComposedUnitError::ConversionError),
+        for (key, _power) in rhs.units.iter() {
+            for unit in self.units.keys().into_iter() {
+                if let Some(f) = unit.conversion_factor(key) {
+                    conversion_factor *= f;
+                } else {
+                    return Err(ComposedUnitError::ConversionError);
+                }
             }
         }
-
-        for units in self.denominator.iter().zip(unit.denominator.iter()) {
-            let (self_denominator, other_denominator) = units;
-
-            match self_denominator.conversion_factor(other_denominator) {
-                Some(factor) => conversion_factor /= factor,
-                None => return Err(ComposedUnitError::ConversionError),
-            }
-        }
-
         Ok(conversion_factor)
     }
 
-
-    // pub fn convert_to_unit(&self, unit: &ComposedUnit) -> Result<(f64, ComposedUnit), ComposedUnitError>{
-    //     // If one unit is empty, take the type of the other
-    //     if self.is_empty() {
-    //         return Ok((1.0, unit.clone()))
-    //     } else if unit.is_empty() {
-    //         return Ok((1.0, self.clone()))
-    //     }
-
-    //     let conversion_factor = self.conversion_factor(unit)?;
-    //     Ok((conversion_factor, self.clone()))
-    // }
+    fn has_denominator(&self) -> bool {
+        self.units.values().any(|power| power.is_negative())
+    }
 }
 
 fn unit_in_vector(vec: &Vec<Unit>, unit: &Unit) -> Option<(ConversionFactor, Unit)> {
@@ -122,9 +101,9 @@ fn regroup_unit_with_power(units: &Vec<Unit>) -> HashMap<Unit, u64> {
 
 /// Return a String containing the `nb` as an exponent
 /// 24 -> ²⁴
-fn pretty_exponent(nb: &u64) -> String {
-    if *nb == 0 | 1 {
-        return String::from("")
+fn pretty_exponent(nb: &i64) -> String {
+    if *nb < 1 {
+        unreachable!("This value should never be under 1");
     }
 
     let nb_as_string = nb.to_string();
@@ -142,7 +121,7 @@ fn pretty_exponent(nb: &u64) -> String {
             '7' => '⁷',
             '8' => '⁸',
             '9' => '⁹',
-            _ => unreachable!("A u64 should only have number when printed"),
+            _ => unreachable!("A u128 should only have number when printed"),
         };
         exponent.push(c);
     }
@@ -151,23 +130,28 @@ fn pretty_exponent(nb: &u64) -> String {
 
 impl fmt::Display for ComposedUnit {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut output = String::new();
+        // let mut output = String::new();
 
-        let grouped_unit = regroup_unit_with_power(&self.numerator);
+        // numerator (units above 0)
+        let numerator: String = self.units
+            .iter()
+            .filter(|&(_u, power)| *power > 0)
+            .map(|(unit, power)| format!("{}{}", unit.symbol, pretty_exponent(power)))
+            .collect();
 
-        for (unit, power) in grouped_unit.iter() {
-            output.push_str(&unit.symbol);
-            output.push_str(&pretty_exponent(power));
+        if !self.has_denominator() {
+            write!(f, "{}", numerator)
+        
+        // We have a denominator
+        } else {
+            let denominator: String = self.units
+                .iter()
+                .filter(|&(_u, power)| *power < 0)
+                .map(|(unit, power)| format!("{}{}", unit.symbol, pretty_exponent(power)))
+                .collect();
+
+                write!(f, "{}/{}", numerator, denominator)
         }
-
-        if !self.denominator.is_empty() {
-            output.push('/');
-
-            for unit in self.denominator.iter() {
-                output.push_str(&unit.symbol);
-            }
-        }
-        write!(f, "{}", output)
     }
 }
 
