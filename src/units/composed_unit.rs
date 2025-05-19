@@ -120,12 +120,44 @@ fn regroup_unit_with_power(units: &Vec<Unit>) -> HashMap<Unit, u64> {
     counts
 }
 
+/// 2 -> ²
+// ⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ 
+fn pretty_exponent(nb: &u64) -> String {
+    if *nb == 0 | 1 {
+        return String::from("")
+    }
+
+    let nb_as_string = nb.to_string();
+    let mut exponent = String::new();
+
+    for char in nb_as_string.chars() {
+        let c = match char {
+            '0' => '⁰',
+            '1' => '¹',
+            '2' => '²',
+            '3' => '³',
+            '4' => '⁴',
+            '5' => '⁵',
+            '6' => '⁶',
+            '7' => '⁷',
+            '8' => '⁸',
+            '9' => '⁹',
+            _ => unreachable!("A u64 should only have number when printed"),
+        };
+        exponent.push(c);
+    }
+    exponent
+}
+
 impl fmt::Display for ComposedUnit {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut output = String::new();
 
-        for unit in self.numerator.iter() {
+        let grouped_unit = regroup_unit_with_power(&self.numerator);
+
+        for (unit, power) in grouped_unit.iter() {
             output.push_str(&unit.symbol);
+            output.push_str(&pretty_exponent(power));
         }
 
         if !self.denominator.is_empty() {
