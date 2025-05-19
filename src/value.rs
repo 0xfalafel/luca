@@ -236,7 +236,8 @@ impl Mul<Value> for Value {
         let (factor, new_unit) = self.unit * rhs.unit;
 
         Ok(Value {
-            number: self.number * (rhs.number * factor)
+            number: self.number * (rhs.number / factor)
+                // TODO: funsion CalculationError and ValueError
                 .map_err(|_| CalculationError::IncompatibleTypes)?,
             unit: new_unit,
         })
