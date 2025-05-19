@@ -83,6 +83,9 @@ impl Mul<ComposedUnit> for ComposedUnit {
             }
         }
 
+        // Remove any power that is equal to 0
+        new_hashmap.retain(|_, power| *power != 0);
+
         (conversion_factor, ComposedUnit {units: new_hashmap})
     }
 }
