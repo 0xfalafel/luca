@@ -47,6 +47,14 @@ impl Unit {
         }
     }
 
+    pub fn can_be_converted_to(&self, dest_unit: &Unit) -> bool {
+        let (base_unit_self, _ ) = self.base_and_factor();
+        let (base_unit_other, _) = dest_unit.base_and_factor();
+
+        base_unit_self == base_unit_other
+    }
+
+
     pub fn conversion_factor(&self, dest_unit: &Unit) -> Option<f64> {
         let (base_unit_self, convertion_factor_self) = self.base_and_factor();
         let (base_unit_other, convertion_factor_other) = dest_unit.base_and_factor();

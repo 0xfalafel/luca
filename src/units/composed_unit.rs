@@ -1,10 +1,9 @@
 use std::collections::HashMap;
 use std::fmt;
-use std::hash::Hash;
 use std::ops::Mul;
 use crate::units::unit::Unit;
 
-use super::unit::{self, ConversionFactor};
+use super::unit::ConversionFactor;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ComposedUnitError {
@@ -56,47 +55,36 @@ impl ComposedUnit {
     }
 }
 
-fn unit_in_vector(vec: &Vec<Unit>, unit: &Unit) -> Option<(ConversionFactor, Unit)> {
-    for elem in vec.iter() {
-        if let Some(factor) = elem.conversion_factor(unit) {
-            return Some((factor, elem.clone()));
-        }
-    }
-
-    None
-}
-
 impl Mul<ComposedUnit> for ComposedUnit {
     type Output = (ConversionFactor, ComposedUnit);
 
     fn mul(self, rhs: ComposedUnit) -> Self::Output {
         let mut conversion_factor = 1.0;
-        let mut new_numerator = self.numerator.clone();
+        let mut new_hashmap = self.units.clone();
+        
+        for (unit, power) in rhs.units {
+            // Call conversion_factor for each unit
 
-        for unit in rhs.numerator.iter() {
-            if let Some((factor, u)) = unit_in_vector(&self.numerator, unit) {
-                conversion_factor = conversion_factor * factor;
-                new_numerator.push(u);
+            if self.units.keys().any(|u| u.can_be_converted_to(&unit)) {
+                for key in self.units.keys() {
+                    if let Some(factor) = key.conversion_factor(&unit) {
+                        conversion_factor *= factor.powi(power as i32);
+    
+                        new_hashmap
+                            .entry(key.clone())
+                            .and_modify(|val| *val += power)
+                            .or_insert(power);
+                    }
+                }
+
             } else {
-                new_numerator.push(unit.clone());
+                new_hashmap
+                    .insert(unit, power);
             }
         }
 
-        (conversion_factor, ComposedUnit {
-            numerator: new_numerator,
-            denominator: self.denominator.clone(),
-        })
+        (conversion_factor, ComposedUnit {units: new_hashmap})
     }
-}
-
-fn regroup_unit_with_power(units: &Vec<Unit>) -> HashMap<Unit, u64> {
-    let mut counts = HashMap::new();
-    
-    for unit in units {
-        *counts.entry(unit.clone()).or_insert(0) += 1;
-    }
-
-    counts
 }
 
 /// Return a String containing the `nb` as an exponent
@@ -175,11 +163,10 @@ mod tests {
     fn mul_m_cm() {
         let m: ComposedUnit = ComposedUnit::new_with_unit(Unit::meter());
         let cm: ComposedUnit = ComposedUnit::new_with_unit(Unit::centimeter());
-
         let res = m * cm;
-        assert_eq!(res, (100.0, ComposedUnit {
-            numerator: vec![Unit::meter(), Unit::meter()],
-            denominator: vec![],
-        }));
+
+        let mut assert_unit = HashMap::new();
+        assert_unit.insert(Unit::meter(), 2);
+        assert_eq!(res, (100.0, ComposedUnit {units: assert_unit}));
     }
 }
