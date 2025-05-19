@@ -120,8 +120,8 @@ fn regroup_unit_with_power(units: &Vec<Unit>) -> HashMap<Unit, u64> {
     counts
 }
 
-/// 2 -> ²
-// ⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ 
+/// Return a String containing the `nb` as an exponent
+/// 24 -> ²⁴
 fn pretty_exponent(nb: &u64) -> String {
     if *nb == 0 | 1 {
         return String::from("")
