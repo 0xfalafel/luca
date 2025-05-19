@@ -1,4 +1,5 @@
 use compact_str::CompactString;
+use std::hash::{Hash, Hasher};
 
 pub type ConversionFactor = f64;
 pub type CanonicalName = CompactString;
@@ -11,11 +12,25 @@ pub enum UnitKind {
     Derived(ConversionFactor, Box<Unit>),
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone)]
 pub struct Unit {
     pub symbol: CompactString,
     pub name: CanonicalName,
     kind: UnitKind,
+}
+
+impl PartialEq for Unit {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
+    }
+}
+
+impl Eq for Unit {}
+
+impl Hash for Unit {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.name.hash(state);
+    }
 }
 
 impl Unit {

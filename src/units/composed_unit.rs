@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fmt;
 use std::ops::Mul;
 use crate::units::unit::Unit;
@@ -107,6 +108,16 @@ impl Mul<ComposedUnit> for ComposedUnit {
             denominator: self.denominator.clone(),
         })
     }
+}
+
+fn regroup_unit_with_power(units: &Vec<Unit>) -> HashMap<Unit, u64> {
+    let mut counts = HashMap::new();
+    
+    for unit in units {
+        *counts.entry(unit.clone()).or_insert(0) += 1;
+    }
+
+    counts
 }
 
 impl fmt::Display for ComposedUnit {
