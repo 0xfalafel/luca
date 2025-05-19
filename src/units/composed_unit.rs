@@ -94,6 +94,10 @@ fn pretty_exponent(nb: &i64) -> String {
         unreachable!("This value should never be under 1");
     }
 
+    if *nb == 1 {
+        return String::from("");
+    }
+
     let nb_as_string = nb.to_string();
     let mut exponent = String::new();
 
