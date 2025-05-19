@@ -91,6 +91,17 @@ impl <F: FloatCore> Mul<F> for Number {
     }
 }
 
+impl <F: FloatCore> Div<F> for Number {
+    type Output = Result<Number, ValueError>;
+
+    fn div(self, rhs: F) -> Self::Output {
+        match BigRational::from_float(rhs) {
+            Some(r) => Ok(Number(self.0 / r)),
+            None => Err(ValueError::FailedToParseConversionFactor),
+        }
+    }
+}
+
 
 impl Neg for Number {
     type Output = Self;
