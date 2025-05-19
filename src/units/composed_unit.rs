@@ -61,18 +61,6 @@ impl ComposedUnit {
 
         Ok(conversion_factor)
     }
-
-    // pub fn convert_to_unit(&self, unit: &ComposedUnit) -> Result<(f64, ComposedUnit), ComposedUnitError>{
-    //     // If one unit is empty, take the type of the other
-    //     if self.is_empty() {
-    //         return Ok((1.0, unit.clone()))
-    //     } else if unit.is_empty() {
-    //         return Ok((1.0, self.clone()))
-    //     }
-
-    //     let conversion_factor = self.conversion_factor(unit)?;
-    //     Ok((conversion_factor, self.clone()))
-    // }
 }
 
 impl Mul<ComposedUnit> for ComposedUnit {
