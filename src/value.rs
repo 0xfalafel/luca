@@ -241,19 +241,6 @@ impl Mul<Value> for Value {
                 .map_err(|_| CalculationError::IncompatibleTypes)?,
             unit: new_unit,
         })
-
-
-        // Normal multiplication
-
-        // // TODO: implement a new type contructor
-        // if self.unit != rhs.unit { 
-        //     return Err(CalculationError::IncompatibleTypes)
-        // }
-
-        // Ok(Value {
-        //     number: self.number * rhs.number,
-        //     unit: self.unit
-        // })
     }
 }
 
@@ -288,14 +275,14 @@ impl Div<Value> for Value {
             })
         }
         
-        // TODO: implement a new type contructor
-        if self.unit != rhs.unit { 
-            return Err(CalculationError::IncompatibleTypes)
-        }
+
+        let (factor, new_unit) = self.unit / rhs.unit;
 
         Ok(Value {
-            number: self.number / rhs.number,
-            unit: self.unit
+            number: self.number * (rhs.number * factor)
+                // TODO: funsion CalculationError and ValueError
+                .map_err(|_| CalculationError::IncompatibleTypes)?,
+            unit: new_unit,
         })
     }
 }

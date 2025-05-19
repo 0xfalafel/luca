@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::fmt;
-use std::ops::Mul;
+use std::ops::{Mul, Div};
 use crate::units::unit::Unit;
 
 use super::unit::ConversionFactor;
@@ -90,6 +90,42 @@ impl Mul<ComposedUnit> for ComposedUnit {
     }
 }
 
+impl Div<ComposedUnit> for ComposedUnit {
+    type Output = (ConversionFactor, ComposedUnit);
+
+    fn div(self, rhs: ComposedUnit) -> Self::Output {
+        let mut conversion_factor = 1.0;
+        let mut new_hashmap = self.units.clone();
+        
+        for (unit, power) in rhs.units {
+            // Call conversion_factor for each unit
+
+            if self.units.keys().any(|u| u.can_be_converted_to(&unit)) {
+                for key in self.units.keys() {
+                    if let Some(factor) = key.conversion_factor(&unit) {
+                        conversion_factor /= factor.powi(power as i32);
+    
+                        new_hashmap
+                            .entry(key.clone())
+                            .and_modify(|val| *val -= power)
+                            .or_insert(power);
+                    }
+                }
+
+            } else {
+                new_hashmap
+                    .insert(unit, -power);
+            }
+        }
+
+        // Remove any power that is equal to 0
+        new_hashmap.retain(|_, power| *power != 0);
+
+        (conversion_factor, ComposedUnit {units: new_hashmap})
+    }
+}
+
+
 /// Return a String containing the `nb` as an exponent
 /// 24 -> ²⁴
 fn pretty_exponent(nb: &i64) -> String {
@@ -142,7 +178,7 @@ impl fmt::Display for ComposedUnit {
             let denominator: String = self.units
                 .iter()
                 .filter(|&(_u, power)| *power < 0)
-                .map(|(unit, power)| format!("{}{}", unit.symbol, pretty_exponent(power)))
+                .map(|(unit, power)| format!("{}{}", unit.symbol, pretty_exponent(&-power)))
                 .collect();
 
                 write!(f, "{}/{}", numerator, denominator)
