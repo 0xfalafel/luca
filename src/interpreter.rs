@@ -26,7 +26,7 @@ statement   : expr | assignement
 assignment  : VAR ASSIGN expr
 expr        : term   ((PLUS | MINUS) term)*
 term        : factor ((MUL  | DIV) factor)*
-factor      : INTEGER | LPAREN expr RPAREN | VAR
+factor      : NUMBER | LPAREN expr RPAREN | VAR
 
 */
 
@@ -44,7 +44,7 @@ factor      : INTEGER | LPAREN expr RPAREN | VAR
 /// The input is separated in a bunch of tokens.
 #[derive(Debug, Clone, PartialEq)]
 enum Token {
-    INTEGER(Number),
+    NUMBER(Number),
     PLUS,
     MINUS,
     MUL,
@@ -119,7 +119,7 @@ impl Lexer {
         }
     }
 
-    /// Return a (multidigit) Token::INTEGER or TOKEN::FLOAT consumed from the input.
+    /// Return a (multidigit) Token::NUMBER consumed from the input.
     fn number(&mut self) -> Result<Token, Error> {
         let mut ascii_number = String::from("");
 
@@ -139,7 +139,7 @@ impl Lexer {
         }
 
         match Number::from_str(&ascii_number) {
-            Ok(val) => Ok(Token::INTEGER(val)),
+            Ok(val) => Ok(Token::NUMBER(val)),
             Err(_) => Err(Error::NumberParsingFailed)
         }    
     }
@@ -312,7 +312,7 @@ impl Parser {
         }
     }
 
-    /// number : INTEGER | FLOAT
+    /// number : NUMBER
     fn number(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
 
@@ -333,8 +333,8 @@ impl Parser {
                 Ok(node)
             },
 
-            // INTEGER
-            Token::INTEGER(_) => {
+            // NUMBER
+            Token::NUMBER(_) => {
                 let node = self.number()?;
 
                 match self.current_token {
@@ -370,7 +370,7 @@ impl Parser {
         let token = self.current_token.clone();
         
         match token {
-            Token::MONEY(_) | Token::INTEGER(_) => {
+            Token::MONEY(_) | Token::NUMBER(_) => {
                 self.value()
             },
             // (PLUS | MINUS) factor
@@ -538,8 +538,8 @@ impl Interpreter {
 
     fn visit_num(&self, node: &AST) -> Value {
         match &node.token {
-            Token::INTEGER(i) => Value::new(i.clone()),
-            _ => panic!("Error: end node is not an integer")
+            Token::NUMBER(i) => Value::new(i.clone()),
+            _ => panic!("Error: end node is not an number")
         }
     }
 
@@ -665,7 +665,7 @@ impl Interpreter {
 
     fn visit(&mut self, node: &AST) -> Result<Value, Error> {
         match node.token {
-            Token::INTEGER(_) => Ok(self.visit_num(node)),
+            Token::NUMBER(_) => Ok(self.visit_num(node)),
             Token::VAR(_) => Ok(self.visit_variable(node)?),
             Token::ASSIGN => Ok(self.visit_assign(node)?),
             Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_) | Token::PERCENTAGE | Token::UNIT(_) => {
