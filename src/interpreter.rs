@@ -131,7 +131,7 @@ impl Lexer {
                 } else if char == '.' || char == ',' {
                     self.advance();
                     ascii_number.push('.');
-                } else if char == ' ' {
+                } else if char == ' ' || char == '_' {
                     self.advance();
                 } else {
                     break;
@@ -1031,6 +1031,12 @@ mod tests {
     fn number_with_spaces() {
         let result = make_interpreter("10 000", None).interpret();
         assert_eq!(result, Ok(Value::new(Number::from_i64(10000).unwrap())));
+    }
+
+    #[test]
+    fn number_with_underscores() {
+        let result = make_interpreter("12_345_678", None).interpret();
+        assert_eq!(result, Ok(Value::new(Number::from_i64(12345678).unwrap())));
     }
 
 }
