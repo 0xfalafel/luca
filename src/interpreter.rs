@@ -1027,5 +1027,10 @@ mod tests {
         assert_eq!(result, Ok(Value::new(Number::from_i64(1200).unwrap())));
     }
 
+    #[test]
+    fn number_with_spaces() {
+        let result = make_interpreter("10 000", None).interpret();
+        assert_eq!(result, Ok(Value::new(Number::from_i64(10000).unwrap())));
+    }
 
 }
