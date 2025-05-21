@@ -864,8 +864,7 @@ checksum = "7edddbd0b52d732b21ad9a5fab5c704c14cd949e5e9a1ec5929a24fded1b904c"
 [[package]]
 name = "pretty_dtoa"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a239bcdfda2c685fda1add3b4695c06225f50075e3cfb5b954e91545587edff2"
+source = "git+https://github.com/0xfalafel/pretty_dtoa.git?branch=group_digits#6e71bcde0f51e742708dfa61573788f30a23987d"
 dependencies = [
  "ryu_floating_decimal",
 ]

@@ -45,9 +45,10 @@ impl fmt::Display for Number {
         match &self.0.to_f64() {
             Some(float) => {
                 let config = FmtFloatConfig::default()
-                    .max_decimal_digits(6)
-                    .upper_e_break(8)
-                    .add_point_zero(false);
+                    .upper_e_break(11)
+                    .lower_e_break(-9)
+                    .add_point_zero(false)
+                    .group_digits(3, ' ');
                 write!(f, "{} ", dtoa(*float, config))
             },
             None => write!(f, "{} ", self.0.to_string())
