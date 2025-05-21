@@ -103,7 +103,7 @@ impl Div<ComposedUnit> for ComposedUnit {
             if self.units.keys().any(|u| u.can_be_converted_to(&unit)) {
                 for key in self.units.keys() {
                     if let Some(factor) = key.conversion_factor(&unit) {
-                        conversion_factor /= factor.powi(power as i32);
+                        conversion_factor *= factor.powi(power as i32);
     
                         new_hashmap
                             .entry(key.clone())

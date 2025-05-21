@@ -1035,4 +1035,11 @@ mod tests {
         assert_eq!(result, Ok(Value::from_f64_with_unit(15.0, Unit::percent())));
     }
 
+    #[test]
+    fn m_div_by_dm() {
+        let result = make_interpreter("120m / 1dm", None).interpret();
+        assert_eq!(result, Ok(Value::new(Number::from_i64(1200).unwrap())));
+    }
+
+
 }
