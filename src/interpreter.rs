@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::str::FromStr;
 
 // use crate::units::money::{Money, Currency};
 
@@ -16,8 +15,7 @@ enum Error {
     UndefinedVariable,
     DivisonByZero,
     CalculationError,
-    IntParsingFailed,
-    FloatParsingFailed,
+    NumberParsingFailed,
     FailedConversion,
 }
 
@@ -124,7 +122,6 @@ impl Lexer {
     /// Return a (multidigit) Token::INTEGER or TOKEN::FLOAT consumed from the input.
     fn number(&mut self) -> Result<Token, Error> {
         let mut ascii_number = String::from("");
-        let mut is_float = false;
 
         // dumb code is smart code
         while let Some (char) = self.get_char() {
@@ -132,30 +129,19 @@ impl Lexer {
                     self.advance();
                     ascii_number.push(char);
                 } else if char == '.' || char == ',' {
-                    is_float = true;
                     self.advance();
                     ascii_number.push('.');
+                } else if char == ' ' {
+                    self.advance();
                 } else {
                     break;
                 }
         }
 
-        if !is_float {
-            match Number::from_str(&ascii_number) {
-                Ok(val) => Ok(Token::INTEGER(val)),
-                Err(_) => Err(Error::IntParsingFailed)
-            }    
-        } else { // we parse a float
-            let val = match f64::from_str(&ascii_number) {
-                Ok(val) => val,
-                Err(_) => return Err(Error::FloatParsingFailed)
-            };
-
-            match Number::from_float(val) {
-                Some(num) => Ok(Token::INTEGER(num)),
-                None => Err(Error::FloatParsingFailed)
-            }
-        }
+        match Number::from_str(&ascii_number) {
+            Ok(val) => Ok(Token::INTEGER(val)),
+            Err(_) => Err(Error::NumberParsingFailed)
+        }    
     }
 
     fn keyword_or_variable(&mut self) -> Result<Token, Error> {

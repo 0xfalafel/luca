@@ -9,6 +9,7 @@ use crate::units::composed_unit::{ComposedUnit, ComposedUnitError};
 pub enum ValueError {
     InvalidConversion,
     FailedToParseConversionFactor,
+    FailedToParseNumber,
 }
 
 #[derive(Debug, Clone, PartialEq)]
