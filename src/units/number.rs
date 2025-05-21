@@ -4,6 +4,7 @@ use std::str::FromStr;
 use num_rational::{BigRational, ParseRatioError};
 use num_traits::float::FloatCore;
 use num_traits::{FromPrimitive, ToPrimitive};
+use pretty_dtoa::{dtoa, FmtFloatConfig};
 
 use crate::value::ValueError;
 
@@ -42,7 +43,13 @@ impl Number {
 impl fmt::Display for Number {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self.0.to_f64() {
-            Some(float) => write!(f, "{} ", float),
+            Some(float) => {
+                let config = FmtFloatConfig::default()
+                    .max_decimal_digits(6)
+                    .upper_e_break(8)
+                    .add_point_zero(false);
+                write!(f, "{} ", dtoa(*float, config))
+            },
             None => write!(f, "{} ", self.0.to_string())
         }
     }
