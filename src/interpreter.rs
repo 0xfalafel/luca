@@ -663,8 +663,6 @@ impl Interpreter {
             },
             Token::UNIT(unit_symbol) => {
                 let number = self.visit(&node.children[0])?;
-                
-                // Maybe this should be matched somewhere else ?
                 let unit = unit_symbol.to_unit();
 
                 match number.convert_to_unit(&ComposedUnit::new_with_unit(unit)) {
@@ -1092,4 +1090,14 @@ mod tests {
         assert_eq!(result, Ok(Value::new_with_unit(Number::from_i64(500).unwrap(), &Unit::dollar())));
     }
 
+    #[test]
+    fn km_per_second_as_meter() {
+        let result = make_interpreter("1 km/s as meter", None).interpret();
+        let mut units = ComposedUnit::new_with_unit(Unit::meter());
+        units.set_unit(Unit::second(), -1);
+        assert_eq!(result, Ok(Value::new_with_units(
+            Number::from_i64(1000).unwrap(),
+            units)
+        ));
+    }
 }
