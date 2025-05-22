@@ -234,7 +234,7 @@ impl Lexer {
             '-' => {
                 self.advance();
                 Ok(Token::MINUS)
-            },    
+            },
             '*' => {
                 self.advance();
                 Ok(Token::MUL,)
@@ -399,7 +399,7 @@ impl Parser {
         }
     }
 
-    /// factor : (PLUS | MINUS) factor | number | LPAREN expr RPAREN | VAR
+    /// factor : (PLUS | MINUS) factor | (number | UNIT | MONEY) | LPAREN expr RPAREN | VAR
     fn factor(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
         
@@ -487,7 +487,7 @@ impl Parser {
     fn expr(&mut self) -> Result<AST, Error> {
         let mut node = self.term()?;
 
-        while self.current_token == Token::PLUS || self.current_token == Token::MINUS {
+        while matches!(self.current_token, Token::PLUS | Token::MINUS | Token::AS) {
 
             match self.current_token {
                 Token::PLUS => {
@@ -706,7 +706,7 @@ impl Interpreter {
                         Number::one(),
                         &symbol.to_unit())
                     ),
-                    // 1 => Ok(self.visit_unaryop(node)?),
+                    1 => Ok(self.visit_unaryop(node)?),
                     _ => panic!("Too many children for an AST node")
                 }             
             }
