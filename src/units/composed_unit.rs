@@ -31,6 +31,19 @@ impl ComposedUnit {
         }
     }
 
+    #[cfg(test)]
+    #[allow(unused)]
+    pub fn new_with_hashmap(hasmap: HashMap<Unit, i64>) -> ComposedUnit {
+        ComposedUnit {
+            units: hasmap
+        }
+    }
+
+    #[cfg(test)]
+    pub fn set_unit(&mut self, unit: Unit, value: i64) {
+        self.units.insert(unit, value);
+    }
+
     pub fn is_empty(&self) -> bool {
         self.units.is_empty()
     }

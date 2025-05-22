@@ -26,9 +26,13 @@ impl Value {
         }
     }
 
-    #[cfg(test)]
     pub fn new_with_unit(number: Number, unit: &Unit) -> Value {
         Value { number: number, unit: ComposedUnit::new_with_unit(unit.clone()) }
+    }
+
+    #[cfg(test)]
+    pub fn new_with_units(number: Number, units: ComposedUnit) -> Value {
+        Value { number: number, unit: units }
     }
 
     pub fn set_unit(self, unit: Unit) -> Value {

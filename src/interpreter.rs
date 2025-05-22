@@ -334,14 +334,23 @@ impl Parser {
     }
 
     /// value : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)
+    /// TODO: we should fusion UNIT and MONEY to have (and maybe even UNIT and PERCENTAGE)
+    /// value : UNIT (number) | number (PERCENTAGE | UNIT)
     fn value(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
 
         match token {
-            // MONEY
+            // MONEY number
             Token::MONEY(currency) => {
                 self.eat(&Token::MONEY(currency))?;
                 let node: AST = AST::new(Token::MONEY(currency), vec![self.number()?]);
+                Ok(node)
+            },
+
+            // UNIT
+            Token::UNIT(symbol) => {
+                self.eat(&Token::UNIT(symbol))?;
+                let node: AST = AST::new(Token::UNIT(symbol), vec![]);
                 Ok(node)
             },
 
@@ -674,13 +683,23 @@ impl Interpreter {
             Token::NUMBER(_) => Ok(self.visit_num(node)),
             Token::VAR(_) => Ok(self.visit_variable(node)?),
             Token::ASSIGN => Ok(self.visit_assign(node)?),
-            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_) | Token::PERCENTAGE | Token::UNIT(_) => {
+            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_) | Token::PERCENTAGE => {
                 match node.children.len() {
                     1 => Ok(self.visit_unaryop(node)?),
                     2 => Ok(self.visit_binop(node)?),
                     _ => panic!("Too many children for an AST node")
                 }             
             },
+            Token::UNIT(symbol) => {
+                match node.children.len() {
+                    0 => Ok(Value::new_with_unit(
+                        Number::one(),
+                        &symbol.to_unit())
+                    ),
+                    1 => Ok(self.visit_unaryop(node)?),
+                    _ => panic!("Too many children for an AST node")
+                }             
+            }
             _ => panic!("Unkown Token in the AST")
         }
     }
@@ -1048,7 +1067,10 @@ mod tests {
     #[test]
     fn euro_per_km() {
         let result = make_interpreter("10000 € / km", None).interpret();
-        assert_eq!(result, Ok(Value::new(Number::from_i64(10000).unwrap())));
+        let number = Number::from_i64(10000).unwrap();
+        let mut units = ComposedUnit::new_with_unit(Unit::euro());
+        units.set_unit(Unit::kilometer(), -1);
+        assert_eq!(result, Ok(Value::new_with_units(number, units)));
     }
 
 }

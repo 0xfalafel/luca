@@ -3,7 +3,7 @@ use std::ops::{Add, Sub, Mul, Div, Neg};
 use std::str::FromStr;
 use num_rational::BigRational;
 use num_traits::float::FloatCore;
-use num_traits::{FromPrimitive, ToPrimitive};
+use num_traits::{FromPrimitive, One, ToPrimitive};
 use pretty_dtoa::{dtoa, FmtFloatConfig};
 
 use crate::value::ValueError;
@@ -41,6 +41,10 @@ impl Number {
             Some(num)=> Ok(Number(num)),
             None => Err(ValueError::FailedToParseNumber),
         }
+    }
+
+    pub fn one() -> Number {
+        Number(BigRational::one())
     }
 
 }
