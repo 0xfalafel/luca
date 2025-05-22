@@ -43,7 +43,7 @@ factor      : NUMBER | LPAREN expr RPAREN | VAR
 /// Token are used to represent the differents elements given as an input.
 /// The input is separated in a bunch of tokens.
 #[derive(Debug, Clone, PartialEq)]
-enum Token {
+pub enum Token {
     NUMBER(Number),
     PLUS,
     MINUS,
