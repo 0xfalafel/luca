@@ -59,6 +59,11 @@ impl Value {
         })
     }
 
+    pub fn convert_to_value(&self, value: &Value) -> Result <Value, ValueError> {
+
+        todo!()
+    }
+
     pub fn is_percent(&self) -> bool {
         self.unit == ComposedUnit::new_with_unit(Unit::percent())
     }
