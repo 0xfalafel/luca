@@ -371,3 +371,9 @@ fn m_per_s_to_km_per_h() {
         units)
     ));
 }
+
+#[test]
+fn power() {
+    let result = make_interpreter("100 ^ 2", None).interpret();
+    assert_eq!(result, Ok(Value::new(Number::from_i64(10000).unwrap())));
+}

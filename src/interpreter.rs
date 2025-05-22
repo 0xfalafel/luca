@@ -457,7 +457,7 @@ impl Parser {
             }                
         }
 
-        while self.current_token == Token::MUL || self.current_token == Token::DIV || self.current_token == Token::OF {
+        while matches!(self.current_token, Token::MUL | Token::DIV | Token::OF | Token::POWER) {
             
             match self.current_token {
                 Token::MUL => {
