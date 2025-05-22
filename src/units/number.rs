@@ -46,6 +46,28 @@ impl Number {
         Number(BigRational::one())
     }
 
+    pub fn pow(&self, rhs: Number) -> Result<Number, ValueError> {
+        // try to convert rhs to integer to use powi
+        if let Some(rhs_integer) =  rhs.0.to_i32() {
+            Ok(Number(self.0.pow(rhs_integer)))
+            // otherwise try to convert self and rhs to f64 to use powf
+        } else {
+            let self_f64 = match self.0.to_f64() {
+                Some(f) => f,
+                None => return Err(ValueError::FailedToConvertionNumberFloat),
+            };
+            let rhs_f64 = match self.0.to_f64() {
+                Some(f) => f,
+                None => return Err(ValueError::FailedToConvertionNumberFloat),
+            };
+            let res = self_f64.powf(rhs_f64);
+            if let Some(num) = Number::from_float(res) {
+                return Ok(num)
+            } else {
+                return Err(ValueError::FailedToConvertionNumberFloat)
+            }
+        }
+    }
 }
 
 impl fmt::Display for Number {
