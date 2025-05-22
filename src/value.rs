@@ -59,9 +59,31 @@ impl Value {
         })
     }
 
-    pub fn convert_to_value(&self, value: &Value) -> Result <Value, ValueError> {
+    pub fn convert_to_value(&self, rhs: &Value) -> Result <Value, ValueError> {
+        let mut conversion_factor = 1.0;
+        let mut units = self.unit.clone();
+
+        // For each unit in `self`, we look if it can be converted to a unit of `rhs`
+        for (unit, _) in &rhs.unit.units {
+            for (key, power) in &self.unit.units {
+                if let Some(factor) = key.conversion_factor(unit) {
+                    conversion_factor *= factor.powi(*power as i32);
+
+                    // We replace the previous unit, with the corresopnding unit
+                    // of `rhs`
+                    let tmp_power = units.units.remove(&key).unwrap();
+                    units.units.insert(unit.clone(), tmp_power);
+                }
+            }
+        }
         
-        todo!()
+        let conversion_factor = Number::from_float(conversion_factor)
+            .ok_or(ValueError::FailedToParseConversionFactor)?; 
+
+        Ok(Value {
+            number: self.number.clone() * conversion_factor,
+            unit: units,
+        })
     }
 
     pub fn is_percent(&self) -> bool {

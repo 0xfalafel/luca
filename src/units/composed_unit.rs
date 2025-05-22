@@ -12,7 +12,7 @@ pub enum ComposedUnitError {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ComposedUnit {
-    units: HashMap<Unit, i64>,
+    pub units: HashMap<Unit, i64>,
 }
 
 impl ComposedUnit {
