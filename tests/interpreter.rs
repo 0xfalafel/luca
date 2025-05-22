@@ -2,11 +2,11 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use std::cell::RefCell;
 
-use crate::units::unit::Unit;
-use crate::value::Value;
-use crate::interpreter::*;
-
-use super::*;
+use luca::units::composed_unit::ComposedUnit;
+use luca::units::number::Number;
+use luca::units::unit::Unit;
+use luca::value::Value;
+use luca::interpreter::*;
 
 fn make_interpreter(text: &str, variables: Option<Rc<RefCell<HashMap<String, Value>>>>) -> Interpreter {
     

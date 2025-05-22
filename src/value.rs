@@ -30,7 +30,6 @@ impl Value {
         Value { number: number, unit: ComposedUnit::new_with_unit(unit.clone()) }
     }
 
-    #[cfg(test)]
     pub fn new_with_units(number: Number, units: ComposedUnit) -> Value {
         Value { number: number, unit: units }
     }
@@ -60,7 +59,7 @@ impl Value {
     }
 
     pub fn convert_to_value(&self, value: &Value) -> Result <Value, ValueError> {
-
+        
         todo!()
     }
 
@@ -70,7 +69,6 @@ impl Value {
 }
 
 // Helper function to create Value with Unit in tests
-#[cfg(test)]
 impl Value {
     pub fn from_f64_with_unit(number: f64, unit: Unit) -> Value {
         Value {
