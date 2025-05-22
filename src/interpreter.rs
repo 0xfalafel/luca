@@ -29,6 +29,7 @@ pub enum Error {
     CalculationError,
     NumberParsingFailed,
     FailedConversion,
+    FailedToApproximateFloat,
 }
 
 /*
@@ -66,6 +67,7 @@ pub enum Token {
     ASSIGN,
     VAR(String),
     MONEY(Currency),
+    POWER,
     PERCENTAGE,
     OF, // Keyword of for percentage
     UNIT(UnitSymbol),
@@ -345,6 +347,10 @@ impl Lexer {
                 self.advance();
                 Ok(Token::LABEL)
             },
+            '^' => {
+                self.advance();
+                Ok(Token::POWER)
+            },
             char if char.is_alphabetic() => {
                 self.keyword_or_variable()
             },
@@ -549,13 +555,11 @@ impl Parser {
                 let node = AST::new(Token::VAR(name), vec![]);
                 Ok(node)
             },
-            _ => {
-                Err(Error::InvalidSyntax)
-            }
+            _ => Err(Error::InvalidSyntax)
         }
     }
 
-    /// term : factor (VAR)* ((MUL | DIV) factor)*
+    /// term : factor (VAR)* ((MUL | DIV | POWER) factor)*
     ///      | factor (VAR)*            <-- implicit multiplication of variables. Like 4ab + 12 TODO
     ///      | percentage OF factor
     fn term(&mut self) -> Result<AST, Error> {
@@ -584,6 +588,11 @@ impl Parser {
                     self.eat(&Token::DIV)?;
                     let children: Vec<AST> = vec![node, self.factor()?];
                     node = AST::new(Token::DIV, children);
+                },
+                Token::POWER => {
+                    self.eat(&Token::POWER)?;
+                    let children: Vec<AST> = vec![node, self.factor()?];
+                    node = AST::new(Token::POWER, children);
                 },
                 Token::OF => {
                     self.eat(&Token::OF)?;
@@ -762,10 +771,16 @@ impl Interpreter {
                 };  // Todo: use more explicit errors
                 Ok(res)
             },
+            Token::POWER => {
+                match left_val.pow(right_val) {
+                    Ok(val) => Ok(val),
+                    Err(_e) => Err(Error::FailedToApproximateFloat),
+                }
+            },
             Token::AS => {
                 left_val.convert_to_value(&right_val)
                     .map_err(|_| Error::FailedConversion)
-            }
+            },
             _ => panic!("Unkown BinOp Token in the AST")
         }
     }
@@ -825,7 +840,7 @@ impl Interpreter {
             Token::NUMBER(_) => Ok(self.visit_num(node)),
             Token::VAR(_) => Ok(self.visit_variable(node)?),
             Token::ASSIGN => Ok(self.visit_assign(node)?),
-            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_) | Token::PERCENTAGE => {
+            Token::PLUS | Token::MINUS | Token::MUL | Token::DIV | Token::MONEY(_) | Token::PERCENTAGE | Token::POWER => {
                 match node.children.len() {
                     1 => Ok(self.visit_unaryop(node)?),
                     2 => Ok(self.visit_binop(node)?),
