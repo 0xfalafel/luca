@@ -399,7 +399,7 @@ fn one_square_meter() {
 }
 
 #[test]
-fn square_meter() {
+fn square_meter_2() {
     let result = make_interpreter("1 m² * 2", None).interpret();
     assert_eq!(result, Ok(Value::new_with_units(
         Number::from_i64(2).unwrap(),
@@ -446,4 +446,13 @@ fn power_with_unit() {
             &Unit::meter()
         )
     ))
+}
+
+#[test]
+fn square_meter() {
+    let result = make_interpreter("1 m² * 2", None).interpret();
+    assert_eq!(result, Ok(Value::new_with_units(
+        Number::from_i64(2).unwrap(),
+        ComposedUnit::square_meters())
+    ));
 }
