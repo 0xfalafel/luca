@@ -1,5 +1,11 @@
 [
     {
+        "type": "git",
+        "url": "https://github.com/0xfalafel/pretty_dtoa",
+        "commit": "6e71bcde0f51e742708dfa61573788f30a23987d",
+        "dest": "flatpak-cargo/git/pretty_dtoa-6e71bcd"
+    },
+    {
         "type": "archive",
         "archive-type": "tar-gzip",
         "url": "https://static.crates.io/crates/addr2line/addr2line-0.24.2.crate",
@@ -1066,6 +1072,24 @@
         "dest-filename": ".cargo-checksum.json"
     },
     {
+        "type": "shell",
+        "commands": [
+            "cp -r --reflink=auto \"flatpak-cargo/git/pretty_dtoa-6e71bcd/.\" \"cargo/vendor/pretty_dtoa\""
+        ]
+    },
+    {
+        "type": "inline",
+        "contents": "[[bench]]\nname = \"dtoa_benchmark\"\nharness = false\n\n[package]\nname = \"pretty_dtoa\"\nversion = \"0.3.0\"\nauthors = [ \"Matthew Torrence <matt@torrencefamily.net>\",]\nedition = \"2018\"\ndescription = \"Configurable floating point number to string conversions, with many options for controlling various aspects of displaying floats.\"\nreadme = \"README.md\"\nlicense = \"MIT OR Apache-2.0\"\ndocumentation = \"https://docs.rs/pretty_dtoa\"\nhomepage = \"https://github.com/torrencem/pretty_dtoa\"\nrepository = \"https://github.com/torrencem/pretty_dtoa\"\nkeywords = [ \"float\", \"double\", \"display\", \"dtoa\",]\ncategories = [ \"value-formatting\",]\n\n[dev-dependencies]\ncriterion = \"0.3\"\nrand = \"0.7.3\"\n\n[dependencies]\nryu_floating_decimal = \"0.1.0\"\n",
+        "dest": "cargo/vendor/pretty_dtoa",
+        "dest-filename": "Cargo.toml"
+    },
+    {
+        "type": "inline",
+        "contents": "{\"package\": null, \"files\": {}}",
+        "dest": "cargo/vendor/pretty_dtoa",
+        "dest-filename": ".cargo-checksum.json"
+    },
+    {
         "type": "archive",
         "archive-type": "tar-gzip",
         "url": "https://static.crates.io/crates/proc-macro-crate/proc-macro-crate-3.3.0.crate",
@@ -1206,6 +1230,19 @@
         "type": "inline",
         "contents": "{\"package\": \"28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f\", \"files\": {}}",
         "dest": "cargo/vendor/ryu-1.0.20",
+        "dest-filename": ".cargo-checksum.json"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
+        "url": "https://static.crates.io/crates/ryu_floating_decimal/ryu_floating_decimal-0.1.0.crate",
+        "sha256": "700de91d5fd6091442d00fdd9ee790af6d4f0f480562b0f5a1e8f59e90aafe73",
+        "dest": "cargo/vendor/ryu_floating_decimal-0.1.0"
+    },
+    {
+        "type": "inline",
+        "contents": "{\"package\": \"700de91d5fd6091442d00fdd9ee790af6d4f0f480562b0f5a1e8f59e90aafe73\", \"files\": {}}",
+        "dest": "cargo/vendor/ryu_floating_decimal-0.1.0",
         "dest-filename": ".cargo-checksum.json"
     },
     {
@@ -1821,7 +1858,7 @@
     },
     {
         "type": "inline",
-        "contents": "[source.vendored-sources]\ndirectory = \"cargo/vendor\"\n\n[source.crates-io]\nreplace-with = \"vendored-sources\"\n",
+        "contents": "[source.vendored-sources]\ndirectory = \"cargo/vendor\"\n\n[source.crates-io]\nreplace-with = \"vendored-sources\"\n\n[source.\"https://github.com/0xfalafel/pretty_dtoa\"]\ngit = \"https://github.com/0xfalafel/pretty_dtoa\"\nreplace-with = \"vendored-sources\"\nbranch = \"group_digits\"\n",
         "dest": "cargo",
         "dest-filename": "config"
     }
