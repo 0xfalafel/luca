@@ -1073,4 +1073,10 @@ mod tests {
         assert_eq!(result, Ok(Value::new_with_units(number, units)));
     }
 
+    #[test]
+    fn euro_per_km_mul() {
+        let result = make_interpreter("$50/km * 10km", None).interpret();
+        assert_eq!(result, Ok(Value::new_with_unit(Number::from_i64(500).unwrap(), &Unit::dollar())));
+    }
+
 }
