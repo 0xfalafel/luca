@@ -160,6 +160,7 @@ impl Lexer {
         let var = self.variable();
 
         let token = match var.as_str() {
+            "per" | "par" => Token::DIV, // $ per km 
             "of" | "de" => Token::OF, // Percentage
             "en" | "as" => Token::AS, // Conversion
             "m" | "meter" | "metre" => Token::UNIT(UnitSymbol::Meter),
