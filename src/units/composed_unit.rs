@@ -39,7 +39,6 @@ impl ComposedUnit {
         }
     }
 
-    #[cfg(test)]
     pub fn set_unit(&mut self, unit: Unit, value: i64) {
         self.units.insert(unit, value);
     }

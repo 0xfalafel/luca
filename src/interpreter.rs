@@ -10,7 +10,7 @@ use crate::value::Value;
 use crate::units::composed_unit::ComposedUnit;
 
 #[derive(Debug, Eq, PartialEq)]
-enum Error {
+pub enum Error {
     InvalidSyntax,
     UndefinedVariable,
     DivisonByZero,
@@ -100,7 +100,7 @@ impl UnitSymbol {
 
 
 #[derive(Debug, Clone)]
-struct Lexer {
+pub struct Lexer {
     text: String,
     pos: usize
 }
@@ -318,7 +318,7 @@ pub struct Parser {
 }
 
 impl Parser {
-    fn new(mut lexer: Lexer) -> Result<Parser, Error> {
+    pub fn new(mut lexer: Lexer) -> Result<Parser, Error> {
         let token = lexer.get_next_token()?;
 
         Ok(Parser {
@@ -555,7 +555,7 @@ pub struct Interpreter {
 }
 
 impl Interpreter {
-    fn new(parser: Parser, variables: Rc<RefCell<HashMap<String, Value>>>) -> Interpreter {
+    pub fn new(parser: Parser, variables: Rc<RefCell<HashMap<String, Value>>>) -> Interpreter {
         Interpreter {
             parser: parser,
             variables: variables
@@ -714,7 +714,7 @@ impl Interpreter {
         }
     }
 
-    fn interpret(&mut self) -> Result<Value, Error> {
+    pub fn interpret(&mut self) -> Result<Value, Error> {
         let tree = self.parser.parse()?;
         let result = self.visit(&tree)?;
         // println!("res: {:?}", result);
