@@ -628,7 +628,7 @@ impl Interpreter {
                 Ok(res)
             },
             Token::AS => {
-                right_val.convert_to_value(&right_val)
+                left_val.convert_to_value(&right_val)
                     .map_err(|_| Error::FailedConversion)
             }
             _ => panic!("Unkown BinOp Token in the AST")
