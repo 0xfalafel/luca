@@ -380,23 +380,6 @@ fn m_per_s_to_km_per_h() {
 }
 
 #[test]
-fn power() {
-    let result = make_interpreter("100 ^ 2", None).interpret();
-    assert_eq!(result, Ok(Value::new(Number::from_i64(10000).unwrap())));
-}
-
-#[test]
-fn power_with_unit() {
-    let result = make_interpreter("100 ^ 2 m", None).interpret();
-    assert_eq!(result, Ok(
-        Value::new_with_unit(
-            Number::from_i64(10000).unwrap(),
-            &Unit::meter()
-        )
-    ))
-}
-
-#[test]
 fn two_vars() {
     let result = make_interpreter("1m² ", None).interpret();
     assert_eq!(result, Ok(Value::new_with_units(
@@ -416,7 +399,7 @@ fn one_square_meter() {
 }
 
 #[test]
-fn square_meter() {
+fn square_meter_2() {
     let result = make_interpreter("1 m² * 2", None).interpret();
     assert_eq!(result, Ok(Value::new_with_units(
         Number::from_i64(2).unwrap(),
@@ -428,4 +411,30 @@ fn square_meter() {
 fn k() {
     let result = make_interpreter("10k €", None).interpret();
     assert_eq!(result, Ok(Value::new_with_unit(Number::from_i64(10000).unwrap(), &Unit::euro())));
+}
+
+#[test]
+fn power() {
+    let result = make_interpreter("100 ^ 2", None).interpret();
+    assert_eq!(result, Ok(Value::new(Number::from_i64(10000).unwrap())));
+}
+
+#[test]
+fn power_with_unit() {
+    let result = make_interpreter("100 ^ 2 m", None).interpret();
+    assert_eq!(result, Ok(
+        Value::new_with_unit(
+            Number::from_i64(10000).unwrap(),
+            &Unit::meter()
+        )
+    ))
+}
+
+#[test]
+fn square_meter() {
+    let result = make_interpreter("1 m² * 2", None).interpret();
+    assert_eq!(result, Ok(Value::new_with_units(
+        Number::from_i64(2).unwrap(),
+        ComposedUnit::square_meters())
+    ));
 }
