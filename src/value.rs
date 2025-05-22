@@ -124,7 +124,7 @@ impl Value {
         
         // We don't update the unit, let's just do a powf
         } else {
-            let num = match self.number.pow(&rhs.number) {
+            let num = match self.number.pow(rhs.number) {
                 Ok(num) => num,
                 Err(e) => return Err(e),
             };
