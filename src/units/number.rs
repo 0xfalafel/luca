@@ -46,7 +46,7 @@ impl Number {
         Number(BigRational::one())
     }
 
-    pub fn pow(&self, rhs: &Number) -> Result<Number, ValueError> {
+    pub fn pow(&self, rhs: Number) -> Result<Number, ValueError> {
         // try to convert rhs to integer to use powi
         if let Some(rhs_integer) =  rhs.0.to_i32() {
             Ok(Number(self.0.pow(rhs_integer)))
