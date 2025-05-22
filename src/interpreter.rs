@@ -483,7 +483,7 @@ impl Parser {
         Ok(node)
     }
 
-    /// expr    : term   ((PLUS | MINUS) term)* (AS Unit)
+    /// expr    : term   ((PLUS | MINUS | AS) term)*
     fn expr(&mut self) -> Result<AST, Error> {
         let mut node = self.term()?;
 
@@ -500,22 +500,14 @@ impl Parser {
                     let children: Vec<AST> = vec![node, self.term()?];
                     node = AST::new(Token::MINUS, children);
                 },
+                Token::AS => {
+                    self.eat(&Token::AS)?;
+                    let children: Vec<AST> = vec![node, self.term()?];
+                    node = AST::new(Token::AS, children);
+                }
                 _ => panic!("Incorrect token in expr()")
             }
         }
-
-        if self.current_token == Token::AS {
-            self.eat(&Token::AS)?;
-
-            if let Token::UNIT(unit) = self.current_token {
-                self.eat(&Token::UNIT(unit))?;
-                let children: Vec<AST> = vec![node];
-                node = AST::new(Token::UNIT(unit), children);
-            } else {
-                return Err(Error::InvalidSyntax)
-            }
-        }
-
         Ok (node)
     }
     
@@ -635,6 +627,10 @@ impl Interpreter {
                 };  // Todo: use more explicit errors
                 Ok(res)
             },
+            Token::AS => {
+                right_val.convert_to_value(&right_val)
+                    .map_err(|_| Error::FailedConversion)
+            }
             _ => panic!("Unkown BinOp Token in the AST")
         }
     }
@@ -701,13 +697,16 @@ impl Interpreter {
                     _ => panic!("Too many children for an AST node")
                 }             
             },
+            Token::AS => { // Conversion
+                Ok(self.visit_binop(node)?)
+            },
             Token::UNIT(symbol) => {
                 match node.children.len() {
                     0 => Ok(Value::new_with_unit(
                         Number::one(),
                         &symbol.to_unit())
                     ),
-                    1 => Ok(self.visit_unaryop(node)?),
+                    // 1 => Ok(self.visit_unaryop(node)?),
                     _ => panic!("Too many children for an AST node")
                 }             
             }
