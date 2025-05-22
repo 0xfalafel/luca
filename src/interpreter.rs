@@ -78,6 +78,18 @@ pub enum UnitSymbol {
     Millimeter,
 }
 
+impl UnitSymbol {
+    fn to_unit(&self) -> Unit {
+        match self {
+            UnitSymbol::Meter => Unit::meter(),
+            UnitSymbol::Kilometer => Unit::kilometer(),
+            UnitSymbol::Decimeter => Unit::decimeter(),
+            UnitSymbol::Centimeter => Unit::centimeter(),
+            UnitSymbol::Millimeter => Unit::millimeter(),
+        }
+    }
+}
+
 
 #[derive(Debug, Clone)]
 struct Lexer {
@@ -321,7 +333,7 @@ impl Parser {
         Ok(node)
     }
 
-    /// value : (MONEY) number | number (MONEY | PERCENTAGE | UNIT)
+    /// value : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)
     fn value(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
 
@@ -361,7 +373,7 @@ impl Parser {
                     _ => Ok(node)
                 }
             },
-            _ => {Err(Error::InvalidSyntax)}
+            _ => Err(Error::InvalidSyntax)
         }
     }
 
@@ -370,7 +382,7 @@ impl Parser {
         let token = self.current_token.clone();
         
         match token {
-            Token::MONEY(_) | Token::NUMBER(_) => {
+            Token::MONEY(_) | Token::UNIT(_) | Token::NUMBER(_) => {
                 self.value()
             },
             // (PLUS | MINUS) factor
@@ -611,7 +623,7 @@ impl Interpreter {
         if node.has_no_children() {
             return Err(Error::InvalidSyntax)
         }
-
+        
         let val = self.visit(&node.children[0])?;
 
         match &node.token {
@@ -629,15 +641,9 @@ impl Interpreter {
             },
             Token::UNIT(unit_symbol) => {
                 let number = self.visit(&node.children[0])?;
-
+                
                 // Maybe this should be matched somewhere else ?
-                let unit = match unit_symbol {
-                    UnitSymbol::Meter => Unit::meter(),
-                    UnitSymbol::Kilometer => Unit::kilometer(),
-                    UnitSymbol::Decimeter => Unit::decimeter(),
-                    UnitSymbol::Centimeter => Unit::centimeter(),
-                    UnitSymbol::Millimeter => Unit::millimeter(),
-                };
+                let unit = unit_symbol.to_unit();
 
                 match number.convert_to_unit(&ComposedUnit::new_with_unit(unit)) {
                     Ok(val) => Ok(val),
@@ -1037,6 +1043,12 @@ mod tests {
     fn number_with_underscores() {
         let result = make_interpreter("12_345_678", None).interpret();
         assert_eq!(result, Ok(Value::new(Number::from_i64(12345678).unwrap())));
+    }
+
+    #[test]
+    fn euro_per_km() {
+        let result = make_interpreter("10000 € / km", None).interpret();
+        assert_eq!(result, Ok(Value::new(Number::from_i64(10000).unwrap())));
     }
 
 }
