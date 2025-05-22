@@ -10,6 +10,7 @@ pub enum ValueError {
     InvalidConversion,
     FailedToParseConversionFactor,
     FailedToParseNumber,
+    FailedToConvertionNumberFloat,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -88,6 +89,26 @@ impl Value {
 
     pub fn is_percent(&self) -> bool {
         self.unit == ComposedUnit::new_with_unit(Unit::percent())
+    }
+
+    pub fn has_no_unit(&self) -> bool {
+        self.unit.is_empty()
+    }
+
+    pub fn pow(&self, rhs: Value) -> Result<Value, ValueError> {
+        if !rhs.has_no_unit() {
+            eprintln!("exponent should have no units");
+        }
+
+        match self.number.pow(rhs.number) {
+            Ok(num) => {
+                Ok(Value {
+                    number: num,
+                    unit: self.unit.clone(),
+                })                
+            },
+            Err(e) => Err(e),
+        }
     }
 }
 
