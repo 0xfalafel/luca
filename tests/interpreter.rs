@@ -359,3 +359,15 @@ fn km_per_second_as_meter() {
         units)
     ));
 }
+
+#[test]
+#[ignore = "bug in a library used"]
+fn m_per_s_to_km_per_h() {
+    let result = make_interpreter("100 m/s en km per hour", None).interpret();
+    let mut units = ComposedUnit::new_with_unit(Unit::kilometer());
+    units.set_unit(Unit::hour(), -1);
+    assert_eq!(result, Ok(Value::new_with_units(
+        Number::from_i64(360).unwrap(),
+        units)
+    ));
+}
