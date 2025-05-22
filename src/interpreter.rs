@@ -76,6 +76,10 @@ pub enum UnitSymbol {
     Decimeter,
     Centimeter,
     Millimeter,
+    Second,
+    Minute,
+    Hour,
+    Millisecond,
 }
 
 impl UnitSymbol {
@@ -86,6 +90,10 @@ impl UnitSymbol {
             UnitSymbol::Decimeter => Unit::decimeter(),
             UnitSymbol::Centimeter => Unit::centimeter(),
             UnitSymbol::Millimeter => Unit::millimeter(),
+            UnitSymbol::Second => Unit::second(),
+            UnitSymbol::Minute => Unit::minute(),
+            UnitSymbol::Hour => Unit::hour(),
+            UnitSymbol::Millisecond => Unit::millisecond(),
         }
     }
 }
@@ -168,6 +176,10 @@ impl Lexer {
             "dm" | "decimeter" | "decimetre" => Token::UNIT(UnitSymbol::Decimeter),
             "cm" | "centimeter" | "centimetre" => Token::UNIT(UnitSymbol::Centimeter),
             "mm" | "millimeter" | "millimetre" => Token::UNIT(UnitSymbol::Millimeter),
+            "s" | "second" | "seconde" => Token::UNIT(UnitSymbol::Second),
+            "min" | "minute" => Token::UNIT(UnitSymbol::Minute),
+            "h" | "hour" | "heure" => Token::UNIT(UnitSymbol::Hour),
+            "ms" | "millisecond" | "milliseconde" => Token::UNIT(UnitSymbol::Millisecond),
             _ => Token::VAR(var)
         };
 

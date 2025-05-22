@@ -99,11 +99,25 @@ impl Unit {
     pub fn meter() -> Unit {
         Unit { symbol: "m".into(), name: "meter".into(), kind: UnitKind::Base }
     }
-
     pub fn kilometer()  -> Unit { Unit::meter().with_prefix("kilo") }
     pub fn decimeter()  -> Unit { Unit::meter().with_prefix("deci") }
     pub fn centimeter() -> Unit { Unit::meter().with_prefix("centi") }
     pub fn millimeter() -> Unit { Unit::meter().with_prefix("milli") }
+
+    pub fn second() -> Unit {
+        Unit { symbol: "s".into(), name: "second".into(), kind: UnitKind::Base }
+    }
+    pub fn millisecond() -> Unit { Unit::second().with_prefix("milli") }
+    pub fn minute() -> Unit {
+        Unit {
+            symbol: "min".into(), name: "minute".into(),
+            kind: UnitKind::Derived(60.0, Box::new(Self::second())) }
+    }
+    pub fn hour() -> Unit {
+        Unit {
+            symbol: "h".into(), name: "hour".into(),
+            kind: UnitKind::Derived(3600.0, Box::new(Self::second())) }
+    }
 
     pub fn euro() -> Unit {
         Unit { symbol: "€".into(), name: "euro".into(), kind: UnitKind::Base }
