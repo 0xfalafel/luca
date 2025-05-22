@@ -430,3 +430,9 @@ fn text_with_units() {
     let result = make_interpreter("côté de 10cm", None).interpret();
     assert_eq!(result, Ok(Value::new_with_unit(Number::from_i64(10).unwrap(), &Unit::centimeter())));
 }
+
+#[test]
+fn power() {
+    let result = make_interpreter("100 ^ 2", None).interpret();
+    assert_eq!(result, Ok(Value::new(Number::from_i64(10000).unwrap())));
+}
