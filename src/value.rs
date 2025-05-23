@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Neg};
 
@@ -11,6 +12,7 @@ pub enum ValueError {
     FailedToParseConversionFactor,
     FailedToParseNumber,
     FailedToConvertionNumberFloat,
+    IsNotInteger,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -35,6 +37,10 @@ impl Value {
     #[allow(unused)]
     pub fn new_with_units(number: Number, units: ComposedUnit) -> Value {
         Value { number: number, unit: units }
+    }
+
+    pub fn new_with_hashmap(number: Number, units: HashMap<Unit, i64>) -> Value {
+        Value { number: number, unit: ComposedUnit { units: units } }
     }
 
     pub fn set_unit(self, unit: Unit) -> Value {
@@ -101,14 +107,32 @@ impl Value {
             eprintln!("exponent should have no units");
         }
 
-        match self.number.pow(rhs.number) {
-            Ok(num) => {
-                Ok(Value {
-                    number: num,
-                    unit: self.unit.clone(),
-                })                
-            },
-            Err(e) => Err(e),
+        // If we have a i32. We can update the unit
+        // because we m² exists, but not m ^ 2,5
+        if let Ok(i32) = rhs.number.clone().try_into() {
+            let mut new_unit: HashMap<Unit, i64> = HashMap::new();
+            for (key, power) in &self.unit.units {
+    
+                let p = *power * i64::from(i32);
+                new_unit.insert(key.clone(), p);
+            }
+    
+            Ok(Value::new_with_hashmap(
+                self.number.powi(i32),
+                new_unit
+            ))
+        
+        // We don't update the unit, let's just do a powf
+        } else {
+            let num = match self.number.pow(&rhs.number) {
+                Ok(num) => num,
+                Err(e) => return Err(e),
+            };
+            
+            Ok(Value {
+                number: num,
+                unit: self.unit.clone(),
+            })
         }
     }
 }
