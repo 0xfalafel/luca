@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{fmt, i32};
 use std::ops::{Add, Sub, Mul, Div, Neg};
 use std::str::FromStr;
 use num_rational::BigRational;
@@ -46,7 +46,7 @@ impl Number {
         Number(BigRational::one())
     }
 
-    pub fn pow(&self, rhs: Number) -> Result<Number, ValueError> {
+    pub fn pow(&self, rhs: &Number) -> Result<Number, ValueError> {
         // try to convert rhs to integer to use powi
         if let Some(rhs_integer) =  rhs.0.to_i32() {
             Ok(Number(self.0.pow(rhs_integer)))
@@ -66,6 +66,21 @@ impl Number {
             } else {
                 return Err(ValueError::FailedToConvertionNumberFloat)
             }
+        }
+    }
+
+    pub fn powi(&self, rhs: i32) -> Number {
+        Number(self.0.pow(rhs))
+    }
+
+    pub fn powf(&self, rhs: f64) -> Result<Number, ValueError> {
+        let self_f64 = match self.0.to_f64() {
+            Some(f) => f,
+            None => return Err(ValueError::FailedToConvertionNumberFloat),
+        };
+        match Number::from_float(self_f64.powf(rhs)) {
+            Some(num) => Ok(num),
+            None => Err(ValueError::FailedToConvertionNumberFloat),
         }
     }
 }
@@ -142,6 +157,22 @@ impl <F: FloatCore> Div<F> for Number {
     }
 }
 
+impl TryFrom <Number> for i32 {
+    type Error = ValueError;
+
+    fn try_from(value: Number) -> Result<Self, Self::Error> {
+        if value.0.is_integer() == false {
+            return Err(ValueError::IsNotInteger)
+        }
+
+        let big_int = value.0.to_integer();
+
+        match big_int.to_i32() {
+            Some(i32) => Ok(i32),
+            None => Err(ValueError::IsNotInteger),
+        }
+    }
+}
 
 impl Neg for Number {
     type Output = Self;
