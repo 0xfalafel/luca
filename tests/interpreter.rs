@@ -436,3 +436,14 @@ fn power() {
     let result = make_interpreter("100 ^ 2", None).interpret();
     assert_eq!(result, Ok(Value::new(Number::from_i64(10000).unwrap())));
 }
+
+#[test]
+fn power_with_unit() {
+    let result = make_interpreter("100 ^ 2 m", None).interpret();
+    assert_eq!(result, Ok(
+        Value::new_with_unit(
+            Number::from_i64(10000).unwrap(),
+            &Unit::meter()
+        )
+    ));
+}
