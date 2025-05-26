@@ -83,17 +83,17 @@ pub enum UnitSymbol {
 }
 
 impl UnitSymbol {
-    fn to_unit(&self) -> Unit {
+    fn to_unit(&self) -> ComposedUnit {
         match self {
-            UnitSymbol::Meter => Unit::meter(),
-            UnitSymbol::Kilometer => Unit::kilometer(),
-            UnitSymbol::Decimeter => Unit::decimeter(),
-            UnitSymbol::Centimeter => Unit::centimeter(),
-            UnitSymbol::Millimeter => Unit::millimeter(),
-            UnitSymbol::Second => Unit::second(),
-            UnitSymbol::Minute => Unit::minute(),
-            UnitSymbol::Hour => Unit::hour(),
-            UnitSymbol::Millisecond => Unit::millisecond(),
+            UnitSymbol::Meter => ComposedUnit::meter(),
+            UnitSymbol::Kilometer => ComposedUnit::kilometer(),
+            UnitSymbol::Decimeter => ComposedUnit::decimeter(),
+            UnitSymbol::Centimeter => ComposedUnit::centimeter(),
+            UnitSymbol::Millimeter => ComposedUnit::millimeter(),
+            UnitSymbol::Second => ComposedUnit::second(),
+            UnitSymbol::Minute => ComposedUnit::minute(),
+            UnitSymbol::Hour => ComposedUnit::hour(),
+            UnitSymbol::Millisecond => ComposedUnit::millisecond(),
         }
     }
 }
@@ -658,10 +658,10 @@ impl Interpreter {
                 }
             },
             Token::UNIT(unit_symbol) => {
-                let number = self.visit(&node.children[0])?;
+                let value = self.visit(&node.children[0])?;
                 let unit = unit_symbol.to_unit();
 
-                match number.convert_to_unit(&ComposedUnit::new_with_unit(unit)) {
+                match value.convert_to_unit(&unit) {
                     Ok(val) => Ok(val),
                     Err(_e) => Err(Error::FailedConversion)
                 }
@@ -702,9 +702,9 @@ impl Interpreter {
             },
             Token::UNIT(symbol) => {
                 match node.children.len() {
-                    0 => Ok(Value::new_with_unit(
+                    0 => Ok(Value::new_with_units(
                         Number::one(),
-                        &symbol.to_unit())
+                        symbol.to_unit())
                     ),
                     1 => Ok(self.visit_unaryop(node)?),
                     _ => panic!("Too many children for an AST node")
