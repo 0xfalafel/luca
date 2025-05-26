@@ -91,6 +91,10 @@ impl ComposedUnit {
     pub fn millisecond() -> ComposedUnit { Self::new_with_unit(Unit::millisecond()) }
     pub fn minute() -> ComposedUnit { Self::new_with_unit(Unit::minute()) }
     pub fn hour() -> ComposedUnit { Self::new_with_unit(Unit::hour()) }
+    pub fn day() -> ComposedUnit { Self::new_with_unit(Unit::day()) }
+    pub fn week() -> ComposedUnit { Self::new_with_unit(Unit::week()) }
+    pub fn month() -> ComposedUnit { Self::new_with_unit(Unit::month()) }
+    pub fn year() -> ComposedUnit { Self::new_with_unit(Unit::year()) }
     pub fn square_meters() -> ComposedUnit { Self::meter().power(2) }
     pub fn square_kilometers() -> ComposedUnit { Self::meter().power(2) }
     pub fn square_decimeters() -> ComposedUnit { Self::meter().power(2) }

@@ -92,6 +92,10 @@ impl Unit {
 }
 
 impl Unit {
+    fn derived(symbol: &str, name: &str, convertion_factor: f64, base_unit: Unit) -> Unit {
+        Unit { symbol: symbol.into(), name: name.into(), kind: UnitKind::Derived(convertion_factor, Box::new(base_unit)) }
+    }
+
     pub fn percent() -> Unit {
         Unit { symbol: "%".into(), name: "percent".into(), kind: UnitKind::Base }
     }
@@ -118,6 +122,15 @@ impl Unit {
             symbol: "h".into(), name: "hour".into(),
             kind: UnitKind::Derived(3600.0, Box::new(Self::second())) }
     }
+
+    // 24h
+    pub fn day() -> Unit {Unit::derived("d", "day", 86400.0, Unit::second())}
+    // 7 days
+    pub fn week() -> Unit {Unit::derived("wk", "week", 604800.0, Unit::second())}
+    // 30.436875 days
+    pub fn month() -> Unit {Unit::derived("mo", "month", 2629746.0, Unit::second())}
+    // 365.2425 days
+    pub fn year() -> Unit {Unit::derived("y", "year", 31556952.0, Unit::second())}
 
     pub fn euro() -> Unit {
         Unit { symbol: "€".into(), name: "euro".into(), kind: UnitKind::Base }

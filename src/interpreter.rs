@@ -86,6 +86,10 @@ pub enum UnitSymbol {
     Minute,
     Hour,
     Millisecond,
+    Day,
+    Week,
+    Month,
+    Year,
 }
 
 impl UnitSymbol {
@@ -105,6 +109,10 @@ impl UnitSymbol {
             UnitSymbol::SquareDecimeters => ComposedUnit::square_decimeters(),
             UnitSymbol::SquareCentimeters => ComposedUnit::square_centimeters(),
             UnitSymbol::SquareMillimeters => ComposedUnit::square_millimeters(),
+            UnitSymbol::Day => ComposedUnit::day(),
+            UnitSymbol::Week => ComposedUnit::week(),
+            UnitSymbol::Month => ComposedUnit::month(),
+            UnitSymbol::Year => ComposedUnit::year(),
         }
     }
 }
@@ -199,6 +207,11 @@ impl Lexer {
             "min" | "minute" => Token::UNIT(UnitSymbol::Minute),
             "h" | "hour" | "heure" => Token::UNIT(UnitSymbol::Hour),
             "ms" | "millisecond" | "milliseconde" => Token::UNIT(UnitSymbol::Millisecond),
+
+            "d" | "day" | "days" | "jour" | "jours" => Token::UNIT(UnitSymbol::Day),
+            "w" | "week" | "weeks" | "semaine" | "semaines" => Token::UNIT(UnitSymbol::Week),
+            "mo" | "month" | "months" | "mois" => Token::UNIT(UnitSymbol::Month),
+            "y" | "year" | "years" | "an" | "ans" => Token::UNIT(UnitSymbol::Year),
 
             "k" => Token::LARGE(1000),
             _ => Token::VAR(var)
