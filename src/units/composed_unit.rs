@@ -92,10 +92,10 @@ impl ComposedUnit {
     pub fn minute() -> ComposedUnit { Self::new_with_unit(Unit::minute()) }
     pub fn hour() -> ComposedUnit { Self::new_with_unit(Unit::hour()) }
     pub fn square_meters() -> ComposedUnit { Self::meter().power(2) }
-    pub fn square_kilometers() -> ComposedUnit { Self::meter().power(2) }
-    pub fn square_decimeters() -> ComposedUnit { Self::meter().power(2) }
-    pub fn square_centimeters() -> ComposedUnit { Self::meter().power(2) }
-    pub fn square_millimeters() -> ComposedUnit { Self::meter().power(2) }
+    pub fn square_kilometers() -> ComposedUnit { Self::kilometer().power(2) }
+    pub fn square_decimeters() -> ComposedUnit { Self::decimeter().power(2) }
+    pub fn square_centimeters() -> ComposedUnit { Self::centimeter().power(2) }
+    pub fn square_millimeters() -> ComposedUnit { Self::millimeter().power(2) }
 
 }
 
