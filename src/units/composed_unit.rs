@@ -31,16 +31,6 @@ impl ComposedUnit {
         }
     }
 
-    pub fn new_unit_power(unit: Unit, power: i64) -> ComposedUnit {
-        let mut units = HashMap::new();
-        units.insert(unit, power);
-
-        ComposedUnit {
-            units: units,
-        }
-    }
-
-
     #[cfg(test)]
     #[allow(unused)]
     pub fn new_with_hashmap(hasmap: HashMap<Unit, i64>) -> ComposedUnit {
