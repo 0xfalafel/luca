@@ -23,13 +23,23 @@ impl ComposedUnit {
     }
 
     pub fn new_with_unit(unit: Unit) -> ComposedUnit {
-        let mut units = HashMap::new();
+        let mut units: HashMap<Unit, i64> = HashMap::new();
         units.insert(unit, 1);
 
         ComposedUnit {
             units: units,
         }
     }
+
+    pub fn new_unit_power(unit: Unit, power: i64) -> ComposedUnit {
+        let mut units = HashMap::new();
+        units.insert(unit, power);
+
+        ComposedUnit {
+            units: units,
+        }
+    }
+
 
     #[cfg(test)]
     #[allow(unused)]
@@ -66,8 +76,17 @@ impl ComposedUnit {
     fn has_denominator(&self) -> bool {
         self.units.values().any(|power| power.is_negative())
     }
+
+    /// Easly create power for units
+    /// meter -> square meters
+    pub fn power(&self, power: i64) -> ComposedUnit {
+        let mut unit = self.clone();
+        unit.units.iter_mut().for_each(|(_, pow)| *pow = power);
+        unit
+    }
 }
 
+#[allow(unused)]
 impl ComposedUnit {
     pub fn percent() -> ComposedUnit { Self::new_with_unit(Unit::percent()) }
     pub fn meter() -> ComposedUnit { Self::new_with_unit(Unit::meter()) }
@@ -81,6 +100,12 @@ impl ComposedUnit {
     pub fn millisecond() -> ComposedUnit { Self::new_with_unit(Unit::millisecond()) }
     pub fn minute() -> ComposedUnit { Self::new_with_unit(Unit::minute()) }
     pub fn hour() -> ComposedUnit { Self::new_with_unit(Unit::hour()) }
+    pub fn square_meters() -> ComposedUnit { Self::meter().power(2) }
+    pub fn square_kilometer() -> ComposedUnit { Self::meter().power(2) }
+    pub fn square_decimeter() -> ComposedUnit { Self::meter().power(2) }
+    pub fn square_centimeter() -> ComposedUnit { Self::meter().power(2) }
+    pub fn square_millimeter() -> ComposedUnit { Self::meter().power(2) }
+
 }
 
 impl Mul<ComposedUnit> for ComposedUnit {
