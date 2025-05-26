@@ -78,6 +78,11 @@ pub enum UnitSymbol {
     Decimeter,
     Centimeter,
     Millimeter,
+    SquareMeters,
+    SquareKilometers,
+    SquareDecimeters,
+    SquareCentimeters,
+    SquareMillimeters,
     Second,
     Minute,
     Hour,
@@ -96,6 +101,11 @@ impl UnitSymbol {
             UnitSymbol::Minute => ComposedUnit::minute(),
             UnitSymbol::Hour => ComposedUnit::hour(),
             UnitSymbol::Millisecond => ComposedUnit::millisecond(),
+            UnitSymbol::SquareMeters => ComposedUnit::square_meters(),
+            UnitSymbol::SquareKilometers => ComposedUnit::square_kilometers(),
+            UnitSymbol::SquareDecimeters => ComposedUnit::square_decimeters(),
+            UnitSymbol::SquareCentimeters => ComposedUnit::square_centimeters(),
+            UnitSymbol::SquareMillimeters => ComposedUnit::square_millimeters(),
         }
     }
 }
@@ -173,11 +183,19 @@ impl Lexer {
             "per" | "par" => Token::DIV, // $ per km 
             "of" | "de" => Token::OF, // Percentage
             "en" | "as" => Token::AS, // Conversion
+
             "m" | "meter" | "metre" => Token::UNIT(UnitSymbol::Meter),
             "km" | "kilometer" | "kilometre" => Token::UNIT(UnitSymbol::Kilometer),
             "dm" | "decimeter" | "decimetre" => Token::UNIT(UnitSymbol::Decimeter),
             "cm" | "centimeter" | "centimetre" => Token::UNIT(UnitSymbol::Centimeter),
             "mm" | "millimeter" | "millimetre" => Token::UNIT(UnitSymbol::Millimeter),
+
+            "m²"  | "m2"  => Token::UNIT(UnitSymbol::SquareMeters),
+            "km²" | "km2" => Token::UNIT(UnitSymbol::SquareKilometers),
+            "dm²" | "dm2" => Token::UNIT(UnitSymbol::SquareDecimeters),
+            "cm²" | "cm2" => Token::UNIT(UnitSymbol::SquareCentimeters),
+            "mm²" | "mm2" => Token::UNIT(UnitSymbol::SquareMillimeters),
+
             "s" | "second" | "seconde" => Token::UNIT(UnitSymbol::Second),
             "min" | "minute" => Token::UNIT(UnitSymbol::Minute),
             "h" | "hour" | "heure" => Token::UNIT(UnitSymbol::Hour),
