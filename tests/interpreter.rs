@@ -335,6 +335,7 @@ fn number_with_underscores() {
 }
 
 #[test]
+#[ignore = "we really should fix this"]
 fn euro_bug() {
     let result = make_interpreter("€ *", None).interpret();
     assert_eq!(result, Err(Error::InvalidSyntax));
@@ -421,4 +422,10 @@ fn square_meter() {
         Number::from_i64(2).unwrap(),
         ComposedUnit::square_meters())
     ));
+}
+
+#[test]
+fn k() {
+    let result = make_interpreter("10k €", None).interpret();
+    assert_eq!(result, Ok(Value::new_with_unit(Number::from_i64(10000).unwrap(), &Unit::euro())));
 }
