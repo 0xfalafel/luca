@@ -445,5 +445,33 @@ fn power_with_unit() {
             Number::from_i64(10000).unwrap(),
             &Unit::meter()
         )
+    ))
+}
+
+#[test]
+fn two_vars() {
+    let result = make_interpreter("1m² ", None).interpret();
+    assert_eq!(result, Ok(Value::new_with_units(
+        Number::one(),
+        ComposedUnit::square_meters())
+    ));
+}
+
+
+#[test]
+fn one_square_meter() {
+    let result = make_interpreter("1m² ", None).interpret();
+    assert_eq!(result, Ok(Value::new_with_units(
+        Number::one(),
+        ComposedUnit::square_meters())
+    ));
+}
+
+#[test]
+fn square_meter() {
+    let result = make_interpreter("1 m² * 2", None).interpret();
+    assert_eq!(result, Ok(Value::new_with_units(
+        Number::from_i64(2).unwrap(),
+        ComposedUnit::square_meters())
     ));
 }
