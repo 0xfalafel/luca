@@ -335,6 +335,12 @@ fn number_with_underscores() {
 }
 
 #[test]
+fn euro_bug() {
+    let result = make_interpreter("€ *", None).interpret();
+    assert_eq!(result, Err(Error::InvalidSyntax));
+}
+
+#[test]
 fn euro_per_km() {
     let result = make_interpreter("10000 € / km", None).interpret();
     let number = Number::from_i64(10000).unwrap();
