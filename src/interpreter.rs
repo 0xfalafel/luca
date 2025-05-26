@@ -58,6 +58,7 @@ pub enum Token {
     OF, // Keyword of for percentage
     UNIT(UnitSymbol),
     AS, // Conversion
+    LARGE(i64),
     EOF,
 }
 
@@ -198,6 +199,8 @@ impl Lexer {
             "min" | "minute" => Token::UNIT(UnitSymbol::Minute),
             "h" | "hour" | "heure" => Token::UNIT(UnitSymbol::Hour),
             "ms" | "millisecond" | "milliseconde" => Token::UNIT(UnitSymbol::Millisecond),
+
+            "k" => Token::LARGE(1000),
             _ => Token::VAR(var)
         };
 
@@ -363,7 +366,7 @@ impl Parser {
         Ok(node)
     }
 
-    /// value : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)
+    /// value : (MONEY) number | UNIT | number (LARGE) (MONEY | PERCENTAGE | UNIT)
     /// TODO: we should fusion UNIT and MONEY to have (and maybe even UNIT and PERCENTAGE)
     /// value : UNIT (number) | number (PERCENTAGE | UNIT)
     fn value(&mut self) -> Result<AST, Error> {
@@ -386,7 +389,14 @@ impl Parser {
 
             // NUMBER
             Token::NUMBER(_) => {
-                let node = self.number()?;
+                let mut node = self.number()?;
+
+                // LARGE: the k in 10k €
+                if let Token::LARGE(prop) = self.current_token {
+                    self.eat(&Token::LARGE(prop))?;
+                    let number = Token::NUMBER(Number::from_i64(prop).unwrap());
+                    node = AST::new(Token::MUL, vec![node, AST::new(number, vec![])]);
+                }
 
                 match self.current_token {
                     // MONEY: check if our value ends with a currency, like 12€
