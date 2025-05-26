@@ -68,6 +68,21 @@ impl ComposedUnit {
     }
 }
 
+impl ComposedUnit {
+    pub fn percent() -> ComposedUnit { Self::new_with_unit(Unit::percent()) }
+    pub fn meter() -> ComposedUnit { Self::new_with_unit(Unit::meter()) }
+    pub fn kilometer() -> ComposedUnit { Self::new_with_unit(Unit::kilometer()) }
+    pub fn decimeter() -> ComposedUnit { Self::new_with_unit(Unit::decimeter()) }
+    pub fn centimeter() -> ComposedUnit { Self::new_with_unit(Unit::centimeter()) }
+    pub fn millimeter() -> ComposedUnit { Self::new_with_unit(Unit::millimeter()) }
+    pub fn euro() -> ComposedUnit { Self::new_with_unit(Unit::euro()) }
+    pub fn dollar() -> ComposedUnit { Self::new_with_unit(Unit::dollar()) }
+    pub fn second() -> ComposedUnit { Self::new_with_unit(Unit::second()) }
+    pub fn millisecond() -> ComposedUnit { Self::new_with_unit(Unit::millisecond()) }
+    pub fn minute() -> ComposedUnit { Self::new_with_unit(Unit::minute()) }
+    pub fn hour() -> ComposedUnit { Self::new_with_unit(Unit::hour()) }
+}
+
 impl Mul<ComposedUnit> for ComposedUnit {
     type Output = (ConversionFactor, ComposedUnit);
 
