@@ -214,14 +214,13 @@ impl Lexer {
         let end_of_variable = input_text
             .find(|c: char| c == '=' || c == '€' || c == '$'
                 || c == '+' || c == '-' || c == '*' || c == '/'
-                || c.is_whitespace())
-            .unwrap_or(input_text.len());
+                || c.is_whitespace());
 
+        let end = end_of_variable.unwrap_or(input_text.len());
+        self.pos = str_start + end;
         
-        self.pos = str_start + end_of_variable;
-        
-        let new_var: String = input_text.chars().take(end_of_variable).collect();
-        // println!("new_var: {:?}", new_var);
+        let new_var: String = input_text[..end].to_string();
+        //let new_var: String = input_text.chars().take(end).collect();
         new_var
     }
 
