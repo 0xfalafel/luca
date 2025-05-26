@@ -22,6 +22,7 @@ impl ComposedUnit {
         }
     }
 
+    #[allow(unused)]
     pub fn new_with_unit(unit: Unit) -> ComposedUnit {
         let mut units: HashMap<Unit, i64> = HashMap::new();
         units.insert(unit, 1);
@@ -91,10 +92,10 @@ impl ComposedUnit {
     pub fn minute() -> ComposedUnit { Self::new_with_unit(Unit::minute()) }
     pub fn hour() -> ComposedUnit { Self::new_with_unit(Unit::hour()) }
     pub fn square_meters() -> ComposedUnit { Self::meter().power(2) }
-    pub fn square_kilometer() -> ComposedUnit { Self::meter().power(2) }
-    pub fn square_decimeter() -> ComposedUnit { Self::meter().power(2) }
-    pub fn square_centimeter() -> ComposedUnit { Self::meter().power(2) }
-    pub fn square_millimeter() -> ComposedUnit { Self::meter().power(2) }
+    pub fn square_kilometers() -> ComposedUnit { Self::meter().power(2) }
+    pub fn square_decimeters() -> ComposedUnit { Self::meter().power(2) }
+    pub fn square_centimeters() -> ComposedUnit { Self::meter().power(2) }
+    pub fn square_millimeters() -> ComposedUnit { Self::meter().power(2) }
 
 }
 
