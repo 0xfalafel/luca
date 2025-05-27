@@ -50,17 +50,14 @@ impl SimpleComponent for LucaInput {
             // interpret the text from the input pane
             let mut results = String::new();
             let variables : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
-            
-            for line in text.lines() {
 
+            // Create the content of the Result Pane
+            for line in text.lines() {
                 if let Ok(res) = solve(line.to_string(), variables.clone()) {
                     results.push_str(&res);
-                    results.push_str("\n");
-                } else {
-                    results.push('\n');
                 }
+                results.push('\n');
             }
-            results.pop();
 
             // Make the first line bold
             if let Some(start_iter) = text_buffer.iter_at_line_index(0, 0) {
