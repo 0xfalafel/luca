@@ -62,6 +62,7 @@ pub enum Token {
     AS, // Conversion
     LARGE(i64),
     TITLE,
+    NONE, // used for words that have no meaning
     EOF,
 }
 
@@ -175,39 +176,47 @@ impl Lexer {
         match Number::from_str(&ascii_number) {
             Ok(val) => Ok(Token::NUMBER(val)),
             Err(_) => Err(Error::NumberParsingFailed)
-        }    
+        }
+    }
+
+    fn is_keyword(var: &str) -> Option<Token> {
+        match var {
+            "per" | "par" => Some(Token::DIV), // $ per km 
+            "of" | "de" => Some(Token::OF), // Percentage
+            "en" | "as" => Some(Token::AS), // Conversion
+
+            "m" | "meter" | "metre" => Some(Token::UNIT(UnitSymbol::Meter)),
+            "km" | "kilometer" | "kilometre" => Some(Token::UNIT(UnitSymbol::Kilometer)),
+            "dm" | "decimeter" | "decimetre" => Some(Token::UNIT(UnitSymbol::Decimeter)),
+            "cm" | "centimeter" | "centimetre" => Some(Token::UNIT(UnitSymbol::Centimeter)),
+            "mm" | "millimeter" | "millimetre" => Some(Token::UNIT(UnitSymbol::Millimeter)),
+
+            "m²"  | "m2"  => Some(Token::UNIT(UnitSymbol::SquareMeters)),
+            "km²" | "km2" => Some(Token::UNIT(UnitSymbol::SquareKilometers)),
+            "dm²" | "dm2" => Some(Token::UNIT(UnitSymbol::SquareDecimeters)),
+            "cm²" | "cm2" => Some(Token::UNIT(UnitSymbol::SquareCentimeters)),
+            "mm²" | "mm2" => Some(Token::UNIT(UnitSymbol::SquareMillimeters)),
+
+            "s" | "second" | "seconde" => Some(Token::UNIT(UnitSymbol::Second)),
+            "min" | "minute" => Some(Token::UNIT(UnitSymbol::Minute)),
+            "h" | "hour" | "heure" => Some(Token::UNIT(UnitSymbol::Hour)),
+            "ms" | "millisecond" | "milliseconde" => Some(Token::UNIT(UnitSymbol::Millisecond)),
+            
+            "k" => Some(Token::LARGE(1000)),
+            _ => None,
+        }
     }
 
     fn keyword_or_variable(&mut self) -> Result<Token, Error> {
         let var = self.variable();
 
-        let token = match var.as_str() {
-            "per" | "par" => Token::DIV, // $ per km 
-            "of" | "de" => Token::OF, // Percentage
-            "en" | "as" => Token::AS, // Conversion
-
-            "m" | "meter" | "metre" => Token::UNIT(UnitSymbol::Meter),
-            "km" | "kilometer" | "kilometre" => Token::UNIT(UnitSymbol::Kilometer),
-            "dm" | "decimeter" | "decimetre" => Token::UNIT(UnitSymbol::Decimeter),
-            "cm" | "centimeter" | "centimetre" => Token::UNIT(UnitSymbol::Centimeter),
-            "mm" | "millimeter" | "millimetre" => Token::UNIT(UnitSymbol::Millimeter),
-
-            "m²"  | "m2"  => Token::UNIT(UnitSymbol::SquareMeters),
-            "km²" | "km2" => Token::UNIT(UnitSymbol::SquareKilometers),
-            "dm²" | "dm2" => Token::UNIT(UnitSymbol::SquareDecimeters),
-            "cm²" | "cm2" => Token::UNIT(UnitSymbol::SquareCentimeters),
-            "mm²" | "mm2" => Token::UNIT(UnitSymbol::SquareMillimeters),
-
-            "s" | "second" | "seconde" => Token::UNIT(UnitSymbol::Second),
-            "min" | "minute" => Token::UNIT(UnitSymbol::Minute),
-            "h" | "hour" | "heure" => Token::UNIT(UnitSymbol::Hour),
-            "ms" | "millisecond" | "milliseconde" => Token::UNIT(UnitSymbol::Millisecond),
-            
-            "k" => Token::LARGE(1000),
-            _ => Token::VAR(var)
-        };
-
-        Ok(token)
+        if let Some(token) = Self::is_keyword(var.as_str()) {
+            Ok(token)
+        } else if self.peek_next_token() == Some(Token::ASSIGN) {
+            Ok(Token::VAR(var))
+        } else {
+            Ok(Token::NONE)
+        }
     }
 
     /// Retun a string
@@ -233,7 +242,15 @@ impl Lexer {
     /// This method is responsible for breaking a sentence
     /// appart into tokens. One token at the time.
     pub fn get_next_token(&mut self) -> Result<Token, Error> {
+        let mut token = self.next_token()?;
 
+        while token == Token::NONE {
+            token = self.next_token()?;
+        }
+        Ok(token)
+    }
+
+    fn next_token(&mut self) -> Result<Token, Error> {
         // get the next non-whitespace char, or EOF
         let char = loop {
             let my_char = self.get_char();
@@ -326,7 +343,7 @@ pub fn syntax_analysis(input: &str) -> Vec<(Token, usize, usize)> {
     let mut res = vec![];
 
     let mut start = lexer.pos;
-    while let Ok(token) = lexer.get_next_token() {
+    while let Ok(token) = lexer.next_token() {
         let end = lexer.pos;
 
         res.push((token.clone(), start, end));
