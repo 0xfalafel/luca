@@ -4,6 +4,30 @@ use std::cell::RefCell;
 
 pub type Variables = Rc<RefCell<HashMap<String, Value>>>;
 
+fn get_variable(variables: Variables, key: &str) -> Option<Value> {
+    let var_list = variables.borrow();
+
+    match var_list.get(key) {
+        Some(val) => return Some(val.clone()),
+        None => {}
+    };
+
+    // if variable ends with an 's', we check if the singular is a variable
+    if let Some(last_char) = key.chars().nth(key.len()-1) {
+        
+        if last_char == 's' {
+            let singular_varname: String = key.chars().take(key.len()-1).collect();
+
+            match var_list.get(&singular_varname) {
+                Some(val) => return Some(val.clone()),
+                _ => {}
+            }
+        }
+    }
+
+    None
+}
+
 use crate::units::number::Number;
 use crate::units::unit::Unit;
 use crate::value::Value;
@@ -214,6 +238,8 @@ impl Lexer {
         if let Some(token) = Self::is_keyword(var.as_str()) {
             Ok(token)
         } else if self.peek_next_token() == Some(Token::ASSIGN) {
+            Ok(Token::VAR(var))
+        } else if self.variables.borrow().get(&var).is_some() {
             Ok(Token::VAR(var))
         } else {
             Ok(Token::NONE)
