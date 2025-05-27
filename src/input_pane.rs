@@ -7,6 +7,7 @@ use crate::interpreter::solve;
 use crate::value::Value;
 use std::collections::HashMap;
 use std::cell::RefCell;
+use std::i32;
 use std::rc::Rc;
 
 // Input component
@@ -86,12 +87,29 @@ impl SimpleComponent for LucaInput {
 }
 
 fn create_tags(text_buffer: TextBuffer) {
-        // Create and add the bold tag once
+    let tag_table = text_buffer.tag_table();
+
+    // Bold
     let bold_tag = gtk::TextTag::builder()
         .name("bold")
         .weight(700) // bold in pango
         .build();
-    text_buffer.tag_table().add(&bold_tag);
+    tag_table.add(&bold_tag);
+
+    // Number
+    let number_tag = gtk::TextTag::builder()
+        .name("number")
+        .foreground("#3689e6")
+        .build();
+    tag_table.add(&number_tag);
+
+    // Unit
+    let unit_tag = gtk::TextTag::builder()
+        .name("unit")
+        .foreground("#a56de2")
+        .build();
+    tag_table.add(&unit_tag);
+
 }
 
 fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str) {
@@ -112,22 +130,29 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str) {
                         text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
                     }
                 }               
-            }
+            },
+            Token::NUMBER(_) => {
+                apply_tag(text_buffer.clone(), line_number, start as i32, end as i32, "number");
+            },
+            Token::UNIT(_) | Token::PERCENTAGE | Token::MONEY(_) => {
+                apply_tag(text_buffer.clone(), line_number, start as i32, end as i32, "unit");
+            },
             _ => {}
         }
     }
     println!("----------------------------------------------------");
+}
 
-    // if line_number == 0 {
-    //     // Make the first line bold
-    //     if let Some(start_iter) = text_buffer.iter_at_line_index(0, 0) {
-    //         let mut end_iter = start_iter.clone();
-    //         end_iter.forward_to_line_end();
+fn apply_tag(text_buffer: TextBuffer, line: i32, start: i32, end: i32, tag_name: &str) {
+
+    if let Some(start_iter) = text_buffer.iter_at_line_offset(line, start) {
+
+        if let Some(end_iter) = text_buffer.iter_at_line_offset(line, end) {
             
-    //         // Look up the tag by name
-    //         if let Some(bold_tag) = text_buffer.tag_table().lookup("bold") {
-    //             text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
-    //         }
-    //     }
-    // }
+            // Look up the tag by name
+            if let Some(bold_tag) = text_buffer.tag_table().lookup(tag_name) {
+                text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
+            }            
+        }
+    }
 }
