@@ -74,7 +74,10 @@ pub enum Token {
     AS, // Conversion
     LARGE(i64),
     TITLE,
+<<<<<<< HEAD
     NONE, // used for words that have no meaning
+=======
+>>>>>>> 7806042 (added a Title token)
     EOF,
 }
 
@@ -223,6 +226,7 @@ impl Lexer {
     fn keyword_or_variable(&mut self) -> Result<Token, Error> {
         let var = self.variable();
 
+<<<<<<< HEAD
         if let Some(token) = Self::is_keyword(var.as_str()) {
             Ok(token)
         } else if self.peek_next_token() == Some(Token::ASSIGN) {
@@ -232,6 +236,35 @@ impl Lexer {
         } else {
             Ok(Token::NONE)
         }
+=======
+        let token = match var.as_str() {
+            "per" | "par" => Token::DIV, // $ per km 
+            "of" | "de" => Token::OF, // Percentage
+            "en" | "as" => Token::AS, // Conversion
+
+            "m" | "meter" | "metre" => Token::UNIT(UnitSymbol::Meter),
+            "km" | "kilometer" | "kilometre" => Token::UNIT(UnitSymbol::Kilometer),
+            "dm" | "decimeter" | "decimetre" => Token::UNIT(UnitSymbol::Decimeter),
+            "cm" | "centimeter" | "centimetre" => Token::UNIT(UnitSymbol::Centimeter),
+            "mm" | "millimeter" | "millimetre" => Token::UNIT(UnitSymbol::Millimeter),
+
+            "m²"  | "m2"  => Token::UNIT(UnitSymbol::SquareMeters),
+            "km²" | "km2" => Token::UNIT(UnitSymbol::SquareKilometers),
+            "dm²" | "dm2" => Token::UNIT(UnitSymbol::SquareDecimeters),
+            "cm²" | "cm2" => Token::UNIT(UnitSymbol::SquareCentimeters),
+            "mm²" | "mm2" => Token::UNIT(UnitSymbol::SquareMillimeters),
+
+            "s" | "second" | "seconde" => Token::UNIT(UnitSymbol::Second),
+            "min" | "minute" => Token::UNIT(UnitSymbol::Minute),
+            "h" | "hour" | "heure" => Token::UNIT(UnitSymbol::Hour),
+            "ms" | "millisecond" | "milliseconde" => Token::UNIT(UnitSymbol::Millisecond),
+            
+            "k" => Token::LARGE(1000),
+            _ => Token::VAR(var)
+        };
+
+        Ok(token)
+>>>>>>> 7806042 (added a Title token)
     }
 
     /// Retun a string
@@ -358,7 +391,16 @@ pub fn syntax_analysis(input: &str, variables: Variables) -> Vec<(Token, usize, 
     let mut res = vec![];
 
     let mut start = lexer.pos;
+<<<<<<< HEAD
     while let Ok(token) = lexer.next_token() {
+=======
+    while let Ok(token) = lexer.get_next_token() {
+        // otherwise the loop never exit
+        if matches!(token, Token::EOF | Token::TITLE)  {
+            return res
+        }
+
+>>>>>>> 7806042 (added a Title token)
         let end = lexer.pos;
 
         res.push((token.clone(), start, end));
