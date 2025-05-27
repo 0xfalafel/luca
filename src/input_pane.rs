@@ -1,4 +1,5 @@
 use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
+use luca::interpreter::syntax_analysis;
 use relm4::gtk::TextBuffer;
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
@@ -90,18 +91,30 @@ fn create_tags(text_buffer: TextBuffer) {
     text_buffer.tag_table().add(&bold_tag);
 }
 
-fn syntax_coloration(text_buffer: TextBuffer, line_number: usize, _line: &str) {
+fn syntax_coloration(text_buffer: TextBuffer, line_number: usize, line: &str) {
 
-    if line_number == 0 {
-        // Make the first line bold
-        if let Some(start_iter) = text_buffer.iter_at_line_index(0, 0) {
-            let mut end_iter = start_iter.clone();
-            end_iter.forward_to_line_end();
-            
-            // Look up the tag by name
-            if let Some(bold_tag) = text_buffer.tag_table().lookup("bold") {
-                text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
-            }
+    let tokens = syntax_analysis(line);
+
+    for (token, start, end) in tokens {
+        // println!("token: {:?}, start: {}, end: {}", token, start, end);
+        
+        match token {
+
+            _ => {}
         }
     }
+    //println!("----------------------------------------------------");
+
+    // if line_number == 0 {
+    //     // Make the first line bold
+    //     if let Some(start_iter) = text_buffer.iter_at_line_index(0, 0) {
+    //         let mut end_iter = start_iter.clone();
+    //         end_iter.forward_to_line_end();
+            
+    //         // Look up the tag by name
+    //         if let Some(bold_tag) = text_buffer.tag_table().lookup("bold") {
+    //             text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
+    //         }
+    //     }
+    // }
 }
