@@ -268,8 +268,8 @@ impl Lexer {
     /// Lexical analyser (also known as scanner or tokenizer).
     ///    
     /// This method is responsible for breaking a sentence
-    /// appart into tokens. One token at the time.
     pub fn get_next_token(&mut self) -> Result<Token, Error> {
+    /// appart into tokens. One token at the time.
         let mut token = self.next_token()?;
 
         while token == Token::NONE {
