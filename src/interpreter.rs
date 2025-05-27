@@ -4,28 +4,16 @@ use std::cell::RefCell;
 
 pub type Variables = Rc<RefCell<HashMap<String, Value>>>;
 
-fn get_variable(variables: Variables, key: &str) -> Option<Value> {
+fn get_variable(variables: &Variables, key: &str) -> Option<Value> {
     let var_list = variables.borrow();
 
-    match var_list.get(key) {
-        Some(val) => return Some(val.clone()),
-        None => {}
-    };
-
-    // if variable ends with an 's', we check if the singular is a variable
-    if let Some(last_char) = key.chars().nth(key.len()-1) {
-        
-        if last_char == 's' {
-            let singular_varname: String = key.chars().take(key.len()-1).collect();
-
-            match var_list.get(&singular_varname) {
-                Some(val) => return Some(val.clone()),
-                _ => {}
-            }
-        }
+    if let Some(val) = var_list.get(key) {
+        Some(val.clone())
+    } else if let Some(singular) = key.strip_suffix('s') {
+        var_list.get(singular).cloned()
+    } else {
+        None
     }
-
-    None
 }
 
 use crate::units::number::Number;
@@ -239,7 +227,7 @@ impl Lexer {
             Ok(token)
         } else if self.peek_next_token() == Some(Token::ASSIGN) {
             Ok(Token::VAR(var))
-        } else if self.variables.borrow().get(&var).is_some() {
+        } else if get_variable(&self.variables, &var).is_some() {
             Ok(Token::VAR(var))
         } else {
             Ok(Token::NONE)
@@ -681,27 +669,10 @@ impl Interpreter {
     fn visit_variable(&self, node: &AST) -> Result<Value, Error> {
         match &node.token {
             Token::VAR(var_name) => {
-                let var_list = self.variables.borrow();
-
-                match var_list.get(var_name) {
-                    Some(val) => return Ok(val.clone()),
-                    None => {}
-                };
-
-                // if variable ends with an 's', we check if the singular is a variable
-                if let Some(last_char) = var_name.chars().nth(var_name.len()-1) {
-                    
-                    if last_char == 's' {
-                        let singular_varname: String = var_name.chars().take(var_name.len()-1).collect();
-
-                        match var_list.get(&singular_varname) {
-                            Some(val) => return Ok(val.clone()),
-                            _ => {}
-                        }
-                    }
+                match get_variable(&self.variables, &var_name) {
+                    Some(val) => Ok(val),
+                    None => Err(Error::UndefinedVariable),
                 }
-                
-                Err(Error::UndefinedVariable)
             },
             _ => panic!("Token is not a variable")
         }
