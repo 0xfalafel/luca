@@ -1,10 +1,8 @@
 use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
-use luca::interpreter::{syntax_analysis, Token};
+use luca::interpreter::{syntax_analysis, Token, solve, Variables};
 use relm4::gtk::TextBuffer;
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
-use crate::interpreter::solve;
-use crate::value::Value;
 use std::collections::HashMap;
 use std::cell::RefCell;
 use std::i32;
@@ -54,10 +52,10 @@ impl SimpleComponent for LucaInput {
 
             // interpret the text from the input pane
             let mut results = String::new();
-            let variables : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
+            let variables : Variables = Rc::new(RefCell::new(HashMap::new()));
 
             for (i, line) in text.lines().enumerate() {
-                syntax_coloration(text_buffer.clone(), i as i32, line);
+                syntax_coloration(text_buffer.clone(), i as i32, line, variables.clone());
 
                 // Create the content of the Result Pane
                 if let Ok(res) = solve(line.to_string(), variables.clone()) {
@@ -73,17 +71,6 @@ impl SimpleComponent for LucaInput {
         let widgets = view_output!();
         ComponentParts {model, widgets}
     }
-
-    // fn update(&mut self, msgInput: Self::Input, _sender: ComponentSender<Self>) {
-    //     match msg {
-    //         Msg::TextChanged(text) => {
-    //             self.text = text;
-    //             if let Ok(res) = solve(self.text.clone()) {
-    //                 println!("{}", res);
-    //             }
-    //         }
-    //     }
-    // }
 }
 
 fn create_tags(text_buffer: TextBuffer) {
@@ -119,9 +106,9 @@ fn create_tags(text_buffer: TextBuffer) {
 
 }
 
-fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str) {
+fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str, variables: Variables) {
 
-    let tokens = syntax_analysis(line);
+    let tokens = syntax_analysis(line, variables);
 
     // For debug pupropses
     // for (token, start, end) in tokens.clone() {
