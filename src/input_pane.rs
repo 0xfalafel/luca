@@ -51,23 +51,14 @@ impl SimpleComponent for LucaInput {
             let mut results = String::new();
             let variables : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
-            // Create the content of the Result Pane
-            for line in text.lines() {
+            for (i, line) in text.lines().enumerate() {
+                syntax_coloration(text_buffer.clone(), i, line);
+
+                // Create the content of the Result Pane
                 if let Ok(res) = solve(line.to_string(), variables.clone()) {
                     results.push_str(&res);
                 }
                 results.push('\n');
-            }
-
-            // Make the first line bold
-            if let Some(start_iter) = text_buffer.iter_at_line_index(0, 0) {
-                let mut end_iter = start_iter.clone();
-                end_iter.forward_to_line_end();
-
-                // Look up the tag by name
-                if let Some(bold_tag) = text_buffer.tag_table().lookup("bold") {
-                    text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
-                }
             }
 
             sender.output(MsgInput::TextChanged(results.to_string())).unwrap();
@@ -97,4 +88,20 @@ fn create_tags(text_buffer: TextBuffer) {
         .weight(700) // bold in pango
         .build();
     text_buffer.tag_table().add(&bold_tag);
+}
+
+fn syntax_coloration(text_buffer: TextBuffer, line_number: usize, _line: &str) {
+
+    if line_number == 0 {
+        // Make the first line bold
+        if let Some(start_iter) = text_buffer.iter_at_line_index(0, 0) {
+            let mut end_iter = start_iter.clone();
+            end_iter.forward_to_line_end();
+            
+            // Look up the tag by name
+            if let Some(bold_tag) = text_buffer.tag_table().lookup("bold") {
+                text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
+            }
+        }
+    }
 }
