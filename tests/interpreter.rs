@@ -8,15 +8,15 @@ use luca::units::unit::Unit;
 use luca::value::Value;
 use luca::interpreter::*;
 
-fn make_interpreter(text: &str, variables: Option<Rc<RefCell<HashMap<String, Value>>>>) -> Interpreter {
+fn make_interpreter(text: &str, variables: Option<Variables>) -> Interpreter {
     
     // Create an empty variables array if none is defined
-    let vars = match variables {
+    let vars = match variables.clone() {
         Some(vars) => vars,
         None => Rc::new(RefCell::new(HashMap::new()))
     };
 
-    let lexer = Lexer::new(String::from(text));
+    let lexer = Lexer::new(String::from(text), vars);
     let parser = Parser::new(lexer).expect("Could not parse");
     let interpreter = Interpreter::new(parser, vars);
 
@@ -97,7 +97,7 @@ fn test_expression_unary2() {
 
 #[test]
 fn test_expression_variable1() {
-    let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
+    let vars : Variables = Rc::new(RefCell::new(HashMap::new()));
 
     let mut interpreter = make_interpreter("a=5", Some(vars.clone()));
     _ = interpreter.interpret();
@@ -108,7 +108,7 @@ fn test_expression_variable1() {
 
 #[test]
 fn test_expression_variable2() {
-    let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
+    let vars : Variables = Rc::new(RefCell::new(HashMap::new()));
 
     let mut interpreter = make_interpreter("bob=(525+83)/4", Some(vars.clone()));
     _ = interpreter.interpret();
@@ -119,7 +119,7 @@ fn test_expression_variable2() {
 
 #[test]
 fn test_expression_variable3() {
-    let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
+    let vars : Variables = Rc::new(RefCell::new(HashMap::new()));
 
     let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
     _ = interpreter.interpret();
@@ -245,7 +245,7 @@ fn test_handling_spaces() {
 
 #[test]
 fn implicit_multiplication() {
-    let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
+    let vars : Variables = Rc::new(RefCell::new(HashMap::new()));
     
     let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
     _ = interpreter.interpret();
@@ -257,7 +257,7 @@ fn implicit_multiplication() {
 #[test]
 #[ignore]
 fn implicit_multiplication2() {
-    let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
+    let vars : Variables = Rc::new(RefCell::new(HashMap::new()));
     
     let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
     _ = interpreter.interpret();
@@ -271,7 +271,7 @@ fn implicit_multiplication2() {
 #[test]
 #[ignore]
 fn implicit_multiplication3() {
-    let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
+    let vars : Variables = Rc::new(RefCell::new(HashMap::new()));
     
     let mut interpreter = make_interpreter("a=2", Some(vars.clone()));
     _ = interpreter.interpret();
@@ -284,7 +284,7 @@ fn implicit_multiplication3() {
 
 #[test]
 fn scenario_cinema() {
-    let vars : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
+    let vars : Variables = Rc::new(RefCell::new(HashMap::new()));
     
     let mut interpreter = make_interpreter("enfant=4€", Some(vars.clone()));
     _ = interpreter.interpret();

@@ -1,0 +1,3632 @@
+{
+  "requesterUsername": "0xfalafel",
+  "requesterAvatarIconUri": {
+    "$mid": 1,
+    "path": "/u/4268373",
+    "scheme": "https",
+    "authority": "avatars.githubusercontent.com",
+    "query": "v=4"
+  },
+  "responderUsername": "GitHub Copilot",
+  "responderAvatarIconUri": {
+    "id": "copilot"
+  },
+  "initialLocation": "panel",
+  "requests": [
+    {
+      "requestId": "request_c2897010-9c61-464e-9ccf-b182e4424bad",
+      "message": {
+        "text": "What changes would you make to `src/interpreter.rs` so that the test `power_with_unit` doesn't fail ?",
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 101
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 1,
+              "endColumn": 102
+            },
+            "text": "What changes would you make to `src/interpreter.rs` so that the test `power_with_unit` doesn't fail ?",
+            "kind": "text"
+          }
+        ]
+      },
+      "variableData": {
+        "variables": [
+          {
+            "id": "copilot_searchCodebase",
+            "name": "Codebase",
+            "fullName": "Codebase",
+            "icon": {
+              "id": "folder"
+            },
+            "isTool": true
+          },
+          {
+            "id": "vscode.implicit.selection",
+            "name": "file:interpreter.rs",
+            "value": {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/tests/interpreter.rs",
+                "path": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 382,
+                "startColumn": 4,
+                "endLineNumber": 382,
+                "endColumn": 19,
+                "selectionStartLineNumber": 382,
+                "selectionStartColumn": 4,
+                "positionLineNumber": 382,
+                "positionColumn": 19
+              }
+            },
+            "isFile": true,
+            "modelDescription": "User's active selection"
+          }
+        ]
+      },
+      "response": [
+        {
+          "kind": "toolInvocationSerialized",
+          "invocationMessage": {
+            "value": "Recherche de « power_with_unit » danscodebase",
+            "supportThemeIcons": false,
+            "supportHtml": false,
+            "uris": {}
+          },
+          "pastTenseMessage": {
+            "value": "Résultats de la recherche codebase \"power_with_unit\", 14",
+            "supportThemeIcons": false,
+            "supportHtml": false,
+            "uris": {}
+          },
+          "isConfirmed": true,
+          "isComplete": true,
+          "resultDetails": [
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/lib.rs",
+                "external": "file:///home/olivier/projets/luca/src/lib.rs",
+                "path": "/home/olivier/projets/luca/src/lib.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 3,
+                "endColumn": 21
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/units/composed_unit.rs",
+                "external": "file:///home/olivier/projets/luca/src/units/composed_unit.rs",
+                "path": "/home/olivier/projets/luca/src/units/composed_unit.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 228,
+                "endColumn": 2
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/units/mod.rs",
+                "external": "file:///home/olivier/projets/luca/src/units/mod.rs",
+                "path": "/home/olivier/projets/luca/src/units/mod.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 7,
+                "endColumn": 23
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/units/money.rs",
+                "external": "file:///home/olivier/projets/luca/src/units/money.rs",
+                "path": "/home/olivier/projets/luca/src/units/money.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 126,
+                "startColumn": 9,
+                "endLineNumber": 368,
+                "endColumn": 2
+              }
+            },
+            {
+              "$mid": 1,
+              "fsPath": "/home/olivier/projets/luca/src/units/number.rs",
+              "external": "file:///home/olivier/projets/luca/src/units/number.rs",
+              "path": "/home/olivier/projets/luca/src/units/number.rs",
+              "scheme": "file"
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/units/percentage.rs",
+                "external": "file:///home/olivier/projets/luca/src/units/percentage.rs",
+                "path": "/home/olivier/projets/luca/src/units/percentage.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 264,
+                "endColumn": 2
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/units/restype.rs",
+                "external": "file:///home/olivier/projets/luca/src/units/restype.rs",
+                "path": "/home/olivier/projets/luca/src/units/restype.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 223,
+                "endColumn": 1
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/units/unit.rs",
+                "external": "file:///home/olivier/projets/luca/src/units/unit.rs",
+                "path": "/home/olivier/projets/luca/src/units/unit.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 148,
+                "endColumn": 2
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 201,
+                "endColumn": 13
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 206,
+                "startColumn": 14,
+                "endLineNumber": 229,
+                "endColumn": 18
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 248,
+                "startColumn": 18,
+                "endLineNumber": 285,
+                "endColumn": 12
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 289,
+                "startColumn": 22,
+                "endLineNumber": 326,
+                "endColumn": 17
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 330,
+                "startColumn": 26,
+                "endLineNumber": 392,
+                "endColumn": 1
+              }
+            },
+            {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/tests/interpreter.rs",
+                "path": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 353,
+                "startColumn": 13,
+                "endLineNumber": 390,
+                "endColumn": 2
+              }
+            }
+          ]
+        },
+        {
+          "value": "Pour que le test ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "power_with_unit",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 382,
+                "startColumn": 4,
+                "endLineNumber": 382,
+                "endColumn": 4
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/tests/interpreter.rs",
+                "path": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "4153998b-7119-4728-beb6-25c9b2e34f7d"
+        },
+        {
+          "value": " ne plante plus, il faut s'assurer que l'interprétation de l'expression `\"100 ^ 2 m\"` donne bien une valeur avec le bon nombre (`10000`) et la bonne unité (",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "m",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 386,
+                "startColumn": 13,
+                "endLineNumber": 386,
+                "endColumn": 13
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "58a07908-f7b3-4001-af98-b0a8f5fc5b5f"
+        },
+        {
+          "value": ").  \nCela implique que l'opérateur `^` (puissance) doit correctement gérer la propagation de l'unité lors de l'évaluation d'une puissance suivie d'une unité.\n\nDans la plupart des implémentations d'interpréteurs, ce genre de bug vient du fait que l'unité n'est pas appliquée au résultat de la puissance, mais reste attachée à l'opérande de gauche, ou est ignorée.\n\n**Voici ce qu'il faut vérifier et corriger dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "$mid": 1,
+            "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "value": " :**\n\n1. **Quand on rencontre une expression du type ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "a ^ b unit",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 104,
+                "startColumn": 26,
+                "endLineNumber": 104,
+                "endColumn": 26
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/units/restype.rs",
+                "external": "file:///home/olivier/projets/luca/src/units/restype.rs",
+                "path": "/home/olivier/projets/luca/src/units/restype.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "9935ac8b-aa16-4a07-b465-1e1c769e08bd"
+        },
+        {
+          "value": ", il faut que l'unité soit appliquée au résultat, pas à l'exposant ni ignorée.**\n2. **Après avoir évalué la puissance, si une unité suit, il faut créer un ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "Value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 19,
+                "startColumn": 12,
+                "endLineNumber": 19,
+                "endColumn": 12
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "4003e6fd-3106-4518-8070-aaad9429d1b1"
+        },
+        {
+          "value": " avec le résultat et l'unité.**\n\n### Exemple de correction (pseudo-code Rust, à adapter à votre code)\n\nRepérez dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "$mid": 1,
+            "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "value": " la partie qui gère l'opérateur `^` (puissance), probablement dans une méthode comme `visit_binop` ou similaire.  \nModifiez-la pour appliquer l'unité au résultat de la puissance si une unité suit.\n\n```rust\n",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "codeblockUri",
+          "uri": {
+            "$mid": 1,
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "value": "// ...existing code...\n\n// Supposons que vous avez quelque chose comme ça :\nExpr::BinOp { left, op: Token::Pow, right } => {\n    let left_val = self.visit(*left)?;\n    let right_val = self.visit(*right)?;\n\n    // Calcul de la puissance\n    let result = left_val.pow(right_val)?;\n\n    // Ici, il faut vérifier si une unité suit (par exemple, via le parser ou l'AST)\n    // Si oui, appliquez-la au résultat :\n    if let Some(unit) = self.current_unit.take() {\n        Ok(Value::new_with_unit(result.number, &unit))\n    } else {\n        Ok(result)\n    }\n}\n\n// ...existing code...\n```\n\n**À adapter selon la structure de votre AST et la gestion des unités dans votre parser/interpréteur.**\n\n---\n\n**Résumé :**\n- Après avoir calculé la puissance, vérifiez si une unité suit dans l'expression.\n- Si oui, appliquez-la explicitement au résultat avec ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "Value::new_with_unit(...)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 19,
+                "startColumn": 12,
+                "endLineNumber": 19,
+                "endColumn": 12
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "a6db708f-a11b-4a6b-b289-ea2eca4ecfb4"
+        },
+        {
+          "value": ".\n- Cela garantit que `100 ^ 2 m` donne bien ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "10000 m",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 208,
+                "startColumn": 13,
+                "endLineNumber": 208,
+                "endColumn": 13
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/units/composed_unit.rs",
+                "external": "file:///home/olivier/projets/luca/src/units/composed_unit.rs",
+                "path": "/home/olivier/projets/luca/src/units/composed_unit.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "c68c4a1e-933a-4799-af4a-c3bb77402fd0"
+        },
+        {
+          "value": " et non `10000` sans unité.\n\n---\n\nSi vous partagez la partie concernée de ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "$mid": 1,
+            "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "value": ", je pourrai vous donner le patch exact à appliquer.",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        }
+      ],
+      "responseId": "response_85b24d2a-d40a-43e3-8664-5207b21ff730",
+      "result": {
+        "timings": {
+          "firstProgress": 3567,
+          "totalElapsed": 16578
+        },
+        "metadata": {
+          "codeBlocks": [
+            {
+              "code": "// ...existing code...\n\n// Supposons que vous avez quelque chose comme ça :\nExpr::BinOp { left, op: Token::Pow, right } => {\n    let left_val = self.visit(*left)?;\n    let right_val = self.visit(*right)?;\n\n    // Calcul de la puissance\n    let result = left_val.pow(right_val)?;\n\n    // Ici, il faut vérifier si une unité suit (par exemple, via le parser ou l'AST)\n    // Si oui, appliquez-la au résultat :\n    if let Some(unit) = self.current_unit.take() {\n        Ok(Value::new_with_unit(result.number, &unit))\n    } else {\n        Ok(result)\n    }\n}\n\n// ...existing code...\n",
+              "resource": {
+                "$mid": 1,
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              },
+              "language": "rust",
+              "markdownBeforeBlock": "Pour que le test  ne plante plus, il faut s'assurer que l'interprétation de l'expression `\"100 ^ 2 m\"` donne bien une valeur avec le bon nombre (`10000`) et la bonne unité ().  \nCela implique que l'opérateur `^` (puissance) doit correctement gérer la propagation de l'unité lors de l'évaluation d'une puissance suivie d'une unité.\n\nDans la plupart des implémentations d'interpréteurs, ce genre de bug vient du fait que l'unité n'est pas appliquée au résultat de la puissance, mais reste attachée à l'opérande de gauche, ou est ignorée.\n\n**Voici ce qu'il faut vérifier et corriger dans  :**\n\n1. **Quand on rencontre une expression du type , il faut que l'unité soit appliquée au résultat, pas à l'exposant ni ignorée.**\n2. **Après avoir évalué la puissance, si une unité suit, il faut créer un  avec le résultat et l'unité.**\n\n### Exemple de correction (pseudo-code Rust, à adapter à votre code)\n\nRepérez dans  la partie qui gère l'opérateur `^` (puissance), probablement dans une méthode comme `visit_binop` ou similaire.  \nModifiez-la pour appliquer l'unité au résultat de la puissance si une unité suit.\n\n"
+            }
+          ],
+          "messages": [
+            {
+              "role": "user",
+              "content": "What changes would you make to `src/interpreter.rs` so that the test `power_with_unit` doesn't fail ?"
+            },
+            {
+              "role": "assistant",
+              "content": "Pour que le test `power_with_unit` ne plante plus, il faut s'assurer que l'interprétation de l'expression `\"100 ^ 2 m\"` donne bien une valeur avec le bon nombre (`10000`) et la bonne unité (`m`).  \nCela implique que l'opérateur `^` (puissance) doit correctement gérer la propagation de l'unité lors de l'évaluation d'une puissance suivie d'une unité.\n\nDans la plupart des implémentations d'interpréteurs, ce genre de bug vient du fait que l'unité n'est pas appliquée au résultat de la puissance, mais reste attachée à l'opérande de gauche, ou est ignorée.\n\n**Voici ce qu'il faut vérifier et corriger dans `src/interpreter.rs` :**\n\n1. **Quand on rencontre une expression du type `a ^ b unit`, il faut que l'unité soit appliquée au résultat, pas à l'exposant ni ignorée.**\n2. **Après avoir évalué la puissance, si une unité suit, il faut créer un `Value` avec le résultat et l'unité.**\n\n### Exemple de correction (pseudo-code Rust, à adapter à votre code)\n\nRepérez dans `src/interpreter.rs` la partie qui gère l'opérateur `^` (puissance), probablement dans une méthode comme `visit_binop` ou similaire.  \nModifiez-la pour appliquer l'unité au résultat de la puissance si une unité suit.\n\n```rust\n// filepath: /home/olivier/projets/luca/src/interpreter.rs\n// ...existing code...\n\n// Supposons que vous avez quelque chose comme ça :\nExpr::BinOp { left, op: Token::Pow, right } => {\n    let left_val = self.visit(*left)?;\n    let right_val = self.visit(*right)?;\n\n    // Calcul de la puissance\n    let result = left_val.pow(right_val)?;\n\n    // Ici, il faut vérifier si une unité suit (par exemple, via le parser ou l'AST)\n    // Si oui, appliquez-la au résultat :\n    if let Some(unit) = self.current_unit.take() {\n        Ok(Value::new_with_unit(result.number, &unit))\n    } else {\n        Ok(result)\n    }\n}\n\n// ...existing code...\n```\n\n**À adapter selon la structure de votre AST et la gestion des unités dans votre parser/interpréteur.**\n\n---\n\n**Résumé :**\n- Après avoir calculé la puissance, vérifiez si une unité suit dans l'expression.\n- Si oui, appliquez-la explicitement au résultat avec `Value::new_with_unit(...)`.\n- Cela garantit que `100 ^ 2 m` donne bien `10000 m` et non `10000` sans unité.\n\n---\n\nSi vous partagez la partie concernée de `src/interpreter.rs`, je pourrai vous donner le patch exact à appliquer."
+            }
+          ],
+          "modelMessageId": "8bac8d8d-8214-4cb4-98ca-2a942af6cbef",
+          "responseId": "51d1b98a-6be4-4a4e-ae6f-bae6e1881522",
+          "sessionId": "1ad69fc5-0875-49f2-abab-97e5c155bf4c",
+          "agentId": "github.copilot.default"
+        }
+      },
+      "followups": [
+        {
+          "kind": "reply",
+          "agentId": "github.copilot.default",
+          "message": "Peux-tu montrer le code actuel ?"
+        }
+      ],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.default",
+        "description": "Demander à Copilot",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": true,
+          "helpTextPrefix": "Vous pouvez me poser des questions générales sur la programmation ou converser avec les participants suivants qui ont une expertise spécialisée et peuvent effectuer les actions suivantes :",
+          "helpTextVariablesPrefix": "Vous pouvez également m’aider à comprendre votre question en utilisant les variables suivantes pour me donner un contexte supplémentaire :",
+          "helpTextPostfix": {
+            "value": "Pour avoir une conversation intéressante, posez-moi des questions comme si j’étais un vrai programmeur :\n\n* **Montrez-moi le code** dont vous voulez parler en ouvrant les fichiers et en sélectionnant les lignes les plus importantes.\n* **Apportez des améliorations** en me posant des questions de suivi, en ajoutant des clarifications, en fournissant des erreurs, etc.\n* **Passez en revue mon code suggéré** et parlez-moi des problèmes ou des points d’amélioration afin que je puisse effectuer une itération.\n\nVous pouvez également me poser des questions sur la sélection de votre éditeur en [démarrant une session de conversation inline](command:inlineChat.start).\n\nEn savoir plus sur [GitHub Copilot](https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted) dans [Visual Studio Code](https://code.visualstudio.com/docs/copilot/overview). Ou explorez la [procédure pas à pas Copilot](commande:github.copilot.open.walkthrough).",
+            "isTrusted": {
+              "enabledCommands": [
+                "inlineChat.start",
+                "github.copilot.open.walkthrough"
+              ]
+            },
+            "supportThemeIcons": false,
+            "supportHtml": false,
+            "uris": {
+              "command:inlineChat.start": {
+                "$mid": 1,
+                "path": "inlineChat.start",
+                "scheme": "command"
+              },
+              "https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted": {
+                "$mid": 1,
+                "path": "/copilot/using-github-copilot/getting-started-with-github-copilot",
+                "scheme": "https",
+                "authority": "docs.github.com",
+                "query": "tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted"
+              },
+              "https://code.visualstudio.com/docs/copilot/overview": {
+                "$mid": 1,
+                "path": "/docs/copilot/overview",
+                "scheme": "https",
+                "authority": "code.visualstudio.com"
+              },
+              "commande:github.copilot.open.walkthrough": {
+                "$mid": 1,
+                "path": "github.copilot.open.walkthrough",
+                "scheme": "commande"
+              }
+            }
+          },
+          "supportIssueReporting": false,
+          "requester": {
+            "name": "0xfalafel",
+            "icon": {
+              "$mid": 1,
+              "path": "/u/4268373",
+              "scheme": "https",
+              "authority": "avatars.githubusercontent.com",
+              "query": "v=4"
+            }
+          }
+        },
+        "name": "GitHubCopilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "panel"
+        ],
+        "slashCommands": [],
+        "disambiguation": [
+          {
+            "category": "generate_code_sample",
+            "description": "The user wants to generate code snippets without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Write an example of computing a SHA256 hash."
+            ]
+          },
+          {
+            "category": "add_feature_to_file",
+            "description": "The user wants to change code in a file that is provided in their request, without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Add a refresh button to the table widget."
+            ]
+          },
+          {
+            "category": "question_about_specific_files",
+            "description": "The user has a question about a specific file or code snippet that they have provided as part of their query, and the question does not require additional workspace context to answer.",
+            "examples": [
+              "What does this file do?"
+            ]
+          }
+        ]
+      },
+      "contentReferences": [
+        {
+          "kind": "reference",
+          "reference": {
+            "$mid": 1,
+            "fsPath": "/home/olivier/projets/luca/tests/interpreter.rs",
+            "external": "file:///home/olivier/projets/luca/tests/interpreter.rs",
+            "path": "/home/olivier/projets/luca/tests/interpreter.rs",
+            "scheme": "file"
+          }
+        }
+      ],
+      "codeCitations": [],
+      "timestamp": 1747998427390
+    },
+    {
+      "requestId": "request_f1907b51-81f0-45bf-b08b-9ca8be7b62a6",
+      "message": {
+        "text": "Here is the file",
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 16
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 1,
+              "endColumn": 17
+            },
+            "text": "Here is the file",
+            "kind": "text"
+          }
+        ]
+      },
+      "variableData": {
+        "variables": [
+          {
+            "id": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "value": {
+              "$mid": 1,
+              "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+              "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+              "path": "/home/olivier/projets/luca/src/interpreter.rs",
+              "scheme": "file"
+            },
+            "name": "interpreter.rs",
+            "isFile": true,
+            "isOmitted": false
+          },
+          {
+            "id": "vscode.implicit.selection",
+            "name": "file:interpreter.rs",
+            "value": {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/tests/interpreter.rs",
+                "path": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 382,
+                "startColumn": 4,
+                "endLineNumber": 382,
+                "endColumn": 19,
+                "selectionStartLineNumber": 382,
+                "selectionStartColumn": 4,
+                "positionLineNumber": 382,
+                "positionColumn": 19
+              }
+            },
+            "isFile": true,
+            "modelDescription": "User's active selection"
+          }
+        ]
+      },
+      "response": [
+        {
+          "value": "Pour que le test ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "power_with_unit",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 382,
+                "startColumn": 4,
+                "endLineNumber": 382,
+                "endColumn": 4
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/tests/interpreter.rs",
+                "path": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "506a6e79-459b-41f4-8a91-e2545ecd58a5"
+        },
+        {
+          "value": " passe (`100 ^ 2 m` doit donner `10000 m`), il faut que l'unité soit appliquée au résultat de la puissance, même si l'unité est un nœud \"unary\" dans l'AST.\n\nActuellement, dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "visit_unaryop",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 653,
+                "startColumn": 8,
+                "endLineNumber": 653,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "bf3d8e51-d186-49fb-843e-ee5f3a5bb0c3"
+        },
+        {
+          "value": ", l'unité est appliquée à l'enfant, mais dans le cas d'une puissance suivie d'une unité, l'AST ressemble à :\n\n```\nUNIT(m)\n  |\n  POWER\n   /   \\\n100     2\n```\n\nMais dans ta fonction ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "visit_unaryop",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 653,
+                "startColumn": 8,
+                "endLineNumber": 653,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "3be9cba1-27a0-4a8c-b99a-ec645defde73"
+        },
+        {
+          "value": ", tu fais :\n\n```rust\nlet number = self.visit(&node.children[0])?;\nlet unit = unit_symbol.to_unit();\nmatch number.convert_to_unit(&ComposedUnit::new_with_unit(unit)) {\n    Ok(val) => Ok(val),\n    Err(_e) => Err(Error::FailedConversion)\n}\n```\n\nCela fonctionne si ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "number",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/units/number.rs",
+                "external": "file:///home/olivier/projets/luca/src/units/number.rs",
+                "path": "/home/olivier/projets/luca/src/units/number.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "9bac8329-0323-4b20-a91d-6c5132e91be9"
+        },
+        {
+          "value": " n'a pas déjà d'unité, mais dans le cas d'une puissance, il faut juste appliquer l'unité au résultat, sans conversion.\n\n**Correction à apporter :**\nDans le bloc ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "Token::UNIT(unit_symbol)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 47,
+                "startColumn": 10,
+                "endLineNumber": 47,
+                "endColumn": 10
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "caf0e8ac-7a57-4b62-aa09-8bc7824d87d5"
+        },
+        {
+          "value": " de ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "visit_unaryop",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 653,
+                "startColumn": 8,
+                "endLineNumber": 653,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "392011f5-c252-4930-9379-dd05cf2f18fa"
+        },
+        {
+          "value": ", il faut utiliser `set_unit` au lieu de `convert_to_unit` pour appliquer l'unité brute si le résultat n'a pas déjà d'unité.\n\nRemplace ce bloc par :\n\n````rust\n",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "codeblockUri",
+          "uri": {
+            "$mid": 1,
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "value": "// ...dans fn visit_unaryop...\n            Token::UNIT(unit_symbol) => {\n                let number = self.visit(&node.children[0])?;\n                let unit = unit_symbol.to_unit();\n\n                // Correction ici : on applique l'unité brute\n                Ok(number.set_unit(unit))\n            },\n// ...reste inchangé...\n````\n\nCela garantit que `100 ^ 2 m` donne bien `10000 m` (et non une erreur de conversion).\n\n---\n\n**Résumé :**  \n- Remplace l'appel à `convert_to_unit` par `set_unit` dans le bloc ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "Token::UNIT(unit_symbol)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 47,
+                "startColumn": 10,
+                "endLineNumber": 47,
+                "endColumn": 10
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "b0f5fb8d-5055-4268-bddd-758b6d328c05"
+        },
+        {
+          "value": " de ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "visit_unaryop",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 653,
+                "startColumn": 8,
+                "endLineNumber": 653,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "b314e78d-78f2-45d4-9752-d869b851ec2e"
+        },
+        {
+          "value": ".\n- Cela applique l'unité au résultat, même si c'est une puissance.\n\nLe test ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "power_with_unit",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 382,
+                "startColumn": 4,
+                "endLineNumber": 382,
+                "endColumn": 4
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/tests/interpreter.rs",
+                "path": "/home/olivier/projets/luca/tests/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "3fa8d2c5-6017-4b9a-bf5f-4953e90c0eed"
+        },
+        {
+          "value": " devrait alors passer.",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        }
+      ],
+      "responseId": "response_42105c8c-cdc6-4580-9ef9-5962efdd6440",
+      "result": {
+        "timings": {
+          "firstProgress": 3255,
+          "totalElapsed": 14704
+        },
+        "metadata": {
+          "codeBlocks": [
+            {
+              "code": "UNIT(m)\n  |\n  POWER\n   /   \\\n100     2\n",
+              "language": "",
+              "markdownBeforeBlock": "Pour que le test  passe (`100 ^ 2 m` doit donner `10000 m`), il faut que l'unité soit appliquée au résultat de la puissance, même si l'unité est un nœud \"unary\" dans l'AST.\n\nActuellement, dans , l'unité est appliquée à l'enfant, mais dans le cas d'une puissance suivie d'une unité, l'AST ressemble à :\n\n"
+            },
+            {
+              "code": "let number = self.visit(&node.children[0])?;\nlet unit = unit_symbol.to_unit();\nmatch number.convert_to_unit(&ComposedUnit::new_with_unit(unit)) {\n    Ok(val) => Ok(val),\n    Err(_e) => Err(Error::FailedConversion)\n}\n",
+              "language": "rust",
+              "markdownBeforeBlock": "\nMais dans ta fonction , tu fais :\n\n"
+            },
+            {
+              "code": "// ...dans fn visit_unaryop...\n            Token::UNIT(unit_symbol) => {\n                let number = self.visit(&node.children[0])?;\n                let unit = unit_symbol.to_unit();\n\n                // Correction ici : on applique l'unité brute\n                Ok(number.set_unit(unit))\n            },\n// ...reste inchangé...\n",
+              "resource": {
+                "$mid": 1,
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              },
+              "language": "rust",
+              "markdownBeforeBlock": "\nCela fonctionne si  n'a pas déjà d'unité, mais dans le cas d'une puissance, il faut juste appliquer l'unité au résultat, sans conversion.\n\n**Correction à apporter :**\nDans le bloc  de , il faut utiliser `set_unit` au lieu de `convert_to_unit` pour appliquer l'unité brute si le résultat n'a pas déjà d'unité.\n\nRemplace ce bloc par :\n\n"
+            }
+          ],
+          "messages": [
+            {
+              "role": "user",
+              "content": "Here is the file"
+            },
+            {
+              "role": "assistant",
+              "content": "Pour que le test `power_with_unit` passe (`100 ^ 2 m` doit donner `10000 m`), il faut que l'unité soit appliquée au résultat de la puissance, même si l'unité est un nœud \"unary\" dans l'AST.\n\nActuellement, dans `visit_unaryop`, l'unité est appliquée à l'enfant, mais dans le cas d'une puissance suivie d'une unité, l'AST ressemble à :\n\n```\nUNIT(m)\n  |\n  POWER\n   /   \\\n100     2\n```\n\nMais dans ta fonction `visit_unaryop`, tu fais :\n\n```rust\nlet number = self.visit(&node.children[0])?;\nlet unit = unit_symbol.to_unit();\nmatch number.convert_to_unit(&ComposedUnit::new_with_unit(unit)) {\n    Ok(val) => Ok(val),\n    Err(_e) => Err(Error::FailedConversion)\n}\n```\n\nCela fonctionne si `number` n'a pas déjà d'unité, mais dans le cas d'une puissance, il faut juste appliquer l'unité au résultat, sans conversion.\n\n**Correction à apporter :**\nDans le bloc `Token::UNIT(unit_symbol)` de `visit_unaryop`, il faut utiliser `set_unit` au lieu de `convert_to_unit` pour appliquer l'unité brute si le résultat n'a pas déjà d'unité.\n\nRemplace ce bloc par :\n\n````rust\n// filepath: /home/olivier/projets/luca/src/interpreter.rs\n// ...dans fn visit_unaryop...\n            Token::UNIT(unit_symbol) => {\n                let number = self.visit(&node.children[0])?;\n                let unit = unit_symbol.to_unit();\n\n                // Correction ici : on applique l'unité brute\n                Ok(number.set_unit(unit))\n            },\n// ...reste inchangé...\n````\n\nCela garantit que `100 ^ 2 m` donne bien `10000 m` (et non une erreur de conversion).\n\n---\n\n**Résumé :**  \n- Remplace l'appel à `convert_to_unit` par `set_unit` dans le bloc `Token::UNIT(unit_symbol)` de `visit_unaryop`.\n- Cela applique l'unité au résultat, même si c'est une puissance.\n\nLe test `power_with_unit` devrait alors passer."
+            }
+          ],
+          "modelMessageId": "00cc6c71-2fcc-458c-b29e-f3683c5c8948",
+          "responseId": "9498573e-0c56-462a-9f51-e74acd495ad3",
+          "sessionId": "1ad69fc5-0875-49f2-abab-97e5c155bf4c",
+          "agentId": "github.copilot.default"
+        }
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.default",
+        "description": "Demander à Copilot",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": true,
+          "helpTextPrefix": "Vous pouvez me poser des questions générales sur la programmation ou converser avec les participants suivants qui ont une expertise spécialisée et peuvent effectuer les actions suivantes :",
+          "helpTextVariablesPrefix": "Vous pouvez également m’aider à comprendre votre question en utilisant les variables suivantes pour me donner un contexte supplémentaire :",
+          "helpTextPostfix": {
+            "value": "Pour avoir une conversation intéressante, posez-moi des questions comme si j’étais un vrai programmeur :\n\n* **Montrez-moi le code** dont vous voulez parler en ouvrant les fichiers et en sélectionnant les lignes les plus importantes.\n* **Apportez des améliorations** en me posant des questions de suivi, en ajoutant des clarifications, en fournissant des erreurs, etc.\n* **Passez en revue mon code suggéré** et parlez-moi des problèmes ou des points d’amélioration afin que je puisse effectuer une itération.\n\nVous pouvez également me poser des questions sur la sélection de votre éditeur en [démarrant une session de conversation inline](command:inlineChat.start).\n\nEn savoir plus sur [GitHub Copilot](https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted) dans [Visual Studio Code](https://code.visualstudio.com/docs/copilot/overview). Ou explorez la [procédure pas à pas Copilot](commande:github.copilot.open.walkthrough).",
+            "isTrusted": {
+              "enabledCommands": [
+                "inlineChat.start",
+                "github.copilot.open.walkthrough"
+              ]
+            },
+            "supportThemeIcons": false,
+            "supportHtml": false,
+            "uris": {
+              "command:inlineChat.start": {
+                "$mid": 1,
+                "path": "inlineChat.start",
+                "scheme": "command"
+              },
+              "https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted": {
+                "$mid": 1,
+                "path": "/copilot/using-github-copilot/getting-started-with-github-copilot",
+                "scheme": "https",
+                "authority": "docs.github.com",
+                "query": "tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted"
+              },
+              "https://code.visualstudio.com/docs/copilot/overview": {
+                "$mid": 1,
+                "path": "/docs/copilot/overview",
+                "scheme": "https",
+                "authority": "code.visualstudio.com"
+              },
+              "commande:github.copilot.open.walkthrough": {
+                "$mid": 1,
+                "path": "github.copilot.open.walkthrough",
+                "scheme": "commande"
+              }
+            }
+          },
+          "supportIssueReporting": false,
+          "requester": {
+            "name": "0xfalafel",
+            "icon": {
+              "$mid": 1,
+              "path": "/u/4268373",
+              "scheme": "https",
+              "authority": "avatars.githubusercontent.com",
+              "query": "v=4"
+            }
+          }
+        },
+        "name": "GitHubCopilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "panel"
+        ],
+        "slashCommands": [],
+        "disambiguation": [
+          {
+            "category": "generate_code_sample",
+            "description": "The user wants to generate code snippets without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Write an example of computing a SHA256 hash."
+            ]
+          },
+          {
+            "category": "add_feature_to_file",
+            "description": "The user wants to change code in a file that is provided in their request, without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Add a refresh button to the table widget."
+            ]
+          },
+          {
+            "category": "question_about_specific_files",
+            "description": "The user has a question about a specific file or code snippet that they have provided as part of their query, and the question does not require additional workspace context to answer.",
+            "examples": [
+              "What does this file do?"
+            ]
+          }
+        ]
+      },
+      "contentReferences": [
+        {
+          "kind": "reference",
+          "reference": {
+            "$mid": 1,
+            "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "reference",
+          "reference": {
+            "$mid": 1,
+            "fsPath": "/home/olivier/projets/luca/tests/interpreter.rs",
+            "external": "file:///home/olivier/projets/luca/tests/interpreter.rs",
+            "path": "/home/olivier/projets/luca/tests/interpreter.rs",
+            "scheme": "file"
+          }
+        }
+      ],
+      "codeCitations": [],
+      "timestamp": 1747998468077
+    },
+    {
+      "requestId": "request_083fde6c-2e3d-46fb-91c5-0cd0c78739c3",
+      "message": {
+        "text": "This change doesn't fix the issue.\n\nIf think the issuse is more due to the fact that POWER should have a priority over UNIT\n\n2 m ^ 2 -> 4m²\n\n`2 ^ 2 m ` should be the same as `(2 ^ 2) m`. In what term of the AST should power be taken into account ?",
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 247
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 7,
+              "endColumn": 107
+            },
+            "text": "This change doesn't fix the issue.\n\nIf think the issuse is more due to the fact that POWER should have a priority over UNIT\n\n2 m ^ 2 -> 4m²\n\n`2 ^ 2 m ` should be the same as `(2 ^ 2) m`. In what term of the AST should power be taken into account ?",
+            "kind": "text"
+          }
+        ]
+      },
+      "variableData": {
+        "variables": [
+          {
+            "id": "vscode.implicit.selection",
+            "name": "file:interpreter.rs",
+            "value": {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 680,
+                "startColumn": 1,
+                "endLineNumber": 684,
+                "endColumn": 1,
+                "selectionStartLineNumber": 680,
+                "selectionStartColumn": 1,
+                "positionLineNumber": 684,
+                "positionColumn": 1
+              }
+            },
+            "isFile": true,
+            "modelDescription": "User's active selection"
+          }
+        ]
+      },
+      "response": [
+        {
+          "value": "Excellente remarque : le problème vient bien de la **priorité des opérateurs** dans le parser.\n\nActuellement, dans ta grammaire, la règle ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "term",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 446,
+                "startColumn": 8,
+                "endLineNumber": 446,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "11af40a3-9f37-4b22-b88b-27814be16960"
+        },
+        {
+          "value": " gère les opérateurs ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "MUL",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 51,
+                "startColumn": 5,
+                "endLineNumber": 51,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "20910256-b0e6-4dd4-bc1b-daeaac85cea4"
+        },
+        {
+          "value": ", ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "DIV",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 52,
+                "startColumn": 5,
+                "endLineNumber": 52,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "8f6a55e3-ddaa-4210-829f-15c600e42618"
+        },
+        {
+          "value": ", ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "POWER",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 58,
+                "startColumn": 5,
+                "endLineNumber": 58,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "5c9d555c-3b7a-462c-b20c-0072d7fa5b03"
+        },
+        {
+          "value": ", et les unités sont gérées dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "factor",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 409,
+                "startColumn": 8,
+                "endLineNumber": 409,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "23d551b1-8575-40aa-9767-75321ebce8db"
+        },
+        {
+          "value": " via ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "cd1c2b79-3a53-4fac-bde5-832b5ff1ec5a"
+        },
+        {
+          "value": ".  \nMais dans la plupart des langages, la puissance (`^`) a une **priorité plus forte** que l'application d'une unité (qui se comporte comme une opération unaire).\n\n### Ce qu'il se passe actuellement\n\nTon parser construit l'AST pour `100 ^ 2 m` comme :\n\n```\n      UNIT(m)\n        |\n      POWER\n     /     \\\n 100       2\n```\n\nDonc, il applique l'unité **après** la puissance, ce qui est correct pour `100 ^ 2 m` (donne `10000 m`).  \nMais pour `2 m ^ 2`, il construit :\n\n```\n      POWER\n     /     \\\n  UNIT(m)   2\n   |\n   2\n```\n\nCe qui donne `2m ^ 2` (donc `4 m²` si la puissance propage l'unité).\n\n### Ce qu'il faut garantir\n\n- `2 ^ 2 m` doit être interprété comme `(2 ^ 2) m` → `4 m`\n- `2 m ^ 2` doit être interprété comme `(2 m) ^ 2` → `4 m²`\n\n### Solution : priorité de parsing\n\nIl faut que l'unité soit appliquée **après** la puissance, donc que l'unité soit \"plus faible\" que la puissance dans la grammaire.\n\n#### Correction à apporter\n\nDans la fonction ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "factor",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 409,
+                "startColumn": 8,
+                "endLineNumber": 409,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "f76b617b-370d-456d-85ea-c40cfaf7fc78"
+        },
+        {
+          "value": ", tu gères les unités et monnaies dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value()",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "6fa2c1a0-30a9-4468-a677-2f21a13ee958"
+        },
+        {
+          "value": ".  \nMais dans la fonction ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "term",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 446,
+                "startColumn": 8,
+                "endLineNumber": 446,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "8d5a8a16-1c8a-406c-a381-54d6cc0c3d44"
+        },
+        {
+          "value": ", tu fais :\n\n```rust\nwhile matches!(self.current_token, Token::MUL | Token::DIV | Token::OF | Token::POWER) { ... }\n```\n\nCela met la même priorité à `*`, `/`, `^` et l'application d'une unité.\n\n**Il faut séparer la gestion de la puissance dans une règle dédiée, avec une priorité plus forte que l'unité.**\n\n---\n\n### Exemple de grammaire corrigée\n\nVoici comment tu pourrais organiser tes règles :\n\n```text\nexpr    : term ((PLUS | MINUS | AS) term)*\nterm    : power ((MUL | DIV | OF) power)*\npower   : value (POWER power)?\nvalue   : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)\n        | LPAREN expr RPAREN | VAR\n```\n\n- `power` gère la puissance à droite (right-associative).\n- ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "59aeebb7-b2de-43b8-a3cc-445e301f09dd"
+        },
+        {
+          "value": " applique l'unité **après** la puissance.\n\n---\n\n### Correction du parser\n\nModifie ton parser comme suit :\n\n````rust\n",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "codeblockUri",
+          "uri": {
+            "$mid": 1,
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "value": "impl Parser {\n    // ...\n\n    /// power : value (POWER power)?\n    fn power(&mut self) -> Result<AST, Error> {\n        let mut node = self.value()?;\n\n        if self.current_token == Token::POWER {\n            self.eat(&Token::POWER)?;\n            let right = self.power()?;\n            node = AST::new(Token::POWER, vec![node, right]);\n        }\n\n        Ok(node)\n    }\n\n    /// term : power ((MUL | DIV | OF) power)*\n    fn term(&mut self) -> Result<AST, Error> {\n        let mut node = self.power()?;\n\n        while matches!(self.current_token, Token::MUL | Token::DIV | Token::OF) {\n            match self.current_token {\n                Token::MUL => {\n                    self.eat(&Token::MUL)?;\n                    let children: Vec<AST> = vec![node, self.power()?];\n                    node = AST::new(Token::MUL, children);\n                },\n                Token::DIV => {\n                    self.eat(&Token::DIV)?;\n                    let children: Vec<AST> = vec![node, self.power()?];\n                    node = AST::new(Token::DIV, children);\n                },\n                Token::OF => {\n                    self.eat(&Token::OF)?;\n                    if node.token == Token::PERCENTAGE {\n                        let children: Vec<AST> = vec![node, self.power()?];\n                        node = AST::new(Token::MUL, children);\n                    }\n                },\n                _ => panic!(\"Incorrect token in term()\")\n            }\n        }\n        Ok(node)\n    }\n    // ...\n}\n````\n\n**N'oublie pas d'utiliser `power()` au lieu de ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "factor()",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 409,
+                "startColumn": 8,
+                "endLineNumber": 409,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "6b48ebf8-7f60-48a1-a974-59a63377fd48"
+        },
+        {
+          "value": " dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "term()",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 446,
+                "startColumn": 8,
+                "endLineNumber": 446,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "90ae3e23-2cbd-4379-8641-9c03e99f0108"
+        },
+        {
+          "value": ".**\n\n---\n\n### Résultat\n\n- `100 ^ 2 m` → AST : ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "UNIT(m)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 61,
+                "startColumn": 5,
+                "endLineNumber": 61,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "2ab381a0-9948-4af9-a47b-babadf421a76"
+        },
+        {
+          "value": " appliqué à ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "POWER(100, 2)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 58,
+                "startColumn": 5,
+                "endLineNumber": 58,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "ba4bff85-f13f-48a0-99b9-7aad04cde602"
+        },
+        {
+          "value": " → `10000 m`\n- `2 m ^ 2` → AST : ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "POWER(UNIT(m, 2), 2)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 58,
+                "startColumn": 5,
+                "endLineNumber": 58,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "465a282c-66ee-4ff8-8e8b-541ceded34c6"
+        },
+        {
+          "value": " → `4 m²`\n\n---\n\n**En résumé :**\n- Ajoute une règle `power` dans le parser, qui a une priorité plus forte que l'unité.\n- Applique l'unité dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "f589f6cc-2007-4843-b032-3e46e7bdf7ae"
+        },
+        {
+          "value": ", donc après la puissance.\n- Modifie ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "term",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 446,
+                "startColumn": 8,
+                "endLineNumber": 446,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "a06df297-5b88-42ec-bb1d-685fbfdb7579"
+        },
+        {
+          "value": " pour utiliser `power` au lieu de ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "factor",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 409,
+                "startColumn": 8,
+                "endLineNumber": 409,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "446ee325-685d-46e3-b180-56316f98f296"
+        },
+        {
+          "value": ".\n\nCela corrigera la priorité et fera passer le test `power_with_unit`.",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        }
+      ],
+      "responseId": "response_fa943001-aa3a-40cd-a1ba-e66916a7ecc7",
+      "result": {
+        "timings": {
+          "firstProgress": 2962,
+          "totalElapsed": 31575
+        },
+        "metadata": {
+          "codeBlocks": [
+            {
+              "code": "      UNIT(m)\n        |\n      POWER\n     /     \\\n 100       2\n",
+              "language": "",
+              "markdownBeforeBlock": "Excellente remarque : le problème vient bien de la **priorité des opérateurs** dans le parser.\n\nActuellement, dans ta grammaire, la règle  gère les opérateurs , , , et les unités sont gérées dans  via .  \nMais dans la plupart des langages, la puissance (`^`) a une **priorité plus forte** que l'application d'une unité (qui se comporte comme une opération unaire).\n\n### Ce qu'il se passe actuellement\n\nTon parser construit l'AST pour `100 ^ 2 m` comme :\n\n"
+            },
+            {
+              "code": "      POWER\n     /     \\\n  UNIT(m)   2\n   |\n   2\n",
+              "language": "",
+              "markdownBeforeBlock": "\nDonc, il applique l'unité **après** la puissance, ce qui est correct pour `100 ^ 2 m` (donne `10000 m`).  \nMais pour `2 m ^ 2`, il construit :\n\n"
+            },
+            {
+              "code": "while matches!(self.current_token, Token::MUL | Token::DIV | Token::OF | Token::POWER) { ... }\n",
+              "language": "rust",
+              "markdownBeforeBlock": "\nCe qui donne `2m ^ 2` (donc `4 m²` si la puissance propage l'unité).\n\n### Ce qu'il faut garantir\n\n- `2 ^ 2 m` doit être interprété comme `(2 ^ 2) m` → `4 m`\n- `2 m ^ 2` doit être interprété comme `(2 m) ^ 2` → `4 m²`\n\n### Solution : priorité de parsing\n\nIl faut que l'unité soit appliquée **après** la puissance, donc que l'unité soit \"plus faible\" que la puissance dans la grammaire.\n\n#### Correction à apporter\n\nDans la fonction , tu gères les unités et monnaies dans .  \nMais dans la fonction , tu fais :\n\n"
+            },
+            {
+              "code": "expr    : term ((PLUS | MINUS | AS) term)*\nterm    : power ((MUL | DIV | OF) power)*\npower   : value (POWER power)?\nvalue   : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)\n        | LPAREN expr RPAREN | VAR\n",
+              "language": "text",
+              "markdownBeforeBlock": "\nCela met la même priorité à `*`, `/`, `^` et l'application d'une unité.\n\n**Il faut séparer la gestion de la puissance dans une règle dédiée, avec une priorité plus forte que l'unité.**\n\n---\n\n### Exemple de grammaire corrigée\n\nVoici comment tu pourrais organiser tes règles :\n\n"
+            },
+            {
+              "code": "impl Parser {\n    // ...\n\n    /// power : value (POWER power)?\n    fn power(&mut self) -> Result<AST, Error> {\n        let mut node = self.value()?;\n\n        if self.current_token == Token::POWER {\n            self.eat(&Token::POWER)?;\n            let right = self.power()?;\n            node = AST::new(Token::POWER, vec![node, right]);\n        }\n\n        Ok(node)\n    }\n\n    /// term : power ((MUL | DIV | OF) power)*\n    fn term(&mut self) -> Result<AST, Error> {\n        let mut node = self.power()?;\n\n        while matches!(self.current_token, Token::MUL | Token::DIV | Token::OF) {\n            match self.current_token {\n                Token::MUL => {\n                    self.eat(&Token::MUL)?;\n                    let children: Vec<AST> = vec![node, self.power()?];\n                    node = AST::new(Token::MUL, children);\n                },\n                Token::DIV => {\n                    self.eat(&Token::DIV)?;\n                    let children: Vec<AST> = vec![node, self.power()?];\n                    node = AST::new(Token::DIV, children);\n                },\n                Token::OF => {\n                    self.eat(&Token::OF)?;\n                    if node.token == Token::PERCENTAGE {\n                        let children: Vec<AST> = vec![node, self.power()?];\n                        node = AST::new(Token::MUL, children);\n                    }\n                },\n                _ => panic!(\"Incorrect token in term()\")\n            }\n        }\n        Ok(node)\n    }\n    // ...\n}\n",
+              "resource": {
+                "$mid": 1,
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              },
+              "language": "rust",
+              "markdownBeforeBlock": "\n- `power` gère la puissance à droite (right-associative).\n-  applique l'unité **après** la puissance.\n\n---\n\n### Correction du parser\n\nModifie ton parser comme suit :\n\n"
+            }
+          ],
+          "messages": [
+            {
+              "role": "user",
+              "content": "This change doesn't fix the issue.\n\nIf think the issuse is more due to the fact that POWER should have a priority over UNIT\n\n2 m ^ 2 -> 4m²\n\n`2 ^ 2 m ` should be the same as `(2 ^ 2) m`. In what term of the AST should power be taken into account ?"
+            },
+            {
+              "role": "assistant",
+              "content": "Excellente remarque : le problème vient bien de la **priorité des opérateurs** dans le parser.\n\nActuellement, dans ta grammaire, la règle `term` gère les opérateurs `MUL`, `DIV`, `POWER`, et les unités sont gérées dans `factor` via `value`.  \nMais dans la plupart des langages, la puissance (`^`) a une **priorité plus forte** que l'application d'une unité (qui se comporte comme une opération unaire).\n\n### Ce qu'il se passe actuellement\n\nTon parser construit l'AST pour `100 ^ 2 m` comme :\n\n```\n      UNIT(m)\n        |\n      POWER\n     /     \\\n 100       2\n```\n\nDonc, il applique l'unité **après** la puissance, ce qui est correct pour `100 ^ 2 m` (donne `10000 m`).  \nMais pour `2 m ^ 2`, il construit :\n\n```\n      POWER\n     /     \\\n  UNIT(m)   2\n   |\n   2\n```\n\nCe qui donne `2m ^ 2` (donc `4 m²` si la puissance propage l'unité).\n\n### Ce qu'il faut garantir\n\n- `2 ^ 2 m` doit être interprété comme `(2 ^ 2) m` → `4 m`\n- `2 m ^ 2` doit être interprété comme `(2 m) ^ 2` → `4 m²`\n\n### Solution : priorité de parsing\n\nIl faut que l'unité soit appliquée **après** la puissance, donc que l'unité soit \"plus faible\" que la puissance dans la grammaire.\n\n#### Correction à apporter\n\nDans la fonction `factor`, tu gères les unités et monnaies dans `value()`.  \nMais dans la fonction `term`, tu fais :\n\n```rust\nwhile matches!(self.current_token, Token::MUL | Token::DIV | Token::OF | Token::POWER) { ... }\n```\n\nCela met la même priorité à `*`, `/`, `^` et l'application d'une unité.\n\n**Il faut séparer la gestion de la puissance dans une règle dédiée, avec une priorité plus forte que l'unité.**\n\n---\n\n### Exemple de grammaire corrigée\n\nVoici comment tu pourrais organiser tes règles :\n\n```text\nexpr    : term ((PLUS | MINUS | AS) term)*\nterm    : power ((MUL | DIV | OF) power)*\npower   : value (POWER power)?\nvalue   : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)\n        | LPAREN expr RPAREN | VAR\n```\n\n- `power` gère la puissance à droite (right-associative).\n- `value` applique l'unité **après** la puissance.\n\n---\n\n### Correction du parser\n\nModifie ton parser comme suit :\n\n````rust\n// filepath: /home/olivier/projets/luca/src/interpreter.rs\nimpl Parser {\n    // ...\n\n    /// power : value (POWER power)?\n    fn power(&mut self) -> Result<AST, Error> {\n        let mut node = self.value()?;\n\n        if self.current_token == Token::POWER {\n            self.eat(&Token::POWER)?;\n            let right = self.power()?;\n            node = AST::new(Token::POWER, vec![node, right]);\n        }\n\n        Ok(node)\n    }\n\n    /// term : power ((MUL | DIV | OF) power)*\n    fn term(&mut self) -> Result<AST, Error> {\n        let mut node = self.power()?;\n\n        while matches!(self.current_token, Token::MUL | Token::DIV | Token::OF) {\n            match self.current_token {\n                Token::MUL => {\n                    self.eat(&Token::MUL)?;\n                    let children: Vec<AST> = vec![node, self.power()?];\n                    node = AST::new(Token::MUL, children);\n                },\n                Token::DIV => {\n                    self.eat(&Token::DIV)?;\n                    let children: Vec<AST> = vec![node, self.power()?];\n                    node = AST::new(Token::DIV, children);\n                },\n                Token::OF => {\n                    self.eat(&Token::OF)?;\n                    if node.token == Token::PERCENTAGE {\n                        let children: Vec<AST> = vec![node, self.power()?];\n                        node = AST::new(Token::MUL, children);\n                    }\n                },\n                _ => panic!(\"Incorrect token in term()\")\n            }\n        }\n        Ok(node)\n    }\n    // ...\n}\n````\n\n**N'oublie pas d'utiliser `power()` au lieu de `factor()` dans `term()`.**\n\n---\n\n### Résultat\n\n- `100 ^ 2 m` → AST : `UNIT(m)` appliqué à `POWER(100, 2)` → `10000 m`\n- `2 m ^ 2` → AST : `POWER(UNIT(m, 2), 2)` → `4 m²`\n\n---\n\n**En résumé :**\n- Ajoute une règle `power` dans le parser, qui a une priorité plus forte que l'unité.\n- Applique l'unité dans `value`, donc après la puissance.\n- Modifie `term` pour utiliser `power` au lieu de `factor`.\n\nCela corrigera la priorité et fera passer le test `power_with_unit`."
+            }
+          ],
+          "modelMessageId": "2737c91b-e0fc-493d-a438-9b082ce57f6a",
+          "responseId": "9fa58e26-41df-4b1c-a10c-212c187c3d93",
+          "sessionId": "1ad69fc5-0875-49f2-abab-97e5c155bf4c",
+          "agentId": "github.copilot.default"
+        }
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.default",
+        "description": "Demander à Copilot",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": true,
+          "helpTextPrefix": "Vous pouvez me poser des questions générales sur la programmation ou converser avec les participants suivants qui ont une expertise spécialisée et peuvent effectuer les actions suivantes :",
+          "helpTextVariablesPrefix": "Vous pouvez également m’aider à comprendre votre question en utilisant les variables suivantes pour me donner un contexte supplémentaire :",
+          "helpTextPostfix": {
+            "value": "Pour avoir une conversation intéressante, posez-moi des questions comme si j’étais un vrai programmeur :\n\n* **Montrez-moi le code** dont vous voulez parler en ouvrant les fichiers et en sélectionnant les lignes les plus importantes.\n* **Apportez des améliorations** en me posant des questions de suivi, en ajoutant des clarifications, en fournissant des erreurs, etc.\n* **Passez en revue mon code suggéré** et parlez-moi des problèmes ou des points d’amélioration afin que je puisse effectuer une itération.\n\nVous pouvez également me poser des questions sur la sélection de votre éditeur en [démarrant une session de conversation inline](command:inlineChat.start).\n\nEn savoir plus sur [GitHub Copilot](https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted) dans [Visual Studio Code](https://code.visualstudio.com/docs/copilot/overview). Ou explorez la [procédure pas à pas Copilot](commande:github.copilot.open.walkthrough).",
+            "isTrusted": {
+              "enabledCommands": [
+                "inlineChat.start",
+                "github.copilot.open.walkthrough"
+              ]
+            },
+            "supportThemeIcons": false,
+            "supportHtml": false,
+            "uris": {
+              "command:inlineChat.start": {
+                "$mid": 1,
+                "path": "inlineChat.start",
+                "scheme": "command"
+              },
+              "https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted": {
+                "$mid": 1,
+                "path": "/copilot/using-github-copilot/getting-started-with-github-copilot",
+                "scheme": "https",
+                "authority": "docs.github.com",
+                "query": "tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted"
+              },
+              "https://code.visualstudio.com/docs/copilot/overview": {
+                "$mid": 1,
+                "path": "/docs/copilot/overview",
+                "scheme": "https",
+                "authority": "code.visualstudio.com"
+              },
+              "commande:github.copilot.open.walkthrough": {
+                "$mid": 1,
+                "path": "github.copilot.open.walkthrough",
+                "scheme": "commande"
+              }
+            }
+          },
+          "supportIssueReporting": false,
+          "requester": {
+            "name": "0xfalafel",
+            "icon": {
+              "$mid": 1,
+              "path": "/u/4268373",
+              "scheme": "https",
+              "authority": "avatars.githubusercontent.com",
+              "query": "v=4"
+            }
+          }
+        },
+        "name": "GitHubCopilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "panel"
+        ],
+        "slashCommands": [],
+        "disambiguation": [
+          {
+            "category": "generate_code_sample",
+            "description": "The user wants to generate code snippets without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Write an example of computing a SHA256 hash."
+            ]
+          },
+          {
+            "category": "add_feature_to_file",
+            "description": "The user wants to change code in a file that is provided in their request, without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Add a refresh button to the table widget."
+            ]
+          },
+          {
+            "category": "question_about_specific_files",
+            "description": "The user has a question about a specific file or code snippet that they have provided as part of their query, and the question does not require additional workspace context to answer.",
+            "examples": [
+              "What does this file do?"
+            ]
+          }
+        ]
+      },
+      "contentReferences": [
+        {
+          "kind": "reference",
+          "reference": {
+            "$mid": 1,
+            "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        }
+      ],
+      "codeCitations": [],
+      "timestamp": 1747998768331
+    },
+    {
+      "requestId": "request_cd25b9a4-8c84-44d2-ae33-5f551af81db4",
+      "message": {
+        "text": "Is there another way to change the garmar ?\n\nI would perfer to do something like ` value (POWER value) `",
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 104
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 3,
+              "endColumn": 60
+            },
+            "text": "Is there another way to change the garmar ?\n\nI would perfer to do something like ` value (POWER value) `",
+            "kind": "text"
+          }
+        ]
+      },
+      "variableData": {
+        "variables": [
+          {
+            "id": "vscode.implicit.selection",
+            "name": "file:interpreter.rs",
+            "value": {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 680,
+                "startColumn": 1,
+                "endLineNumber": 684,
+                "endColumn": 1,
+                "selectionStartLineNumber": 680,
+                "selectionStartColumn": 1,
+                "positionLineNumber": 684,
+                "positionColumn": 1
+              }
+            },
+            "isFile": true,
+            "modelDescription": "User's active selection"
+          }
+        ]
+      },
+      "response": [
+        {
+          "value": "Oui, tu peux tout à fait simplifier la grammaire pour donner la priorité à la puissance sur l’application d’une unité, en modifiant la règle ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "3e59e3e1-d55b-4cdf-b38b-de4ecf1cf1f5"
+        },
+        {
+          "value": " pour qu’elle gère la puissance.  \nCela revient à faire :\n\n```\nvalue : atom (POWER value)?\natom  : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)\n      | LPAREN expr RPAREN | VAR\n```\n\n**Explication :**\n- ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "b9f98052-5632-41e5-9b8f-5d4996db5d60"
+        },
+        {
+          "value": " devient récursif à droite pour la puissance.\n- L’unité (ou la monnaie) est appliquée à un nombre, mais seulement après l’évaluation de la puissance si elle est présente.\n\n### Comment faire dans ton code\n\nAjoute une fonction ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "bcd95215-2a7e-44fd-b099-a128e1ae0722"
+        },
+        {
+          "value": " qui gère la puissance :\n\n````rust\n",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "codeblockUri",
+          "uri": {
+            "$mid": 1,
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "value": "impl Parser {\n    // ...\n\n    /// value : atom (POWER value)?\n    fn value(&mut self) -> Result<AST, Error> {\n        let mut node = self.atom()?;\n\n        if self.current_token == Token::POWER {\n            self.eat(&Token::POWER)?;\n            let right = self.value()?;\n            node = AST::new(Token::POWER, vec![node, right]);\n        }\n\n        Ok(node)\n    }\n\n    /// atom : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)\n    ///      | LPAREN expr RPAREN | VAR\n    fn atom(&mut self) -> Result<AST, Error> {\n        let token = self.current_token.clone();\n\n        match token {\n            // ...reprends ici le contenu de ton ancienne value()...\n            // (copie le match sur token de ta value() actuelle)\n            // Remplace tous les appels à self.value() dans factor/term par self.atom()\n        }\n    }\n\n    // ...dans factor() et term(), remplace les appels à value() par atom() ou value() selon le besoin...\n}\n````\n\n**Dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "factor",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 409,
+                "startColumn": 8,
+                "endLineNumber": 409,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "fb735ab4-2564-4709-9e8f-d9cb7ade169f"
+        },
+        {
+          "value": " et ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "term",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 446,
+                "startColumn": 8,
+                "endLineNumber": 446,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "efda4382-2301-43e9-875b-c126470e3b9e"
+        },
+        {
+          "value": ", utilise maintenant ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value()",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "62ad99dd-acbe-4547-abd4-3e882d2965b6"
+        },
+        {
+          "value": " à la place de l’ancienne ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value()",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "d414a503-81e3-4453-9154-b509a964527e"
+        },
+        {
+          "value": " pour bénéficier de la priorité de la puissance.**\n\n---\n\n### Résultat\n\n- `100 ^ 2 m` → AST : ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "UNIT(m)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 61,
+                "startColumn": 5,
+                "endLineNumber": 61,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "4dd5aad9-7f68-41a2-8cce-193638ed0603"
+        },
+        {
+          "value": " appliqué à ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "POWER(100, 2)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 58,
+                "startColumn": 5,
+                "endLineNumber": 58,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "4dd6dd5c-8314-4101-a0f1-ccfc22308d27"
+        },
+        {
+          "value": " → `10000 m`\n- `2 m ^ 2` → AST : ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "POWER(UNIT(m, 2), 2)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 58,
+                "startColumn": 5,
+                "endLineNumber": 58,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "546e5f6f-d2d0-44ea-bacc-f322e0571cf3"
+        },
+        {
+          "value": " → `4 m²`\n\n---\n\n### Résumé\n\n- Déplace la gestion de la puissance dans la règle ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value : atom (POWER value)?",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "13a63565-7446-4e16-929a-b3ee0c3ed82f"
+        },
+        {
+          "value": "\n- Applique l’unité dans `atom`, donc après la puissance.\n- Cela donne la bonne priorité, sans avoir à ajouter une règle intermédiaire `power`.\n\n---\n\n**C’est une façon élégante et courante de gérer la priorité de la puissance sur l’application d’une unité.**  \nTu n’as plus besoin de la boucle sur ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "POWER",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 58,
+                "startColumn": 5,
+                "endLineNumber": 58,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "ff95cc65-9fc1-48e0-9e56-f2446c238bac"
+        },
+        {
+          "value": " dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "term",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 446,
+                "startColumn": 8,
+                "endLineNumber": 446,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "81eaa7dd-687b-48e2-b1d0-419ebef88e6a"
+        },
+        {
+          "value": ".  \nTu peux maintenant faire passer le test `power_with_unit` et garder une grammaire simple.",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        }
+      ],
+      "responseId": "response_09e2c49b-f217-4ae1-857b-cde7d42be0a2",
+      "result": {
+        "timings": {
+          "firstProgress": 1365,
+          "totalElapsed": 15735
+        },
+        "metadata": {
+          "codeBlocks": [
+            {
+              "code": "value : atom (POWER value)?\natom  : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)\n      | LPAREN expr RPAREN | VAR\n",
+              "language": "",
+              "markdownBeforeBlock": "Oui, tu peux tout à fait simplifier la grammaire pour donner la priorité à la puissance sur l’application d’une unité, en modifiant la règle  pour qu’elle gère la puissance.  \nCela revient à faire :\n\n"
+            },
+            {
+              "code": "impl Parser {\n    // ...\n\n    /// value : atom (POWER value)?\n    fn value(&mut self) -> Result<AST, Error> {\n        let mut node = self.atom()?;\n\n        if self.current_token == Token::POWER {\n            self.eat(&Token::POWER)?;\n            let right = self.value()?;\n            node = AST::new(Token::POWER, vec![node, right]);\n        }\n\n        Ok(node)\n    }\n\n    /// atom : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)\n    ///      | LPAREN expr RPAREN | VAR\n    fn atom(&mut self) -> Result<AST, Error> {\n        let token = self.current_token.clone();\n\n        match token {\n            // ...reprends ici le contenu de ton ancienne value()...\n            // (copie le match sur token de ta value() actuelle)\n            // Remplace tous les appels à self.value() dans factor/term par self.atom()\n        }\n    }\n\n    // ...dans factor() et term(), remplace les appels à value() par atom() ou value() selon le besoin...\n}\n",
+              "resource": {
+                "$mid": 1,
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              },
+              "language": "rust",
+              "markdownBeforeBlock": "\n**Explication :**\n-  devient récursif à droite pour la puissance.\n- L’unité (ou la monnaie) est appliquée à un nombre, mais seulement après l’évaluation de la puissance si elle est présente.\n\n### Comment faire dans ton code\n\nAjoute une fonction  qui gère la puissance :\n\n"
+            }
+          ],
+          "messages": [
+            {
+              "role": "user",
+              "content": "Is there another way to change the garmar ?\n\nI would perfer to do something like ` value (POWER value) `"
+            },
+            {
+              "role": "assistant",
+              "content": "Oui, tu peux tout à fait simplifier la grammaire pour donner la priorité à la puissance sur l’application d’une unité, en modifiant la règle `value` pour qu’elle gère la puissance.  \nCela revient à faire :\n\n```\nvalue : atom (POWER value)?\natom  : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)\n      | LPAREN expr RPAREN | VAR\n```\n\n**Explication :**\n- `value` devient récursif à droite pour la puissance.\n- L’unité (ou la monnaie) est appliquée à un nombre, mais seulement après l’évaluation de la puissance si elle est présente.\n\n### Comment faire dans ton code\n\nAjoute une fonction `value` qui gère la puissance :\n\n````rust\n// filepath: /home/olivier/projets/luca/src/interpreter.rs\nimpl Parser {\n    // ...\n\n    /// value : atom (POWER value)?\n    fn value(&mut self) -> Result<AST, Error> {\n        let mut node = self.atom()?;\n\n        if self.current_token == Token::POWER {\n            self.eat(&Token::POWER)?;\n            let right = self.value()?;\n            node = AST::new(Token::POWER, vec![node, right]);\n        }\n\n        Ok(node)\n    }\n\n    /// atom : (MONEY) number | UNIT | number (MONEY | PERCENTAGE | UNIT)\n    ///      | LPAREN expr RPAREN | VAR\n    fn atom(&mut self) -> Result<AST, Error> {\n        let token = self.current_token.clone();\n\n        match token {\n            // ...reprends ici le contenu de ton ancienne value()...\n            // (copie le match sur token de ta value() actuelle)\n            // Remplace tous les appels à self.value() dans factor/term par self.atom()\n        }\n    }\n\n    // ...dans factor() et term(), remplace les appels à value() par atom() ou value() selon le besoin...\n}\n````\n\n**Dans `factor` et `term`, utilise maintenant `value()` à la place de l’ancienne `value()` pour bénéficier de la priorité de la puissance.**\n\n---\n\n### Résultat\n\n- `100 ^ 2 m` → AST : `UNIT(m)` appliqué à `POWER(100, 2)` → `10000 m`\n- `2 m ^ 2` → AST : `POWER(UNIT(m, 2), 2)` → `4 m²`\n\n---\n\n### Résumé\n\n- Déplace la gestion de la puissance dans la règle `value : atom (POWER value)?`\n- Applique l’unité dans `atom`, donc après la puissance.\n- Cela donne la bonne priorité, sans avoir à ajouter une règle intermédiaire `power`.\n\n---\n\n**C’est une façon élégante et courante de gérer la priorité de la puissance sur l’application d’une unité.**  \nTu n’as plus besoin de la boucle sur `POWER` dans `term`.  \nTu peux maintenant faire passer le test `power_with_unit` et garder une grammaire simple."
+            }
+          ],
+          "modelMessageId": "85f0d6d8-8129-483b-8c12-63bc2a597adc",
+          "responseId": "f7f23d9e-045d-479f-b4cf-6437cc2cf9dd",
+          "sessionId": "1ad69fc5-0875-49f2-abab-97e5c155bf4c",
+          "agentId": "github.copilot.default"
+        }
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.default",
+        "description": "Demander à Copilot",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": true,
+          "helpTextPrefix": "Vous pouvez me poser des questions générales sur la programmation ou converser avec les participants suivants qui ont une expertise spécialisée et peuvent effectuer les actions suivantes :",
+          "helpTextVariablesPrefix": "Vous pouvez également m’aider à comprendre votre question en utilisant les variables suivantes pour me donner un contexte supplémentaire :",
+          "helpTextPostfix": {
+            "value": "Pour avoir une conversation intéressante, posez-moi des questions comme si j’étais un vrai programmeur :\n\n* **Montrez-moi le code** dont vous voulez parler en ouvrant les fichiers et en sélectionnant les lignes les plus importantes.\n* **Apportez des améliorations** en me posant des questions de suivi, en ajoutant des clarifications, en fournissant des erreurs, etc.\n* **Passez en revue mon code suggéré** et parlez-moi des problèmes ou des points d’amélioration afin que je puisse effectuer une itération.\n\nVous pouvez également me poser des questions sur la sélection de votre éditeur en [démarrant une session de conversation inline](command:inlineChat.start).\n\nEn savoir plus sur [GitHub Copilot](https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted) dans [Visual Studio Code](https://code.visualstudio.com/docs/copilot/overview). Ou explorez la [procédure pas à pas Copilot](commande:github.copilot.open.walkthrough).",
+            "isTrusted": {
+              "enabledCommands": [
+                "inlineChat.start",
+                "github.copilot.open.walkthrough"
+              ]
+            },
+            "supportThemeIcons": false,
+            "supportHtml": false,
+            "uris": {
+              "command:inlineChat.start": {
+                "$mid": 1,
+                "path": "inlineChat.start",
+                "scheme": "command"
+              },
+              "https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted": {
+                "$mid": 1,
+                "path": "/copilot/using-github-copilot/getting-started-with-github-copilot",
+                "scheme": "https",
+                "authority": "docs.github.com",
+                "query": "tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted"
+              },
+              "https://code.visualstudio.com/docs/copilot/overview": {
+                "$mid": 1,
+                "path": "/docs/copilot/overview",
+                "scheme": "https",
+                "authority": "code.visualstudio.com"
+              },
+              "commande:github.copilot.open.walkthrough": {
+                "$mid": 1,
+                "path": "github.copilot.open.walkthrough",
+                "scheme": "commande"
+              }
+            }
+          },
+          "supportIssueReporting": false,
+          "requester": {
+            "name": "0xfalafel",
+            "icon": {
+              "$mid": 1,
+              "path": "/u/4268373",
+              "scheme": "https",
+              "authority": "avatars.githubusercontent.com",
+              "query": "v=4"
+            }
+          }
+        },
+        "name": "GitHubCopilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "panel"
+        ],
+        "slashCommands": [],
+        "disambiguation": [
+          {
+            "category": "generate_code_sample",
+            "description": "The user wants to generate code snippets without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Write an example of computing a SHA256 hash."
+            ]
+          },
+          {
+            "category": "add_feature_to_file",
+            "description": "The user wants to change code in a file that is provided in their request, without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Add a refresh button to the table widget."
+            ]
+          },
+          {
+            "category": "question_about_specific_files",
+            "description": "The user has a question about a specific file or code snippet that they have provided as part of their query, and the question does not require additional workspace context to answer.",
+            "examples": [
+              "What does this file do?"
+            ]
+          }
+        ]
+      },
+      "contentReferences": [
+        {
+          "kind": "reference",
+          "reference": {
+            "$mid": 1,
+            "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        }
+      ],
+      "codeCitations": [],
+      "timestamp": 1747998932426
+    },
+    {
+      "requestId": "request_bc048d1a-f98e-412e-819e-33f9b78b6c1b",
+      "message": {
+        "text": "How can I do a gramar that matches this rules. Without adding a new `term / category`, just by expanding the current functions ?\n\n>>> 2 ^ 2\n\n  2²\n\n    = 4\n\n>>> 2m ^ 2\n\n  2 × metre²\n\n    = 2 m²    [Area]\n\n>>> 2 ^ 2 m\n\n  2² × metre\n\n    = 4 m    [Length]\n\n>>> 2 ^ 2 m²\n\n  2² × metre²\n\n    = 4 m²    [Area]\n",
+        "parts": [
+          {
+            "range": {
+              "start": 0,
+              "endExclusive": 304
+            },
+            "editorRange": {
+              "startLineNumber": 1,
+              "startColumn": 1,
+              "endLineNumber": 26,
+              "endColumn": 1
+            },
+            "text": "How can I do a gramar that matches this rules. Without adding a new `term / category`, just by expanding the current functions ?\n\n>>> 2 ^ 2\n\n  2²\n\n    = 4\n\n>>> 2m ^ 2\n\n  2 × metre²\n\n    = 2 m²    [Area]\n\n>>> 2 ^ 2 m\n\n  2² × metre\n\n    = 4 m    [Length]\n\n>>> 2 ^ 2 m²\n\n  2² × metre²\n\n    = 4 m²    [Area]\n",
+            "kind": "text"
+          }
+        ]
+      },
+      "variableData": {
+        "variables": [
+          {
+            "id": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "value": {
+              "$mid": 1,
+              "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+              "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+              "path": "/home/olivier/projets/luca/src/interpreter.rs",
+              "scheme": "file"
+            },
+            "name": "interpreter.rs",
+            "isFile": true,
+            "isOmitted": false
+          },
+          {
+            "id": "vscode.implicit.selection",
+            "name": "file:interpreter.rs",
+            "value": {
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              },
+              "range": {
+                "startLineNumber": 680,
+                "startColumn": 1,
+                "endLineNumber": 684,
+                "endColumn": 1,
+                "selectionStartLineNumber": 680,
+                "selectionStartColumn": 1,
+                "positionLineNumber": 684,
+                "positionColumn": 1
+              }
+            },
+            "isFile": true,
+            "modelDescription": "User's active selection"
+          }
+        ]
+      },
+      "response": [
+        {
+          "value": "Tu peux obtenir ce comportement **sans ajouter de nouvelle catégorie** en modifiant simplement la fonction ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "083b11ef-6542-4157-8f95-905751d0541d"
+        },
+        {
+          "value": " pour qu’elle gère la puissance à droite, puis l’application d’une unité/monnaie/%.  \nCela donne la bonne priorité :  \n- la puissance s’applique d’abord (",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value : atom (POWER value)?",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "cd49e5e7-14ff-4e17-84c0-018ff3894c50"
+        },
+        {
+          "value": ")\n- puis l’unité/monnaie/percent s’applique au résultat.\n\nVoici comment faire :\n\n---\n\n### 1. Modifie la fonction ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "97edcb66-7c61-4b02-ba77-b2af9676df1b"
+        },
+        {
+          "value": " pour gérer la puissance\n\nRemplace la fonction ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "32a3dae7-be0b-4293-ae12-56cd9750822a"
+        },
+        {
+          "value": " par :\n\n````rust\n",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "codeblockUri",
+          "uri": {
+            "$mid": 1,
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "value": "impl Parser {\n    // ...\n\n    /// value : atom (POWER value)?\n    fn value(&mut self) -> Result<AST, Error> {\n        let mut node = self.atom()?;\n\n        // Gère la puissance à droite\n        if self.current_token == Token::POWER {\n            self.eat(&Token::POWER)?;\n            let right = self.value()?;\n            node = AST::new(Token::POWER, vec![node, right]);\n        }\n\n        // Après la puissance, gère l'unité, la monnaie ou le pourcentage\n        match self.current_token.clone() {\n            Token::MONEY(currency) => {\n                self.eat(&Token::MONEY(currency))?;\n                node = AST::new(Token::MONEY(currency), vec![node]);\n            },\n            Token::PERCENTAGE => {\n                self.eat(&Token::PERCENTAGE)?;\n                node = AST::new(Token::PERCENTAGE, vec![node]);\n            },\n            Token::UNIT(unit) => {\n                self.eat(&Token::UNIT(unit))?;\n                node = AST::new(Token::UNIT(unit), vec![node]);\n            },\n            _ => {}\n        }\n\n        Ok(node)\n    }\n\n    /// atom : NUMBER | UNIT | LPAREN expr RPAREN | VAR\n    fn atom(&mut self) -> Result<AST, Error> {\n        let token = self.current_token.clone();\n\n        match token {\n            Token::NUMBER(_) => self.number(),\n            Token::UNIT(symbol) => {\n                self.eat(&Token::UNIT(symbol))?;\n                Ok(AST::new(Token::UNIT(symbol), vec![]))\n            },\n            Token::MONEY(currency) => {\n                self.eat(&Token::MONEY(currency))?;\n                Ok(AST::new(Token::MONEY(currency), vec![]))\n            },\n            Token::LPAREN => {\n                self.eat(&Token::LPAREN)?;\n                let node = self.expr()?;\n                self.eat(&Token::RPAREN)?;\n                Ok(node)\n            },\n            Token::VAR(name) => {\n                self.eat(&Token::VAR(name.clone()))?;\n                Ok(AST::new(Token::VAR(name), vec![]))\n            },\n            _ => Err(Error::InvalidSyntax)\n        }\n    }\n\n    // ...le reste inchangé...\n}\n````\n\n### 2. Dans ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "factor",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 409,
+                "startColumn": 8,
+                "endLineNumber": 409,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "ba804745-9e0c-465b-828e-a8a50f36c76b"
+        },
+        {
+          "value": ", appelle ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value()",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "1e0a6fe8-782c-4856-9f08-2adc390668a6"
+        },
+        {
+          "value": " au lieu de l’ancienne logique\n\n````rust\n",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "codeblockUri",
+          "uri": {
+            "$mid": 1,
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        },
+        {
+          "value": "impl Parser {\n    // ...\n\n    fn factor(&mut self) -> Result<AST, Error> {\n        let token = self.current_token.clone();\n\n        match token {\n            Token::PLUS | Token::MINUS => {\n                self.eat(&token)?;\n                let children = vec![self.factor()?];\n                Ok(AST::new(token, children))\n            },\n            _ => self.value()\n        }\n    }\n}\n````\n\n### 3. Laisse ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "term",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 446,
+                "startColumn": 8,
+                "endLineNumber": 446,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "702b2fe3-1795-497c-a79d-6969c5ca29ed"
+        },
+        {
+          "value": " et ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "expr",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 496,
+                "startColumn": 8,
+                "endLineNumber": 496,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "c43f1797-0c9c-4886-ad1c-99a63fd011e7"
+        },
+        {
+          "value": " inchangés\n\n---\n\n## Résultat\n\n- `2 ^ 2` → AST : ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "POWER(2, 2)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 58,
+                "startColumn": 5,
+                "endLineNumber": 58,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "067f951a-2777-4fec-b796-31ceb020b060"
+        },
+        {
+          "value": " → 4\n- `2m ^ 2` → AST : ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "POWER(UNIT(m, [2]), 2)",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 58,
+                "startColumn": 5,
+                "endLineNumber": 58,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "29c6f34b-163f-4468-93b9-c5cd7a75341d"
+        },
+        {
+          "value": " → 2 m²\n- `2 ^ 2 m` → AST : ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "UNIT(m, [POWER(2, 2)])",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 61,
+                "startColumn": 5,
+                "endLineNumber": 61,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "047d9a28-e779-4947-8710-bcd47838918e"
+        },
+        {
+          "value": " → 4 m\n- `2 ^ 2 m²` → AST : ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "UNIT(m², [POWER(2, 2)])",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 61,
+                "startColumn": 5,
+                "endLineNumber": 61,
+                "endColumn": 5
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "765e10a8-ea4d-4075-961a-8b75663c04b2"
+        },
+        {
+          "value": " → 4 m²\n\n---\n\n**Résumé :**\n- La règle ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value : atom (POWER value)? (MONEY|PERCENTAGE|UNIT)?",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "ccbd3301-99cc-4cfd-94e4-b696272a09f4"
+        },
+        {
+          "value": " donne la bonne priorité.\n- Pas besoin d’ajouter de nouvelle catégorie.\n- Tu modifies seulement ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "value",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 1,
+                "startColumn": 1,
+                "endLineNumber": 1,
+                "endColumn": 1
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/value.rs",
+                "external": "file:///home/olivier/projets/luca/src/value.rs",
+                "path": "/home/olivier/projets/luca/src/value.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "b9b5fe12-af91-4a12-96de-a84dc6eafdad"
+        },
+        {
+          "value": " et ",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        },
+        {
+          "kind": "inlineReference",
+          "inlineReference": {
+            "name": "factor",
+            "kind": 12,
+            "containerName": "",
+            "location": {
+              "range": {
+                "startLineNumber": 409,
+                "startColumn": 8,
+                "endLineNumber": 409,
+                "endColumn": 8
+              },
+              "uri": {
+                "$mid": 1,
+                "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+                "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              }
+            }
+          },
+          "resolveId": "49ece040-c230-44f7-bad9-392e45cfe487"
+        },
+        {
+          "value": ".\n\nCela correspond exactement à ce que tu veux, et le test `power_with_unit` passera.",
+          "supportThemeIcons": false,
+          "supportHtml": false,
+          "baseUri": {
+            "$mid": 1,
+            "path": "/home/olivier/projets/luca/",
+            "scheme": "file"
+          }
+        }
+      ],
+      "responseId": "response_cd0490a3-0b74-450e-a80a-09ebf2bdc977",
+      "result": {
+        "timings": {
+          "firstProgress": 1546,
+          "totalElapsed": 16706
+        },
+        "metadata": {
+          "codeBlocks": [
+            {
+              "code": "impl Parser {\n    // ...\n\n    /// value : atom (POWER value)?\n    fn value(&mut self) -> Result<AST, Error> {\n        let mut node = self.atom()?;\n\n        // Gère la puissance à droite\n        if self.current_token == Token::POWER {\n            self.eat(&Token::POWER)?;\n            let right = self.value()?;\n            node = AST::new(Token::POWER, vec![node, right]);\n        }\n\n        // Après la puissance, gère l'unité, la monnaie ou le pourcentage\n        match self.current_token.clone() {\n            Token::MONEY(currency) => {\n                self.eat(&Token::MONEY(currency))?;\n                node = AST::new(Token::MONEY(currency), vec![node]);\n            },\n            Token::PERCENTAGE => {\n                self.eat(&Token::PERCENTAGE)?;\n                node = AST::new(Token::PERCENTAGE, vec![node]);\n            },\n            Token::UNIT(unit) => {\n                self.eat(&Token::UNIT(unit))?;\n                node = AST::new(Token::UNIT(unit), vec![node]);\n            },\n            _ => {}\n        }\n\n        Ok(node)\n    }\n\n    /// atom : NUMBER | UNIT | LPAREN expr RPAREN | VAR\n    fn atom(&mut self) -> Result<AST, Error> {\n        let token = self.current_token.clone();\n\n        match token {\n            Token::NUMBER(_) => self.number(),\n            Token::UNIT(symbol) => {\n                self.eat(&Token::UNIT(symbol))?;\n                Ok(AST::new(Token::UNIT(symbol), vec![]))\n            },\n            Token::MONEY(currency) => {\n                self.eat(&Token::MONEY(currency))?;\n                Ok(AST::new(Token::MONEY(currency), vec![]))\n            },\n            Token::LPAREN => {\n                self.eat(&Token::LPAREN)?;\n                let node = self.expr()?;\n                self.eat(&Token::RPAREN)?;\n                Ok(node)\n            },\n            Token::VAR(name) => {\n                self.eat(&Token::VAR(name.clone()))?;\n                Ok(AST::new(Token::VAR(name), vec![]))\n            },\n            _ => Err(Error::InvalidSyntax)\n        }\n    }\n\n    // ...le reste inchangé...\n}\n",
+              "resource": {
+                "$mid": 1,
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              },
+              "language": "rust",
+              "markdownBeforeBlock": "Tu peux obtenir ce comportement **sans ajouter de nouvelle catégorie** en modifiant simplement la fonction  pour qu’elle gère la puissance à droite, puis l’application d’une unité/monnaie/%.  \nCela donne la bonne priorité :  \n- la puissance s’applique d’abord ()\n- puis l’unité/monnaie/percent s’applique au résultat.\n\nVoici comment faire :\n\n---\n\n### 1. Modifie la fonction  pour gérer la puissance\n\nRemplace la fonction  par :\n\n"
+            },
+            {
+              "code": "impl Parser {\n    // ...\n\n    fn factor(&mut self) -> Result<AST, Error> {\n        let token = self.current_token.clone();\n\n        match token {\n            Token::PLUS | Token::MINUS => {\n                self.eat(&token)?;\n                let children = vec![self.factor()?];\n                Ok(AST::new(token, children))\n            },\n            _ => self.value()\n        }\n    }\n}\n",
+              "resource": {
+                "$mid": 1,
+                "path": "/home/olivier/projets/luca/src/interpreter.rs",
+                "scheme": "file"
+              },
+              "language": "rust",
+              "markdownBeforeBlock": "\n### 2. Dans , appelle  au lieu de l’ancienne logique\n\n"
+            }
+          ],
+          "messages": [
+            {
+              "role": "user",
+              "content": "How can I do a gramar that matches this rules. Without adding a new `term / category`, just by expanding the current functions ?\n\n>>> 2 ^ 2\n\n  2²\n\n    = 4\n\n>>> 2m ^ 2\n\n  2 × metre²\n\n    = 2 m²    [Area]\n\n>>> 2 ^ 2 m\n\n  2² × metre\n\n    = 4 m    [Length]\n\n>>> 2 ^ 2 m²\n\n  2² × metre²\n\n    = 4 m²    [Area]\n"
+            },
+            {
+              "role": "assistant",
+              "content": "Tu peux obtenir ce comportement **sans ajouter de nouvelle catégorie** en modifiant simplement la fonction `value` pour qu’elle gère la puissance à droite, puis l’application d’une unité/monnaie/%.  \nCela donne la bonne priorité :  \n- la puissance s’applique d’abord (`value : atom (POWER value)?`)\n- puis l’unité/monnaie/percent s’applique au résultat.\n\nVoici comment faire :\n\n---\n\n### 1. Modifie la fonction `value` pour gérer la puissance\n\nRemplace la fonction `value` par :\n\n````rust\n// filepath: /home/olivier/projets/luca/src/interpreter.rs\nimpl Parser {\n    // ...\n\n    /// value : atom (POWER value)?\n    fn value(&mut self) -> Result<AST, Error> {\n        let mut node = self.atom()?;\n\n        // Gère la puissance à droite\n        if self.current_token == Token::POWER {\n            self.eat(&Token::POWER)?;\n            let right = self.value()?;\n            node = AST::new(Token::POWER, vec![node, right]);\n        }\n\n        // Après la puissance, gère l'unité, la monnaie ou le pourcentage\n        match self.current_token.clone() {\n            Token::MONEY(currency) => {\n                self.eat(&Token::MONEY(currency))?;\n                node = AST::new(Token::MONEY(currency), vec![node]);\n            },\n            Token::PERCENTAGE => {\n                self.eat(&Token::PERCENTAGE)?;\n                node = AST::new(Token::PERCENTAGE, vec![node]);\n            },\n            Token::UNIT(unit) => {\n                self.eat(&Token::UNIT(unit))?;\n                node = AST::new(Token::UNIT(unit), vec![node]);\n            },\n            _ => {}\n        }\n\n        Ok(node)\n    }\n\n    /// atom : NUMBER | UNIT | LPAREN expr RPAREN | VAR\n    fn atom(&mut self) -> Result<AST, Error> {\n        let token = self.current_token.clone();\n\n        match token {\n            Token::NUMBER(_) => self.number(),\n            Token::UNIT(symbol) => {\n                self.eat(&Token::UNIT(symbol))?;\n                Ok(AST::new(Token::UNIT(symbol), vec![]))\n            },\n            Token::MONEY(currency) => {\n                self.eat(&Token::MONEY(currency))?;\n                Ok(AST::new(Token::MONEY(currency), vec![]))\n            },\n            Token::LPAREN => {\n                self.eat(&Token::LPAREN)?;\n                let node = self.expr()?;\n                self.eat(&Token::RPAREN)?;\n                Ok(node)\n            },\n            Token::VAR(name) => {\n                self.eat(&Token::VAR(name.clone()))?;\n                Ok(AST::new(Token::VAR(name), vec![]))\n            },\n            _ => Err(Error::InvalidSyntax)\n        }\n    }\n\n    // ...le reste inchangé...\n}\n````\n\n### 2. Dans `factor`, appelle `value()` au lieu de l’ancienne logique\n\n````rust\n// filepath: /home/olivier/projets/luca/src/interpreter.rs\nimpl Parser {\n    // ...\n\n    fn factor(&mut self) -> Result<AST, Error> {\n        let token = self.current_token.clone();\n\n        match token {\n            Token::PLUS | Token::MINUS => {\n                self.eat(&token)?;\n                let children = vec![self.factor()?];\n                Ok(AST::new(token, children))\n            },\n            _ => self.value()\n        }\n    }\n}\n````\n\n### 3. Laisse `term` et `expr` inchangés\n\n---\n\n## Résultat\n\n- `2 ^ 2` → AST : `POWER(2, 2)` → 4\n- `2m ^ 2` → AST : `POWER(UNIT(m, [2]), 2)` → 2 m²\n- `2 ^ 2 m` → AST : `UNIT(m, [POWER(2, 2)])` → 4 m\n- `2 ^ 2 m²` → AST : `UNIT(m², [POWER(2, 2)])` → 4 m²\n\n---\n\n**Résumé :**\n- La règle `value : atom (POWER value)? (MONEY|PERCENTAGE|UNIT)?` donne la bonne priorité.\n- Pas besoin d’ajouter de nouvelle catégorie.\n- Tu modifies seulement `value` et `factor`.\n\nCela correspond exactement à ce que tu veux, et le test `power_with_unit` passera."
+            }
+          ],
+          "modelMessageId": "6e8a787d-0e54-47cf-a0e8-9c85fb0484d0",
+          "responseId": "971dbae7-ce0f-46b2-89ef-ab0752eab9fe",
+          "sessionId": "1ad69fc5-0875-49f2-abab-97e5c155bf4c",
+          "agentId": "github.copilot.default"
+        }
+      },
+      "followups": [],
+      "isCanceled": false,
+      "agent": {
+        "extensionId": {
+          "value": "GitHub.copilot-chat",
+          "_lower": "github.copilot-chat"
+        },
+        "publisherDisplayName": "GitHub",
+        "extensionPublisherId": "GitHub",
+        "extensionDisplayName": "GitHub Copilot Chat",
+        "id": "github.copilot.default",
+        "description": "Demander à Copilot",
+        "metadata": {
+          "themeIcon": {
+            "id": "copilot"
+          },
+          "hasFollowups": true,
+          "helpTextPrefix": "Vous pouvez me poser des questions générales sur la programmation ou converser avec les participants suivants qui ont une expertise spécialisée et peuvent effectuer les actions suivantes :",
+          "helpTextVariablesPrefix": "Vous pouvez également m’aider à comprendre votre question en utilisant les variables suivantes pour me donner un contexte supplémentaire :",
+          "helpTextPostfix": {
+            "value": "Pour avoir une conversation intéressante, posez-moi des questions comme si j’étais un vrai programmeur :\n\n* **Montrez-moi le code** dont vous voulez parler en ouvrant les fichiers et en sélectionnant les lignes les plus importantes.\n* **Apportez des améliorations** en me posant des questions de suivi, en ajoutant des clarifications, en fournissant des erreurs, etc.\n* **Passez en revue mon code suggéré** et parlez-moi des problèmes ou des points d’amélioration afin que je puisse effectuer une itération.\n\nVous pouvez également me poser des questions sur la sélection de votre éditeur en [démarrant une session de conversation inline](command:inlineChat.start).\n\nEn savoir plus sur [GitHub Copilot](https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted) dans [Visual Studio Code](https://code.visualstudio.com/docs/copilot/overview). Ou explorez la [procédure pas à pas Copilot](commande:github.copilot.open.walkthrough).",
+            "isTrusted": {
+              "enabledCommands": [
+                "inlineChat.start",
+                "github.copilot.open.walkthrough"
+              ]
+            },
+            "supportThemeIcons": false,
+            "supportHtml": false,
+            "uris": {
+              "command:inlineChat.start": {
+                "$mid": 1,
+                "path": "inlineChat.start",
+                "scheme": "command"
+              },
+              "https://docs.github.com/copilot/using-github-copilot/getting-started-with-github-copilot?tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted": {
+                "$mid": 1,
+                "path": "/copilot/using-github-copilot/getting-started-with-github-copilot",
+                "scheme": "https",
+                "authority": "docs.github.com",
+                "query": "tool=vscode&utm_source=editor&utm_medium=chat-panel&utm_campaign=2024q3-em-MSFT-getstarted"
+              },
+              "https://code.visualstudio.com/docs/copilot/overview": {
+                "$mid": 1,
+                "path": "/docs/copilot/overview",
+                "scheme": "https",
+                "authority": "code.visualstudio.com"
+              },
+              "commande:github.copilot.open.walkthrough": {
+                "$mid": 1,
+                "path": "github.copilot.open.walkthrough",
+                "scheme": "commande"
+              }
+            }
+          },
+          "supportIssueReporting": false,
+          "requester": {
+            "name": "0xfalafel",
+            "icon": {
+              "$mid": 1,
+              "path": "/u/4268373",
+              "scheme": "https",
+              "authority": "avatars.githubusercontent.com",
+              "query": "v=4"
+            }
+          }
+        },
+        "name": "GitHubCopilot",
+        "fullName": "GitHub Copilot",
+        "isDefault": true,
+        "locations": [
+          "panel"
+        ],
+        "slashCommands": [],
+        "disambiguation": [
+          {
+            "category": "generate_code_sample",
+            "description": "The user wants to generate code snippets without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Write an example of computing a SHA256 hash."
+            ]
+          },
+          {
+            "category": "add_feature_to_file",
+            "description": "The user wants to change code in a file that is provided in their request, without referencing the contents of the current workspace. This category does not include generating entire projects.",
+            "examples": [
+              "Add a refresh button to the table widget."
+            ]
+          },
+          {
+            "category": "question_about_specific_files",
+            "description": "The user has a question about a specific file or code snippet that they have provided as part of their query, and the question does not require additional workspace context to answer.",
+            "examples": [
+              "What does this file do?"
+            ]
+          }
+        ]
+      },
+      "contentReferences": [
+        {
+          "kind": "reference",
+          "reference": {
+            "$mid": 1,
+            "fsPath": "/home/olivier/projets/luca/src/interpreter.rs",
+            "external": "file:///home/olivier/projets/luca/src/interpreter.rs",
+            "path": "/home/olivier/projets/luca/src/interpreter.rs",
+            "scheme": "file"
+          }
+        }
+      ],
+      "codeCitations": [],
+      "timestamp": 1747999132986
+    }
+  ]
+}

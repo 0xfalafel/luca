@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use std::cell::RefCell;
 
-// use crate::units::money::{Money, Currency};
+pub type Variables = Rc<RefCell<HashMap<String, Value>>>;
 
 use crate::units::number::Number;
 use crate::units::unit::Unit;
@@ -117,16 +117,17 @@ impl UnitSymbol {
 #[derive(Debug, Clone)]
 pub struct Lexer {
     text: String,
-    pos: usize
+    pos: usize,
+    variables: Variables,
 }
 
 /// The Lexer is in charge of spliting the input in a bunch of tokens.
 impl Lexer {
-    pub fn new(text: String) -> Lexer {
-
+    pub fn new(text: String, variables: Variables) -> Lexer {
         Lexer {
             text: text,
-            pos: 0
+            pos: 0,
+            variables: variables,
         }
     }
 
@@ -338,8 +339,8 @@ impl Lexer {
 
 #[allow(unused)]
 /// Returns (Token, start, end) for each token in the input text
-pub fn syntax_analysis(input: &str) -> Vec<(Token, usize, usize)> {
-    let mut lexer = Lexer::new(input.to_string());
+pub fn syntax_analysis(input: &str, variables: Variables) -> Vec<(Token, usize, usize)> {
+    let mut lexer = Lexer::new(input.to_string(), variables);
     let mut res = vec![];
 
     let mut start = lexer.pos;
@@ -810,9 +811,9 @@ impl Interpreter {
     }
 }
 
-pub fn solve(input: String, variables: Rc<RefCell<HashMap<String, Value>>>) -> Result<String, String>{
+pub fn solve(input: String, variables: Variables) -> Result<String, String>{
     let text = String::from(input.trim());
-    let lexer = Lexer::new(text);
+    let lexer = Lexer::new(text, variables.clone());
 
     match Parser::new(lexer) {
         Ok(parser) => {
