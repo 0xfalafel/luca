@@ -135,7 +135,7 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str) {
                     }
                 }               
             },
-            Token::NUMBER(_) => {
+            Token::NUMBER(_) | Token::LARGE(_) => {
                 apply_tag(text_buffer.clone(), line_number, start as i32, end as i32, "number");
             },
             Token::UNIT(_) | Token::PERCENTAGE | Token::MONEY(_) => {
