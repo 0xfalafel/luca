@@ -1,5 +1,7 @@
 use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
+use relm4::gtk::ffi::gtk_text_iter_forward_to_line_end;
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
+use gtk::pango;
 
 use crate::interpreter::solve;
 use crate::value::Value;
@@ -38,6 +40,19 @@ impl SimpleComponent for LucaInput {
     ) -> ComponentParts<Self> {
         let text_buffer = gtk::TextBuffer::new(None);
         text_buffer.set_text(&text);
+
+        if let Some(start_iter) = text_buffer.iter_at_line_index(0, 0) {
+            let mut end_iter = start_iter.clone();
+            end_iter.forward_to_line_end();
+
+            let tag_table = text_buffer.tag_table();
+            let bold_tag = gtk::TextTag::builder()
+                .weight(20)
+                .build();
+            tag_table.add(&bold_tag);
+
+            text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
+        }
 
         text_buffer.connect_changed(move |text_buffer| {
             let start_iter = text_buffer.start_iter();
