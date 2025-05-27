@@ -122,7 +122,7 @@ impl Value {
 
 impl fmt::Display for Value {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} {}", self.number, self.unit)
+        write!(f, "{} {}", self.number, self.unit)
     }
 }
 

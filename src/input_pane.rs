@@ -106,7 +106,7 @@ fn create_tags(text_buffer: TextBuffer) {
     // Unit
     let unit_tag = gtk::TextTag::builder()
         .name("unit")
-        .foreground("#a56de2")
+        .foreground("#de3e80")
         .build();
     tag_table.add(&unit_tag);
 
