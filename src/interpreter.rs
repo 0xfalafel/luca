@@ -320,15 +320,15 @@ pub fn syntax_analysis(input: &str) -> Vec<(Token, usize, usize)> {
 
     let mut start = lexer.pos;
     while let Ok(token) = lexer.get_next_token() {
+        let end = lexer.pos;
+
+        res.push((token.clone(), start, end));
+        start = end;
+
         // otherwise the loop never exit
         if matches!(token, Token::EOF | Token::TITLE)  {
             return res
         }
-
-        let end = lexer.pos;
-
-        res.push((token, start, end));
-        start = end;
     }
 
     res
