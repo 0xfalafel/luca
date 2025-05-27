@@ -131,6 +131,10 @@ impl Lexer {
         self.pos += 1
     }
 
+    pub fn get_pos(&self) -> usize {
+        self.pos
+    }
+
     /// Return the char at the `pos` position
     fn get_char(&self) -> Option<char> {
         self.text.chars().nth(self.pos)
@@ -305,6 +309,30 @@ impl Lexer {
     }
 }
 
+//#############################################################
+//   Syntax analysis
+//#############################################################
+
+/// Returns (Token, start, end) for each token in the input text
+pub fn syntax_analysis(input: &str) -> Vec<(Token, usize, usize)> {
+    let mut lexer = Lexer::new(input.to_string());
+    let mut res = vec![];
+
+    let mut start = lexer.pos;
+    while let Ok(token) = lexer.get_next_token() {
+        // otherwise the loop never exit
+        if token == Token::EOF {
+            return res
+        }
+
+        let end = lexer.pos;
+
+        res.push((token, start, end));
+        start = end;
+    }
+
+    res
+}
 
 //#############################################################
 //   Parser / AST
