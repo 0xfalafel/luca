@@ -116,9 +116,13 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str) {
 
     let tokens = syntax_analysis(line);
 
+    // For debug pupropses
+    // for (token, start, end) in tokens.clone() {
+    //     println!("token: {:?}, start: {}, end: {}", token, start, end);
+    // }
+    // println!("----------------------------------------------------");
+
     for (token, start, end) in tokens {
-        println!("token: {:?}, start: {}, end: {}", token, start, end);
-        
         match token {
             Token::TITLE => {
                 if let Some(start_iter) = text_buffer.iter_at_line_index(line_number, 0) {
@@ -140,7 +144,6 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str) {
             _ => {}
         }
     }
-    println!("----------------------------------------------------");
 }
 
 fn apply_tag(text_buffer: TextBuffer, line: i32, start: i32, end: i32, tag_name: &str) {
