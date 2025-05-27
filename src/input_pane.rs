@@ -1,5 +1,5 @@
 use gtk::prelude::{WidgetExt, TextBufferExt, TextViewExt};
-use luca::interpreter::syntax_analysis;
+use luca::interpreter::{syntax_analysis, Token};
 use relm4::gtk::TextBuffer;
 use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
@@ -53,7 +53,7 @@ impl SimpleComponent for LucaInput {
             let variables : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
 
             for (i, line) in text.lines().enumerate() {
-                syntax_coloration(text_buffer.clone(), i, line);
+                syntax_coloration(text_buffer.clone(), i as i32, line);
 
                 // Create the content of the Result Pane
                 if let Ok(res) = solve(line.to_string(), variables.clone()) {
@@ -91,19 +91,29 @@ fn create_tags(text_buffer: TextBuffer) {
     text_buffer.tag_table().add(&bold_tag);
 }
 
-fn syntax_coloration(text_buffer: TextBuffer, line_number: usize, line: &str) {
+fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str) {
 
     let tokens = syntax_analysis(line);
 
     for (token, start, end) in tokens {
-        // println!("token: {:?}, start: {}, end: {}", token, start, end);
+        println!("token: {:?}, start: {}, end: {}", token, start, end);
         
         match token {
-
+            Token::TITLE => {
+                if let Some(start_iter) = text_buffer.iter_at_line_index(line_number, 0) {
+                    let mut end_iter = start_iter.clone();
+                    end_iter.forward_to_line_end();
+                    
+                    // Look up the tag by name
+                    if let Some(bold_tag) = text_buffer.tag_table().lookup("bold") {
+                        text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
+                    }
+                }               
+            }
             _ => {}
         }
     }
-    //println!("----------------------------------------------------");
+    println!("----------------------------------------------------");
 
     // if line_number == 0 {
     //     // Make the first line bold
