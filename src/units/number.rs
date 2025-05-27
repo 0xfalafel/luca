@@ -58,10 +58,10 @@ impl fmt::Display for Number {
                     .max_decimal_digits(6)
                     .add_point_zero(false)
                     .round()
-                    .group_digits(3, ' ');
-                write!(f, "{} ", dtoa(*float, config))
+                    .group_digits(3, ' ');
+                write!(f, "{}", dtoa(*float, config))
             },
-            None => write!(f, "{} ", self.0.to_string())
+            None => write!(f, "{}", self.0.to_string())
         }
     }
 }
