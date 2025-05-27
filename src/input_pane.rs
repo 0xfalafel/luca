@@ -48,6 +48,9 @@ impl SimpleComponent for LucaInput {
             let end_iter = text_buffer.end_iter();
             let text = text_buffer.text(&start_iter, &end_iter, false);
 
+            // Remove all the coloration tags, since we reapply them on the newest input
+            text_buffer.remove_all_tags(&start_iter, &end_iter);
+
             // interpret the text from the input pane
             let mut results = String::new();
             let variables : Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
