@@ -16,7 +16,7 @@ fn make_interpreter(text: &str, variables: Option<Variables>) -> Interpreter {
         None => Rc::new(RefCell::new(HashMap::new()))
     };
 
-    let lexer = Lexer::new(String::from(text), vars);
+    let lexer = Lexer::new(String::from(text), vars.clone());
     let parser = Parser::new(lexer).expect("Could not parse");
     let interpreter = Interpreter::new(parser, vars);
 
