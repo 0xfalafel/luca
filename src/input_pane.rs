@@ -63,6 +63,7 @@ impl SimpleComponent for LucaInput {
                 }
                 results.push('\n');
             }
+            results.pop();
 
             sender.output(MsgInput::TextChanged(results.to_string())).unwrap();
         });
