@@ -61,6 +61,7 @@ pub enum Token {
     UNIT(UnitSymbol),
     AS, // Conversion
     LARGE(i64),
+    TITLE,
     EOF,
 }
 
@@ -133,10 +134,6 @@ impl Lexer {
         self.pos += 1
     }
 
-    pub fn get_pos(&self) -> usize {
-        self.pos
-    }
-
     /// Return the char at the `pos` position
     fn get_char(&self) -> Option<char> {
         self.text.chars().nth(self.pos)
@@ -205,7 +202,7 @@ impl Lexer {
             "min" | "minute" => Token::UNIT(UnitSymbol::Minute),
             "h" | "hour" | "heure" => Token::UNIT(UnitSymbol::Hour),
             "ms" | "millisecond" | "milliseconde" => Token::UNIT(UnitSymbol::Millisecond),
-
+            
             "k" => Token::LARGE(1000),
             _ => Token::VAR(var)
         };
@@ -296,7 +293,10 @@ impl Lexer {
             '^' => {
                 self.advance();
                 Ok(Token::POWER)
-            }
+            },
+            '#' if self.peek(1) == Some(' ') => {
+                Ok(Token::TITLE)
+            },
             char if char.is_alphabetic() => {
                 self.keyword_or_variable()
             },
@@ -327,7 +327,7 @@ pub fn syntax_analysis(input: &str) -> Vec<(Token, usize, usize)> {
     let mut start = lexer.pos;
     while let Ok(token) = lexer.get_next_token() {
         // otherwise the loop never exit
-        if token == Token::EOF {
+        if matches!(token, Token::EOF | Token::TITLE)  {
             return res
         }
 
@@ -361,7 +361,7 @@ impl AST {
     }
 
     fn has_no_children(&self) -> bool {
-        self.children[0].token == Token::EOF
+        matches!(self.children[0].token, Token::EOF | Token::TITLE)
     }
 }
 
