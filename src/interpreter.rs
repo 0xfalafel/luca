@@ -148,7 +148,7 @@ impl Lexer {
     /// advance `self.pos` until the next non-whitespace character
     fn skip_whitespace(&mut self) {
 
-        while self.pos < self.text.len() && self.text.chars().nth(self.pos).unwrap().is_whitespace() {
+        while self.pos < self.text.len() && self.text.chars().nth(self.pos).unwrap_or_default().is_whitespace() {
             self.pos += 1;
         }
     }
@@ -319,6 +319,7 @@ impl Lexer {
 //   Syntax analysis
 //#############################################################
 
+#[allow(unused)]
 /// Returns (Token, start, end) for each token in the input text
 pub fn syntax_analysis(input: &str) -> Vec<(Token, usize, usize)> {
     let mut lexer = Lexer::new(input.to_string());
