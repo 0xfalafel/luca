@@ -110,6 +110,13 @@ fn create_tags(text_buffer: TextBuffer) {
         .build();
     tag_table.add(&unit_tag);
 
+    // Variable
+    let var_tag = gtk::TextTag::builder()
+        .name("variable")
+        .foreground("#68b723")
+        .build();
+    tag_table.add(&var_tag);
+
 }
 
 fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str) {
@@ -140,6 +147,9 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str) {
             },
             Token::UNIT(_) | Token::PERCENTAGE | Token::MONEY(_) => {
                 apply_tag(text_buffer.clone(), line_number, start as i32, end as i32, "unit");
+            },
+            Token::VAR(_) => {
+                apply_tag(text_buffer.clone(), line_number, start as i32, end as i32, "variable");
             },
             _ => {}
         }
