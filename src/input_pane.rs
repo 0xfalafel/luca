@@ -112,10 +112,19 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str, vari
     let tokens = syntax_analysis(line, variables);
 
     // For debug pupropses
-    // for (token, start, end) in tokens.clone() {
-    //     println!("token: {:?}, start: {}, end: {}", token, start, end);
-    // }
-    // println!("----------------------------------------------------");
+    for (token, start, end) in tokens.clone() {
+        let start_text = text_buffer.iter_at_line_offset(line_number, start as i32);
+        let end_text = text_buffer.iter_at_line_offset(line_number, end as i32);
+        
+        let text = if start_text.is_some() && end_text.is_some() {
+            text_buffer.text(&start_text.unwrap(), &end_text.unwrap(), false)
+        } else {
+            "".into()
+        };
+
+        println!("token: {:?}, start: {}, end: {}, text: {}", token, start, end, text);
+    }
+    println!("----------------------------------------------------");
 
     for (token, start, end) in tokens {
         match token {
