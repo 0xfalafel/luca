@@ -232,24 +232,22 @@ impl Lexer {
         }
     }
 
-    /// Retun a string
     fn variable(&mut self) -> String {
         let str_start = self.pos;
-        let input_text: String = self.text.chars().skip(self.pos).collect();
-
-        let end_of_variable = input_text
-            .find(|c: char| c == '=' || c == '€' || c == '$'
-                || c == '+' || c == '-' || c == '*' || c == '/'
-                || c.is_whitespace());
-
-        let end = end_of_variable.unwrap_or(input_text.len());
+        let input_chars: Vec<char> = self.text.chars().skip(self.pos).collect();
+    
+        let end_of_variable = input_chars.iter().position(|&c| {
+            c == '=' || c == '€' || c == '$' || c == '+' || c == '-' || c == '*' || c == '/' || c.is_whitespace()
+        });
+    
+        let end = end_of_variable.unwrap_or(input_chars.len());
         self.pos = str_start + end;
-        
-        let new_var: String = input_text[..end].to_string();
-        //let new_var: String = input_text.chars().take(end).collect();
+    
+        // Collect the characters up to the end index
+        let new_var: String = input_chars.into_iter().take(end).collect();
         new_var
     }
-
+    
     /// Lexical analyser (also known as scanner or tokenizer).
     ///    
     /// This method is responsible for breaking a sentence
