@@ -118,7 +118,7 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str, vari
 
     let tokens = syntax_analysis(line, variables);
 
-    // For debug pupropses
+    // // For debug pupropses
     // for (token, start, end) in tokens.clone() {
     //     let start_text = text_buffer.iter_at_line_offset(line_number, start as i32);
     //     let end_text = text_buffer.iter_at_line_offset(line_number, end as i32);

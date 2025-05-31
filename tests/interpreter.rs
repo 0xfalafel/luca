@@ -418,3 +418,9 @@ fn comment() {
     let result = make_interpreter("220€ //a comment", None).interpret();
     assert_eq!(result, Ok(Value::new_with_unit(Number::from_i64(220).unwrap(), &Unit::euro())));
 }
+
+#[test]
+fn label() {
+    let result = make_interpreter("Iphone 9: $690", None).interpret();
+    assert_eq!(result, Ok(Value::new_with_unit(Number::from_i64(690).unwrap(), &Unit::dollar())));
+}

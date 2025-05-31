@@ -74,6 +74,7 @@ pub enum Token {
     TITLE,
     NONE, // used for words that have no meaning
     COMMENT, // Similar to EOF
+    LABEL, // Bold, and not interpreted
     EOF,
 }
 
@@ -238,7 +239,7 @@ impl Lexer {
         let input_chars: Vec<char> = self.text.chars().skip(self.pos).collect();
     
         let end_of_variable = input_chars.iter().position(|&c| {
-            c == '=' || c == '€' || c == '$' || c == '+' || c == '-' || c == '*' || c == '/' || c.is_whitespace()
+            c == '=' || c == '€' || c == '$' || c == '+' || c == '-' || c == '*' || c == '/' || c == ':' || c.is_whitespace()
         });
     
         let end = end_of_variable.unwrap_or(input_chars.len());
@@ -326,7 +327,11 @@ impl Lexer {
             },
             '#' => {
                 Ok(Token::TITLE)
-            }
+            },
+            ':' => {
+                self.advance();
+                Ok(Token::LABEL)
+            },
             char if char.is_alphabetic() => {
                 self.keyword_or_variable()
             },
@@ -422,10 +427,9 @@ impl Parser {
         }
     }
 
-    /// number : NUMBER
+    /// number : NUMBER | LABEL
     fn number(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
-
         self.eat(&token)?;
         let node = AST::new(token, vec![]);
         Ok(node)
@@ -624,6 +628,18 @@ impl Parser {
     
     /// statement   : expr | assignement
     fn statement(&mut self) -> Result<AST, Error> {
+        // debug
+        let mut lexer_clone = self.lexer.clone();
+
+        // For debug pupropses
+        while let Ok(token) = lexer_clone.get_next_token() {
+            println!("tok: {:?}", token);
+            if matches!(token, Token::EOF | Token::COMMENT) {
+                break;
+            }
+        }
+        println!("----------------------------------------------------");
+
         if matches!(self.current_token, Token::VAR(_)) && self.lexer.peek_next_token() == Some(Token::ASSIGN) {
             self.assignement()
         } else {
@@ -631,8 +647,30 @@ impl Parser {
         }
     }
 
+    // Jump just after the last label if we have one
+    fn seek_to_last_label(lex: &Lexer) -> Lexer {
+        let mut final_lexer = lex.clone();
+        let mut lexer = lex.clone();
+        
+        while let Ok(token) = lexer.get_next_token() {
+            if matches!(token, Token::EOF | Token::COMMENT | Token::TITLE) {
+                break;
+            }
+
+            if token == Token::LABEL {
+                final_lexer = lexer.clone();
+                // if lexer.peek_next_token().is_some() {
+                //     let mut lex_at_next_token = lexer.clone();
+                //     let _ = lex_at_next_token.get_next_token();
+                //     final_lexer = lex_at_next_token;
+                // }
+            }
+        }
+        final_lexer
+    }
 
     fn parse(&mut self) -> Result<AST, Error> {
+        self.lexer = Self::seek_to_last_label(&self.lexer);
         self.statement()
     }
 }
