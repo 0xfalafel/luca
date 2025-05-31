@@ -324,7 +324,7 @@ impl Lexer {
                 self.advance();
                 Ok(Token::PERCENTAGE)
             },
-            '#' if self.peek(1) == Some(' ') => {
+            '#' => {
                 Ok(Token::TITLE)
             }
             char if char.is_alphabetic() => {
