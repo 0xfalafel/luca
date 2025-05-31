@@ -27,7 +27,9 @@ impl SimpleComponent for LucaInput {
 
     view! {
         gtk::ScrolledWindow {
+            set_widget_name: "input_pane",
             gtk::TextView {
+                set_widget_name: "input_textview",
                 set_margin_start: 20,
                 set_buffer: Some(&model.text_buffer)
             },

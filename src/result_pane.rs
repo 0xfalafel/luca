@@ -21,7 +21,9 @@ impl SimpleComponent for ResultView {
 
     view! {
         gtk::ScrolledWindow {
+            set_widget_name: "result_pane",
             gtk::TextView {
+                set_widget_name: "result_textview",
                 set_margin_start: 20,
                 set_editable: false,
                 set_buffer: Some(&model.text_buffer)

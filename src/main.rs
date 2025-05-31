@@ -123,6 +123,7 @@ impl SimpleComponent for AppModel {
                 .detach();
 
 
+        /*
         // Sync both panes when scrolling
         let adjustment_input = text_input.widget().vadjustment();
         let adjustment_result = result_view.widget().vadjustment();
@@ -142,7 +143,8 @@ impl SimpleComponent for AppModel {
                 adjustment_in.set_value(adj.value());
             }
         });
-
+        */
+        
         let model = AppModel {
             input: text_input,
             result: result_view
