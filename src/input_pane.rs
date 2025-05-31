@@ -55,21 +55,21 @@ impl SimpleComponent for LucaInput {
             text_buffer.remove_all_tags(&start_iter, &end_iter);
 
             // interpret the text from the input pane
-            let mut results = String::new();
+            let mut results: Vec<String> = vec![];
             let variables : Variables = Rc::new(RefCell::new(HashMap::new()));
 
-            for (i, line) in text.lines().enumerate() {
+            for (i, line) in text.split('\n').enumerate() {
                 syntax_coloration(text_buffer.clone(), i as i32, line, variables.clone());
 
                 // Create the content of the Result Pane
                 if let Ok(res) = solve(line.to_string(), variables.clone()) {
-                    results.push_str(&res);
+                    results.push(res);
+                } else {
+                    results.push(String::from(""));
                 }
-                results.push('\n');
             }
-            results.pop();
 
-            sender.output(MsgInput::TextChanged(results.to_string())).unwrap();
+            sender.output(MsgInput::TextChanged(results.join("\n"))).unwrap();
         });
 
         let model = LucaInput {text_buffer};

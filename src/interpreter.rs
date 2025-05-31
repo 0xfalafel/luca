@@ -838,7 +838,7 @@ impl Interpreter {
 
     pub fn interpret(&mut self) -> Result<Value, Error> {
         let tree = self.parser.parse()?;
-        tree.print_tree(0); // Print the AST for debugging
+        // tree.print_tree(0); // Print the AST for debugging
         let result = self.visit(&tree)?;
         // println!("res: {:?}", result);
         Ok(result)
