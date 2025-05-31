@@ -148,7 +148,7 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str, vari
             },
             Token::COMMENT => {
 
-                if let Some(mut start_iter) = text_buffer.iter_at_line_offset(line_number, start as i32) {
+                if let Some(start_iter) = text_buffer.iter_at_line_offset(line_number, start as i32) {
                     let mut end_iter = start_iter.clone();
                     end_iter.forward_to_line_end();
 
