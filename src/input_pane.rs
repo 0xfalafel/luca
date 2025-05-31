@@ -85,11 +85,11 @@ fn create_tags(text_buffer: TextBuffer) {
     tag_table.add(&bold_tag);
 
     // Comment
-    let bold_tag = gtk::TextTag::builder()
+    let comment_tag = gtk::TextTag::builder()
         .name("comment")
-        .foreground("#7e8087") // bold in pango
+        .foreground("#7e8087") // grey
         .build();
-    tag_table.add(&bold_tag);
+    tag_table.add(&comment_tag);
 
     // Number
     let number_tag = gtk::TextTag::builder()
@@ -155,6 +155,19 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str, vari
                     // Look up the tag by name
                     if let Some(comment_tag) = text_buffer.tag_table().lookup("comment") {
                         text_buffer.apply_tag(&comment_tag, &start_iter, &end_iter);
+                    }
+                }               
+            },
+            Token::LABEL => {
+
+                if let Some(end_iter) = text_buffer.iter_at_line_offset(line_number, end as i32) {
+                    let start_iter = text_buffer.iter_at_line(line_number).unwrap();
+
+                    // Remove previous coloration
+                    text_buffer.remove_all_tags(&start_iter, &end_iter);
+
+                    if let Some(bold_tag) = text_buffer.tag_table().lookup("bold") {
+                        text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
                     }
                 }               
             },
