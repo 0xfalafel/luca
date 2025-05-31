@@ -1,5 +1,6 @@
 use gtk::{gdk, glib, glib::clone};
 use gtk::prelude::{GtkWindowExt, OrientableExt, WidgetExt};
+use relm4::gtk::prelude::{AdjustmentExt, ScrollableExt};
 use relm4::{gtk, Component, ComponentController, ComponentParts, ComponentSender, Controller, RelmApp, SimpleComponent};
 use granite::prelude::SettingsExt;
 
@@ -120,6 +121,27 @@ impl SimpleComponent for AppModel {
             ResultView::builder()
                 .launch(String::from(""))
                 .detach();
+
+
+        // Sync both panes when scrolling
+        let adjustment_input = text_input.widget().vadjustment();
+        let adjustment_result = result_view.widget().vadjustment();
+
+        // Input -> Result
+        adjustment_input.connect_value_changed({
+            let adjustment_res = adjustment_result.clone();
+            move |adj| {
+                adjustment_res.set_value(adj.value());
+            }
+        });
+
+        // Result -> Input
+        adjustment_result.connect_value_changed({
+            let adjustment_in = adjustment_input.clone();
+            move |adj| {
+                adjustment_in.set_value(adj.value());
+            }
+        });
 
         let model = AppModel {
             input: text_input,

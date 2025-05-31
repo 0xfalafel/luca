@@ -20,10 +20,12 @@ impl SimpleComponent for ResultView {
     type Output = ();
 
     view! {
-        gtk::TextView {
-            set_margin_start: 20,
-            set_editable: false,
-            set_buffer: Some(&model.text_buffer)
+        gtk::ScrolledWindow {
+            gtk::TextView {
+                set_margin_start: 20,
+                set_editable: false,
+                set_buffer: Some(&model.text_buffer)
+            },
         },
     }
 

@@ -26,9 +26,11 @@ impl SimpleComponent for LucaInput {
     type Output = MsgInput;
 
     view! {
-        gtk::TextView {
-            set_margin_start: 20,
-            set_buffer: Some(&model.text_buffer)
+        gtk::ScrolledWindow {
+            gtk::TextView {
+                set_margin_start: 20,
+                set_buffer: Some(&model.text_buffer)
+            },
         },
     }
 
