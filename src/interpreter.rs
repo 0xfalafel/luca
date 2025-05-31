@@ -638,17 +638,15 @@ impl Parser {
     
     /// statement   : expr | assignement
     fn statement(&mut self) -> Result<AST, Error> {
-        // debug
-        let mut lexer_clone = self.lexer.clone();
-
         // For debug pupropses
-        while let Ok(token) = lexer_clone.get_next_token() {
-            println!("tok: {:?}", token);
-            if matches!(token, Token::EOF | Token::COMMENT) {
-                break;
-            }
-        }
-        println!("----------------------------------------------------");
+        // let mut lexer_clone = self.lexer.clone();
+        // while let Ok(token) = lexer_clone.get_next_token() {
+        //     println!("tok: {:?}", token);
+        //     if matches!(token, Token::EOF | Token::COMMENT | Token::TITLE) {
+        //         break;
+        //     }
+        // }
+        // println!("----------------------------------------------------");
 
         if matches!(self.current_token, Token::VAR(_)) && self.lexer.peek_next_token() == Some(Token::ASSIGN) {
             self.assignement()
