@@ -73,6 +73,7 @@ pub enum Token {
     LARGE(i64),
     TITLE,
     NONE, // used for words that have no meaning
+    COMMENT, // Similar to EOF
     EOF,
 }
 
@@ -289,7 +290,12 @@ impl Lexer {
             '*' => {
                 self.advance();
                 Ok(Token::MUL,)
-            },    
+            },
+            '/' if self.peek(1) == Some('/') => {
+                self.advance();
+                self.advance();
+                Ok(Token::COMMENT)
+            },
             '/' => {
                 self.advance();
                 Ok(Token::DIV,)
@@ -357,7 +363,7 @@ pub fn syntax_analysis(input: &str, variables: Variables) -> Vec<(Token, usize, 
         start = end;
 
         // otherwise the loop never exit
-        if matches!(token, Token::EOF | Token::TITLE)  {
+        if matches!(token, Token::EOF | Token::TITLE | Token::COMMENT)  {
             return res
         }
     }
@@ -386,7 +392,7 @@ impl AST {
     }
 
     fn has_no_children(&self) -> bool {
-        matches!(self.children[0].token, Token::EOF | Token::TITLE)
+        matches!(self.children[0].token, Token::EOF | Token::COMMENT | Token::TITLE)
     }
 }
 
