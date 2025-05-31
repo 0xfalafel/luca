@@ -112,6 +112,13 @@ fn create_tags(text_buffer: TextBuffer) {
         .build();
     tag_table.add(&var_tag);
 
+    // special
+    let special_tag = gtk::TextTag::builder()
+        .name("special")
+        .foreground("#f37329")
+        .build();
+    tag_table.add(&special_tag);
+
 }
 
 fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str, variables: Variables) {
@@ -179,6 +186,10 @@ fn syntax_coloration(text_buffer: TextBuffer, line_number: i32, line: &str, vari
             },
             Token::VAR(_) => {
                 apply_tag(text_buffer.clone(), line_number, start as i32, end as i32, "variable");
+            },
+            //Token::AS | Token::PLUS | Token::MINUS | Token::MUL | Token::DIV => {
+            Token::AS => {
+                apply_tag(text_buffer.clone(), line_number, start as i32, end as i32, "special");
             },
             _ => {}
         }
