@@ -427,7 +427,7 @@ impl Parser {
         }
     }
 
-    /// number : NUMBER | LABEL
+    /// number : NUMBER
     fn number(&mut self) -> Result<AST, Error> {
         let token = self.current_token.clone();
         self.eat(&token)?;
@@ -659,11 +659,6 @@ impl Parser {
 
             if token == Token::LABEL {
                 final_lexer = lexer.clone();
-                // if lexer.peek_next_token().is_some() {
-                //     let mut lex_at_next_token = lexer.clone();
-                //     let _ = lex_at_next_token.get_next_token();
-                //     final_lexer = lex_at_next_token;
-                // }
             }
         }
         final_lexer
