@@ -26,10 +26,9 @@ impl SimpleComponent for LucaInput {
     type Output = MsgInput;
 
     view! {
+        #[name="scrolled_window"]
         gtk::ScrolledWindow {
-            set_widget_name: "input_pane",
             gtk::TextView {
-                set_widget_name: "input_textview",
                 set_margin_start: 20,
                 set_buffer: Some(&model.text_buffer)
             },
@@ -74,6 +73,8 @@ impl SimpleComponent for LucaInput {
 
         let model = LucaInput {text_buffer};
         let widgets = view_output!();
+        // hide the scrollbar
+        widgets.scrolled_window.vscrollbar().set_visible(false);
         ComponentParts {model, widgets}
     }
 }
