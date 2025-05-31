@@ -648,9 +648,11 @@ impl Parser {
     }
 
     // Jump just after the last label if we have one
-    fn seek_to_last_label(lex: &Lexer) -> Lexer {
-        let mut final_lexer = lex.clone();
-        let mut lexer = lex.clone();
+    fn seek_to_last_label(&mut self) -> Result<(), Error> {
+        let mut final_lexer = self.lexer.clone();
+        let mut final_token = self.current_token.clone();
+
+        let mut lexer = self.lexer.clone();
         
         while let Ok(token) = lexer.get_next_token() {
             if matches!(token, Token::EOF | Token::COMMENT | Token::TITLE) {
@@ -659,13 +661,17 @@ impl Parser {
 
             if token == Token::LABEL {
                 final_lexer = lexer.clone();
+                final_token = lexer.get_next_token()?;
             }
         }
-        final_lexer
+        self.lexer = final_lexer;
+        self.current_token = final_token;
+
+        Ok(())
     }
 
     fn parse(&mut self) -> Result<AST, Error> {
-        self.lexer = Self::seek_to_last_label(&self.lexer);
+        self.seek_to_last_label()?;
         self.statement()
     }
 }
