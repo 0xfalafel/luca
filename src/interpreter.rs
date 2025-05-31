@@ -671,7 +671,7 @@ impl Parser {
 
             if token == Token::LABEL {
                 final_lexer = lexer.clone();
-                final_token = lexer.get_next_token()?;
+                final_token = final_lexer.get_next_token()?;
             }
         }
         self.lexer = final_lexer;
