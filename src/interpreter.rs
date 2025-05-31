@@ -399,6 +399,16 @@ impl AST {
     fn has_no_children(&self) -> bool {
         matches!(self.children[0].token, Token::EOF | Token::COMMENT | Token::TITLE)
     }
+
+    /// Pretty-print the AST tree for debugging.
+    #[allow(unused)]
+    pub fn print_tree(&self, indent: usize) {
+        let indent_str = "  ".repeat(indent);
+        println!("{}{:?}", indent_str, self.token);
+        for child in &self.children {
+            child.print_tree(indent + 1);
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -830,6 +840,7 @@ impl Interpreter {
 
     pub fn interpret(&mut self) -> Result<Value, Error> {
         let tree = self.parser.parse()?;
+        tree.print_tree(0); // Print the AST for debugging
         let result = self.visit(&tree)?;
         // println!("res: {:?}", result);
         Ok(result)
