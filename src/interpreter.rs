@@ -192,11 +192,15 @@ impl Lexer {
         }
     }
 
-    fn is_keyword(var: &str) -> Option<Token> {
+    fn is_keyword(&self, var: &str) -> Option<Token> {
         match var {
             "per" | "par" => Some(Token::DIV), // $ per km 
             "of" | "de" => Some(Token::OF), // Percentage
-            "en" | "as" => Some(Token::AS), // Conversion
+            
+            "en" | "as" if matches!(
+                self.peek_next_token(),
+                Some(Token::UNIT(_)) | Some(Token::MONEY(_))
+            ) => Some(Token::AS), // Conversion
 
             "m" | "meter" | "metre" => Some(Token::UNIT(UnitSymbol::Meter)),
             "km" | "kilometer" | "kilometre" => Some(Token::UNIT(UnitSymbol::Kilometer)),
@@ -223,7 +227,7 @@ impl Lexer {
     fn keyword_or_variable(&mut self) -> Result<Token, Error> {
         let var = self.variable();
 
-        if let Some(token) = Self::is_keyword(var.as_str()) {
+        if let Some(token) = self.is_keyword(var.as_str()) {
             Ok(token)
         } else if self.peek_next_token() == Some(Token::ASSIGN) {
             Ok(Token::VAR(var))
