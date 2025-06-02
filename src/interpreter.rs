@@ -179,7 +179,7 @@ impl Lexer {
                 } else if char == '.' || char == ',' {
                     self.advance();
                     ascii_number.push('.');
-                } else if char == ' ' || char == '_' {
+                } else if char.is_whitespace() || char == '_' {
                     self.advance();
                 } else {
                     break;
