@@ -284,15 +284,15 @@ impl Lexer {
             char if char.is_ascii_digit() => {
                 Ok(self.number()?)
             },
-            '+' => {
+            '+' | '﹢' | '＋' => {
                 self.advance();
                 Ok(Token::PLUS)
             },
-            '-' => {
+            '-' | '−' => {
                 self.advance();
                 Ok(Token::MINUS)
             },
-            '*' => {
+            '*' | '×' => {
                 self.advance();
                 Ok(Token::MUL,)
             },
@@ -301,7 +301,7 @@ impl Lexer {
                 self.advance();
                 Ok(Token::COMMENT)
             },
-            '/' => {
+            '/' | '÷' => {
                 self.advance();
                 Ok(Token::DIV,)
             },    
