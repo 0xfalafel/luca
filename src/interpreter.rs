@@ -243,7 +243,8 @@ impl Lexer {
         let input_chars: Vec<char> = self.text.chars().skip(self.pos).collect();
     
         let end_of_variable = input_chars.iter().position(|&c| {
-            c == '=' || c == '€' || c == '$' || c == '+' || c == '-' || c == '*' || c == '/' || c == ':' || c.is_whitespace()
+            c == '=' || c == '€' || c == '$' || c == '+' || c == '-' || c == '*' || c == '/'
+            || c == ':' || c.is_whitespace() || c == '(' || c == ')'
         });
     
         let end = end_of_variable.unwrap_or(input_chars.len());
