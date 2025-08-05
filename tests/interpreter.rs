@@ -424,3 +424,9 @@ fn label() {
     let result = make_interpreter("Iphone 9: $690", None).interpret();
     assert_eq!(result, Ok(Value::new_with_unit(Number::from_i64(690).unwrap(), &Unit::dollar())));
 }
+
+#[test]
+fn text_with_units() {
+    let result = make_interpreter("côté de 10cm", None).interpret();
+    assert_eq!(result, Ok(Value::new_with_unit(Number::from_i64(10).unwrap(), &Unit::centimeter())));
+}
