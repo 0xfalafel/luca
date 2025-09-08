@@ -96,7 +96,8 @@ impl ComposedUnit {
     pub fn square_decimeters() -> ComposedUnit { Self::decimeter().power(2) }
     pub fn square_centimeters() -> ComposedUnit { Self::centimeter().power(2) }
     pub fn square_millimeters() -> ComposedUnit { Self::millimeter().power(2) }
-
+    pub fn inch() -> ComposedUnit { Self::new_with_unit(Unit::inch()) }
+    pub fn feet() -> ComposedUnit { Self::new_with_unit(Unit::feet()) }
 }
 
 impl Mul<ComposedUnit> for ComposedUnit {

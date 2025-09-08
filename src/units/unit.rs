@@ -104,6 +104,22 @@ impl Unit {
     pub fn centimeter() -> Unit { Unit::meter().with_prefix("centi") }
     pub fn millimeter() -> Unit { Unit::meter().with_prefix("milli") }
 
+    // american unit
+    pub fn inch() -> Unit {
+        Unit {
+            symbol: "inch".into(), name: "inch".into(),
+            kind: UnitKind::Derived(0.0254, Box::new(Self::meter()))
+        }
+    }
+
+    pub fn feet() -> Unit {
+        Unit {
+            symbol: "feet".into(), name: "inch".into(),
+            kind: UnitKind::Derived(0.3048, Box::new(Self::meter()))
+        }
+    }
+
+    // time
     pub fn second() -> Unit {
         Unit { symbol: "s".into(), name: "second".into(), kind: UnitKind::Base }
     }

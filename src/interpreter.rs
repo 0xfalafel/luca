@@ -93,6 +93,8 @@ pub enum UnitSymbol {
     Decimeter,
     Centimeter,
     Millimeter,
+    Inch,
+    Feet,
     SquareMeters,
     SquareKilometers,
     SquareDecimeters,
@@ -112,6 +114,8 @@ impl UnitSymbol {
             UnitSymbol::Decimeter => ComposedUnit::decimeter(),
             UnitSymbol::Centimeter => ComposedUnit::centimeter(),
             UnitSymbol::Millimeter => ComposedUnit::millimeter(),
+            UnitSymbol::Inch => ComposedUnit::inch(),
+            UnitSymbol::Feet => ComposedUnit::feet(),
             UnitSymbol::Second => ComposedUnit::second(),
             UnitSymbol::Minute => ComposedUnit::minute(),
             UnitSymbol::Hour => ComposedUnit::hour(),
@@ -207,6 +211,10 @@ impl Lexer {
             "dm" | "decimeter" | "decimetre" => Some(Token::UNIT(UnitSymbol::Decimeter)),
             "cm" | "centimeter" | "centimetre" => Some(Token::UNIT(UnitSymbol::Centimeter)),
             "mm" | "millimeter" | "millimetre" => Some(Token::UNIT(UnitSymbol::Millimeter)),
+
+            "inch" | "inchs"  => Some(Token::UNIT(UnitSymbol::Inch)),
+            "feet" | "feets" => Some(Token::UNIT(UnitSymbol::Feet)),
+
 
             "m²"  | "m2"  => Some(Token::UNIT(UnitSymbol::SquareMeters)),
             "km²" | "km2" => Some(Token::UNIT(UnitSymbol::SquareKilometers)),
