@@ -1,6 +1,6 @@
 use gtk::{gdk, glib, glib::clone};
 use gtk::prelude::{GtkWindowExt, OrientableExt, WidgetExt};
-use relm4::gtk::prelude::AdjustmentExt;
+use relm4::gtk::prelude::{AdjustmentExt, ButtonExt};
 use relm4::{gtk, Component, ComponentController, ComponentParts, ComponentSender, Controller, RelmApp, SimpleComponent};
 use granite::prelude::SettingsExt;
 
@@ -85,8 +85,19 @@ impl SimpleComponent for AppModel {
                         gtk::HeaderBar {
                             set_show_title_buttons: false,
                             set_margin_start: 5,
-                            pack_end = &gtk::WindowControls{
-                                set_side: gtk::PackType::End,
+                            // pack_end = &gtk::WindowControls{
+                            //     set_side: gtk::PackType::End,
+                            // },
+                            pack_end = &gtk::Box{
+                                set_orientation: gtk::Orientation::Horizontal,
+
+                                gtk::Button {
+                                    set_icon_name: "preferences-system-symbolic",
+                                },
+
+                                gtk::WindowControls {
+                                    set_side: gtk::PackType::End,
+                                }
                             },
                             add_css_class: "sidebar"
                         },
