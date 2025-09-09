@@ -5,6 +5,9 @@ use relm4::{gtk, ComponentParts, ComponentSender, SimpleComponent};
 
 use std::collections::HashMap;
 use std::cell::RefCell;
+use std::fs::File;
+use std::io::Write;
+use log::error;
 use std::i32;
 use std::rc::Rc;
 
@@ -69,6 +72,8 @@ impl SimpleComponent for LucaInput {
             }
 
             sender.output(MsgInput::TextChanged(results.join("\n"))).unwrap();
+            // Save the state of the notebook at each change
+            save_notebook(text.as_str());
         });
 
         let model = LucaInput {text_buffer};
@@ -212,5 +217,22 @@ fn apply_tag(text_buffer: TextBuffer, line: i32, start: i32, end: i32, tag_name:
                 text_buffer.apply_tag(&bold_tag, &start_iter, &end_iter);
             }            
         }
+    }
+}
+
+/// Save the notebook open to a file
+fn save_notebook(notebook_content: &str) {
+    let xdg_dirs = xdg::BaseDirectories::with_prefix("pro.lasne.luca");
+    if let Ok(notebook_path) = xdg_dirs.place_data_file("notebook.md") {
+        match File::create(&notebook_path) {
+            Ok(mut file) => {
+                if let Err(e) = file.write_all(notebook_content.as_bytes()) {
+                    error!("Failed to save the state in {}: {}", notebook_path.display(), e);
+                }
+            },
+            Err(e) => error!("Failed to open {} to save the notebook state: {}", notebook_path.display(), e)
+        }
+    } else {
+        error!("Failed to save the notebook state in file in XDG data directory");
     }
 }

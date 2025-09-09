@@ -147,7 +147,7 @@ impl SimpleComponent for AppModel {
                 adjustment_in.set_value(adj.value());
             }
         });
-        
+
         let model = AppModel {
             input: text_input,
             result: result_view
@@ -212,10 +212,10 @@ struct Args {
 	cli: bool,
 }
 
-/// Load a notebook file
+/// Load a the notebook saved (when launching the app)
 fn load_notebook() -> String {
     let xdg_dirs = xdg::BaseDirectories::with_prefix("pro.lasne.luca");
-    if let Some(notebook_path) = xdg_dirs.get_data_file("previous_notebook.md") {
+    if let Some(notebook_path) = xdg_dirs.get_data_file("notebook.md") {
         match File::open(&notebook_path) {
             Err(e) => {
                 match e.kind() {
