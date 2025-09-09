@@ -1,6 +1,7 @@
 use gtk::{gdk, glib, glib::clone};
 use gtk::prelude::{GtkWindowExt, OrientableExt, WidgetExt};
-use relm4::gtk::prelude::{AdjustmentExt, ButtonExt};
+use relm4::gtk::gio;
+use relm4::gtk::prelude::AdjustmentExt;
 use relm4::{gtk, Component, ComponentController, ComponentParts, ComponentSender, Controller, RelmApp, SimpleComponent};
 use granite::prelude::SettingsExt;
 
@@ -91,8 +92,13 @@ impl SimpleComponent for AppModel {
                             pack_end = &gtk::Box{
                                 set_orientation: gtk::Orientation::Horizontal,
 
-                                gtk::Button {
+                                gtk::MenuButton {
                                     set_icon_name: "preferences-system-symbolic",
+                                    set_popover: Some(&gtk::PopoverMenu::from_model(Some(&{
+                                        let menu = gio::Menu::new();
+                                        menu.append(Some("Preferences"), Some("app.preferences"));
+                                        menu
+                                    })))
                                 },
 
                                 gtk::WindowControls {
