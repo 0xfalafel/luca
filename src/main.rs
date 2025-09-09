@@ -1,6 +1,7 @@
 use gtk::{gdk, glib, glib::clone};
 use gtk::prelude::{GtkWindowExt, OrientableExt, WidgetExt};
 use relm4::gtk::gio;
+use log::{error, info};
 use relm4::gtk::prelude::AdjustmentExt;
 use relm4::{gtk, Component, ComponentController, ComponentParts, ComponentSender, Controller, RelmApp, SimpleComponent};
 use granite::prelude::SettingsExt;
@@ -14,10 +15,11 @@ use result_pane::{ResultView, ResultMsg};
 // Things needed for --cli
 use clap::Parser;
 use value::Value;
+use std::fs::File;
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::collections::HashMap;
-use std::io;
+use std::io::{self, ErrorKind, Read};
 use std::io::Write;
 
 mod interpreter;
@@ -124,9 +126,12 @@ impl SimpleComponent for AppModel {
         sender: ComponentSender<Self>,
     ) -> relm4::ComponentParts<Self> {
         load_css();
+
+        let initial_notebook = load_notebook();
+
         let text_input: Controller<LucaInput> = 
             LucaInput::builder()
-                .launch(String::from(""))
+                .launch(initial_notebook)
                 .forward(sender.input_sender(), |msg| match msg {
                     MsgInput::TextChanged(new_text) => {AppMsg::TextChanged(new_text)}
                 });
@@ -221,6 +226,33 @@ struct Args {
 	cli: bool,
 }
 
+/// Load a notebook file
+fn load_notebook() -> String {
+    let xdg_dirs = xdg::BaseDirectories::with_prefix("pro.lasne.luca");
+    if let Some(notebook_path) = xdg_dirs.get_data_file("previous_notebook.md") {
+        match File::open(&notebook_path) {
+            Err(e) => {
+                match e.kind() {
+                    ErrorKind::NotFound => info!("No previous notebook ({})", notebook_path.display()),
+                    _ => error!("Failed to open notebook {}: {:#?}", notebook_path.display(), e.kind())
+                }
+            },
+            Ok(mut notebook) => {
+                let mut notebook_content = String::new();
+                let res = notebook.read_to_string(&mut notebook_content);
+
+                if res.is_err() {
+                    error!("Failed to read notebook {} content: {}", notebook_path.display(), res.unwrap_err())                    
+                }
+
+                return notebook_content;
+            },
+        }
+    }
+    
+    String::from("")
+}
+
 /// CLI mode: we create a small interpreter without launching the UI
 fn cli() {
     let variables: Rc<RefCell<HashMap<String, Value>>> = Rc::new(RefCell::new(HashMap::new()));
@@ -249,6 +281,7 @@ fn cli() {
 }
 
 fn main() {
+    env_logger::init();
     let args = Args::parse();
 
     if args.cli {
