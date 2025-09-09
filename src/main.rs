@@ -3,7 +3,6 @@ use gtk::prelude::{GtkWindowExt, OrientableExt, WidgetExt};
 use relm4::gtk::gio;
 use log::{error, info};
 use relm4::gtk::prelude::AdjustmentExt;
-use relm4::gtk::gio;
 use relm4::{gtk, Component, ComponentController, ComponentParts, ComponentSender, Controller, RelmApp, SimpleComponent};
 use granite::prelude::SettingsExt;
 
