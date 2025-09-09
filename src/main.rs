@@ -86,9 +86,6 @@ impl SimpleComponent for AppModel {
                         gtk::HeaderBar {
                             set_show_title_buttons: false,
                             set_margin_start: 5,
-                            // pack_end = &gtk::WindowControls{
-                            //     set_side: gtk::PackType::End,
-                            // },
                             pack_end = &gtk::Box{
                                 set_orientation: gtk::Orientation::Horizontal,
 
