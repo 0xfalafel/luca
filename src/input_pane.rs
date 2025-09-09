@@ -44,11 +44,27 @@ impl SimpleComponent for LucaInput {
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
         let text_buffer = gtk::TextBuffer::new(None);
-        text_buffer.set_text(&text);
-
         create_tags(text_buffer.clone());
+        
+        // Initialize our notebook
+        text_buffer.set_text(&text);
+        LucaInput::process_text(&text_buffer, &sender);
+
 
         text_buffer.connect_changed(move |text_buffer| {
+            LucaInput::process_text(text_buffer, &sender);
+        });
+
+        let model = LucaInput {text_buffer};
+        let widgets = view_output!();
+        // hide the scrollbar
+        widgets.scrolled_window.vscrollbar().set_visible(false);
+        ComponentParts {model, widgets}
+    }
+}
+
+impl LucaInput {
+    fn process_text(text_buffer: &TextBuffer, sender: &ComponentSender<Self>) {
             let start_iter = text_buffer.start_iter();
             let end_iter = text_buffer.end_iter();
             let text = text_buffer.text(&start_iter, &end_iter, false);
@@ -74,13 +90,7 @@ impl SimpleComponent for LucaInput {
             sender.output(MsgInput::TextChanged(results.join("\n"))).unwrap();
             // Save the state of the notebook at each change
             save_notebook(text.as_str());
-        });
 
-        let model = LucaInput {text_buffer};
-        let widgets = view_output!();
-        // hide the scrollbar
-        widgets.scrolled_window.vscrollbar().set_visible(false);
-        ComponentParts {model, widgets}
     }
 }
 
