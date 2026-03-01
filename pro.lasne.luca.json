@@ -27,6 +27,7 @@
             "cargo --offline build --release --verbose",
             "install -Dm644 ./data/pro.lasne.luca.desktop -t /app/share/applications/",
             "install -Dm644 ./data/pro.lasne.luca.appdata.xml -t /app/share/appdata/",
+            "install -Dm644 ./data/icons/pro.lasne.luca.svg -t /app/share/icons/hicolor/scalable/apps/pro.lasne.luca.svg",
             "install -Dm755 ./target/release/luca -t /app/bin/"
         ],
         "sources": [{

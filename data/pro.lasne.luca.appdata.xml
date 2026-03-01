@@ -8,6 +8,13 @@
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   
+  <icon type="stock">pro.lasne.luca</icon>
+
+  <categories>
+    <category>Utility</category>
+    <category>Math</category>
+  </categories>
+
   <recommends>
     <display_length compare="ge">250</display_length>
   </recommends>
@@ -21,6 +28,8 @@
       It&apos;s more powerful than a traditional calculator, and lighter than a spreadsheet.
     </p>
   </description>
+
+  <url type="homepage">https://github.com/0xfalafel/luca/</url>
 
   <launchable type="desktop-id">pro.lasne.luca.desktop</launchable>
 </component>
