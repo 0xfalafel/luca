@@ -389,4 +389,13 @@ mod tests {
         assert_eq!(res, (cm + m).unwrap());
     }
 
+    #[test]
+    fn mul_m_div_dm() {
+        // 2 m * 2m / 10 cm = 40 m
+        let a = Value::new_with_unit(Number::from_float(2.0).unwrap(), &Unit::meter());
+        let b = Value::new_with_unit(Number::from_float(2.0).unwrap(), &Unit::meter());
+        let c = Value::new_with_unit(Number::from_float(10.0).unwrap(), &Unit::centimeter());
+        assert_eq!("40 m", ((a * b).unwrap() / c).unwrap().to_string());
+    }
+
 }
