@@ -102,6 +102,11 @@ pub enum UnitSymbol {
     SquareDecimeters,
     SquareCentimeters,
     SquareMillimeters,
+    CubicMeters,
+    CubicKilometers,
+    CubicDecimeters,
+    CubicCentimeters,
+    CubicMillimeters,
     Second,
     Minute,
     Hour,
@@ -127,6 +132,11 @@ impl UnitSymbol {
             UnitSymbol::SquareDecimeters => ComposedUnit::square_decimeters(),
             UnitSymbol::SquareCentimeters => ComposedUnit::square_centimeters(),
             UnitSymbol::SquareMillimeters => ComposedUnit::square_millimeters(),
+            UnitSymbol::CubicMeters => ComposedUnit::cubic_meters(),
+            UnitSymbol::CubicKilometers => ComposedUnit::cubic_kilometers(),
+            UnitSymbol::CubicDecimeters => ComposedUnit::cubic_decimeters(),
+            UnitSymbol::CubicCentimeters => ComposedUnit::cubic_centimeters(),
+            UnitSymbol::CubicMillimeters => ComposedUnit::cubic_millimeters(),
         }
     }
 }
@@ -223,6 +233,12 @@ impl Lexer {
             "dm²" | "dm2" => Some(Token::UNIT(UnitSymbol::SquareDecimeters)),
             "cm²" | "cm2" => Some(Token::UNIT(UnitSymbol::SquareCentimeters)),
             "mm²" | "mm2" => Some(Token::UNIT(UnitSymbol::SquareMillimeters)),
+
+            "m³"  | "m3"  => Some(Token::UNIT(UnitSymbol::CubicMeters)),
+            "km³" | "km3" => Some(Token::UNIT(UnitSymbol::CubicKilometers)),
+            "dm³" | "dm3" => Some(Token::UNIT(UnitSymbol::CubicDecimeters)),
+            "cm³" | "cm3" => Some(Token::UNIT(UnitSymbol::CubicCentimeters)),
+            "mm³" | "mm3" => Some(Token::UNIT(UnitSymbol::CubicMillimeters)),
 
             "s" | "second" | "seconde" => Some(Token::UNIT(UnitSymbol::Second)),
             "min" | "minute" => Some(Token::UNIT(UnitSymbol::Minute)),

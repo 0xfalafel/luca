@@ -96,6 +96,11 @@ impl ComposedUnit {
     pub fn square_decimeters() -> ComposedUnit { Self::decimeter().power(2) }
     pub fn square_centimeters() -> ComposedUnit { Self::centimeter().power(2) }
     pub fn square_millimeters() -> ComposedUnit { Self::millimeter().power(2) }
+    pub fn cubic_meters() -> ComposedUnit { Self::meter().power(3) }
+    pub fn cubic_kilometers() -> ComposedUnit { Self::kilometer().power(3) }
+    pub fn cubic_decimeters() -> ComposedUnit { Self::decimeter().power(3) }
+    pub fn cubic_centimeters() -> ComposedUnit { Self::centimeter().power(3) }
+    pub fn cubic_millimeters() -> ComposedUnit { Self::millimeter().power(3) }
     pub fn inch() -> ComposedUnit { Self::new_with_unit(Unit::inch()) }
     pub fn feet() -> ComposedUnit { Self::new_with_unit(Unit::feet()) }
 }
