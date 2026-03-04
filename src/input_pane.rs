@@ -22,6 +22,7 @@ pub enum MsgInput {
     TextChanged(String)
 }
 
+#[allow(unused_assignments)]
 #[relm4::component(pub)]
 impl SimpleComponent for LucaInput {
     type Init = String;

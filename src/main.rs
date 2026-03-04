@@ -49,7 +49,7 @@ impl SimpleComponent for AppModel {
 
 
     view! {
-        main_window = gtk::Window {
+        gtk::Window {
             set_default_width: 600,
             set_default_height: 400,
             set_width_request: 370,
