@@ -225,7 +225,7 @@ impl Lexer {
             "mm" | "millimeter" | "millimetre" => Some(Token::UNIT(UnitSymbol::Millimeter)),
 
             "inch" | "inchs"  => Some(Token::UNIT(UnitSymbol::Inch)),
-            "feet" | "feets" => Some(Token::UNIT(UnitSymbol::Feet)),
+            "feet" | "feets" | "pied" | "pieds" => Some(Token::UNIT(UnitSymbol::Feet)),
 
 
             "m²"  | "m2"  => Some(Token::UNIT(UnitSymbol::SquareMeters)),
